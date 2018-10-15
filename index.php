@@ -21,6 +21,7 @@ if($db->isConnected()){
 	//if(chkLogin($uid)<>''){
 		$tpl  = new  TemplatePower(_TMAIN);
 		$tpl->assignInclude('header',_THEADER);
+		$tpl->assignInclude('footer',_TFOOTER);
 	//}
     switch($op){    
 		case ADDPIC:	//新增作品
@@ -64,6 +65,7 @@ if($db->isConnected()){
 			
     }
 	//$tpl -> prepare ();
+
 	if(chkLogin($uid)<>''){
 		$tpl -> prepare ();
 		$tpl -> assignGlobal('CSSPATH',CSSPATH);
@@ -76,7 +78,7 @@ if($db->isConnected()){
 		$tpl -> prepare ();
 		$tpl -> assignGlobal('CSSPATH',CSSPATH);
 		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle));
-		$tpl -> newBlock('nologinBlock');
+		//$tpl -> newBlock('nologinBlock');
 		$tpl-> assign(array('LOGIN'=>LOGIN,'LOGINPATH'=>LOGINPATH,'TITLESIGN'=>TITLESIGN,'SIGNPATH'=>SIGNPATH));
 		$tpl -> printToScreen ();
 	}

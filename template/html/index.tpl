@@ -1,85 +1,84 @@
-<script src="photograph/js/masonry.pkgd.min.js"></script>
-<script src="photograph/js/imagesloaded.pkgd.min.js"></script>
+<div>
+    <div class="first">
+        <h2>Hot Deals</h2>
+        <ul>
+            <li>
+                <a href="deals.html"><img src="template/images/riverside-city.jpg" alt=""/></a>
+                <span><a href="deals.html">Donec Nisl Justo</a></span>
+                <p>7 Days &amp; 3 Days at Aliquam iaculis velit</p>
+                <a href="deals.html" class="details">See Details</a>
+                <a href="deals.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="deals.html"><img src="template/images/kayaks.jpg" alt=""/></a>
+                <span><a href="deals.html">Pellentesque</a></span>
+                <p>Maecenas gravida lacus mauris, at interdum ligula</p>
+                <a href="deals.html" class="details">See Details</a>              
+                <a href="deals.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="deals.html"><img src="template/images/castle.jpg" alt=""/></a>
+                <span><a href="deals.html">QUISQUE</a></span>
+                <p>Pellentesque molestie arcu vitae lectus</p>
+                <a href="deals.html" class="details">See Details</a>              
+                <a href="deals.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="deals.html"><img src="template/images/girl-swimming.jpg" alt=""/></a>
+                <span><a href="deals.html">ODIOLOREM</a></span>
+                <p>Nullam viverra nisi et elit pretium venenatis</p>
+                <a href="deals.html" class="details">See Details</a>              
+                <a href="deals.html" class="book">Book Now!</a>
+            </li>
+        </ul>
+        <a href="deals.html">View all</a>
+    </div>
+    <div>
+        <h2>Special Offers</h2>
+        <ul>
+            <li>
+                <a href="offers.html"><img src="template/images/palace.jpg" alt=""/></a>
+                <span><a href="offers.html">Pellentesque</a></span>
+                <p>Maecenas gravida lacus mauris, at interdum ligula</p>
+                <a href="offers.html" class="details">See Details</a>             
+                <a href="offers.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="offers.html"><img src="template/images/couples2.jpg" alt=""/></a>
+                <span><a href="offers.html">QUISQUE</a></span>
+                <p>Pellentesque molestie arcu vitae lectus</p>
+                <a href="offers.html" class="details">See Details</a>             
+                <a href="offers.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="offers.html"><img src="template/images/mountain-view.jpg" alt=""/></a>
+                <span><a href="offers.html">DONEC NISL JUSTO</a></span>
+                <p>7 Days &amp; 3 Days at Aliquam iaculis velit</p>
+                <a href="offers.html" class="details">See Details</a>             
+                <a href="offers.html" class="book">Book Now!</a>
+            </li>
+            <li>
+                <a href="offers.html"><img src="template/images/ancient-place.jpg" alt=""/></a>
+                <span><a href="offers.html">ODIOLOREM</a></span>
+                <p>Nullam viverra nisi et elit pretium venenatis</p>
+                <a href="offers.html" class="details">See Details</a>             
+                <a href="offers.html" class="book">Book Now!</a>
+            </li>
+        </ul>
+        <a href="offers.html">View all</a>
+    </div>
+    <div id="news">
+        <h2>Get Updated</h2>
+        <a href="http://twitter.com/fwtemplates">Follow us <font>Twitter</font></a>
+        <a href="http://facebook.com/freewebsitetemplates">Like us in <font>Facebook</font></a>
+        <a href="#">Visit our <font>Blog</font></a>
+        <a href="http://www.youtube.com/fwtemplates">Watch us in <font>YouTube</font></a>
 
-<script src="photograph/js/wayfinder.js"></script>
-<script>
-$( function() {
-	$( "#search_btn" ).click(function() {
-        $("#search_div").toggle();
-    });
-
-	var $grid = $('.grid').imagesLoaded( function() {
-		$grid.masonry({
-	  		itemSelector: '.grid-item',
-			percentPosition: true,
-			columnWidth: '.grid-sizer'
-		});
-	});
-	
-	flag = true;
-	$(window).scroll(function() {
-		if($(window).scrollTop() + $(window).height() == $(document).height()){
-			first = $('#first').val();
-			limit = $('#limit').val();
-			no_data = true;
-			if(flag && no_data){
-				flag = false;
-				$('#loader').show();
-				$.ajax({
-					url : 'ajax.php',
-					method: 'post',
-					data: {
-					   start : first,
-					   limit : limit
-					},
-					dataType:'html',
-					success: function( data ) {
-						flag = true;
-						$('#loader').hide();
-						if(data !=''){
-							first = parseInt($('#first').val());
-							limit = parseInt($('#limit').val());
-				
-							$('#first').val( first+limit );
-							
-							//$('#grid').append( data );
-							//jQuery("#content").append(data).masonry( 'appended', data, true );
-							var $items = $(data);
-							$grid.append( $items ).masonry( 'appended', $items );
-						}else{
-							no_data = false;
-						}
-					},
-					error: function( data ){
-						flag = true;
-						$('#loader').hide();
-						no_data = false;
-						alert('Something went wrong, Please contact admin');
-					}
-				});
-			}
-		}
-	});	
-});
-
-
-</script>
-<div class="grid" id="grid">
-<div class="grid-sizer"></div>
-<!-- START BLOCK : index_row -->
-	<div class="grid-item">
-  		<div class="grid-content box">
-    		<div class="grid-title">【{department}_{uname}】<br>{title}</div>
-    		<img src="{UPLOADPICPATH}{pic}">
-        	<div class="grid-txt details">{txt}</div>
-        	<a href="#" class="button">More Details</a>
-  		</div>
-  	</div>
-<!-- END BLOCK : index_row -->
+        <div>
+            <h3>Brochure</h3>
+            <a href="#" id="download"><img src="template/images/brochure.jpg" alt=""/></a>
+            <a href="#">Download Brochure</a>
+            <p>This website template has been designed by <a href="http://www.freewebsitetemplates.com/">Free Website Templates</a> for you, for free. You can replace all this text with your own text.</p>
+        </div>
+    </div>  
 </div>
-
-<div id="loader">
-	<div class="sk-spinner sk-spinner-pulse"></div>
-</div>
-<input type="hidden" id="first" value="{FIRST}" />
-<input type="hidden" id="limit" value="{LIMIT}" >

@@ -12,6 +12,7 @@ define('CSSPATH','./template/css/');
 define('UPLOADPICPATH','../160505pic/');
 define('_TMAIN',THEMES.'main.tpl');
 define('_THEADER',THEMES.'header.tpl');
+define('_TFOOTER',THEMES.'footer.tpl');
 define('_TSIGN',THEMES.'sign.tpl');
 define('_TLOGIN',THEMES.'login.tpl');
 define('_TSHOWPIC',THEMES.'showPic.tpl');
