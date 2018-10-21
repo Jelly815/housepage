@@ -21,6 +21,6 @@
             <input type="text" value="Enter email address" id="email" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';" />
             <input type="submit" id="submit" value=""/>
         </form>
-        <p>&#169; Copyright 2012. All Rights Reserved.</p>
+        <p>&#169; Copyright {COPYRIGHT}. All Rights Reserved.</p>
     </div>
 </div>

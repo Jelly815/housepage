@@ -1,5 +1,9 @@
 /* Website template by freewebsitetemplates.com */
 /*------------------------- Layout styles ------------------------*/ 
+* {
+    text-decoration: none;
+    border: none; 
+}
 body{
 	background:url(../images/bg-body.jpg) repeat-x center top #09154F;
 	margin: 0;
@@ -69,6 +73,9 @@ p a,h3 a{
     height: 70px;
     margin: 55px 0 0 25px;
     width: 273px;
+
+    text-decoration: none;
+    color: rgba(255,255,255,0.9);
 }
 #header a#logo img,.header a#logo img{
 	border: 0;
@@ -78,7 +85,7 @@ p a,h3 a{
 	overflow: hidden;
 	padding: 0;
 	margin: 23px 0 0;
-	width: 520px;
+	/*width: 520px;*/
 	float: right;
 }
 #header ul.navigation li,.header ul.navigation li{
@@ -302,6 +309,9 @@ p a,h3 a{
 #header div#featured div div ul li p a{
 	color: #8C8C8C;
 	text-decoration: underline;
+}
+.errorColor{
+	color:red;
 }
 
 /*-------------------------	Content --------------------------*/
@@ -958,3 +968,88 @@ p a,h3 a{
 	margin: 0;
 }
 
+
+
+
+#sign_up {
+    -moz-border-radius: 6px;
+    background: #eef2f7;
+    -webkit-border-radius: 6px;
+    border: 1px solid #536376;
+    -webkit-box-shadow: rgba(0,0,0,.6) 0px 2px 12px;
+    -moz-box-shadow: rgba(0,0,0,.6) 0px 2px 12px;
+    padding: 14px 22px;
+    width: 400px;
+    position: relative;
+    display: none;
+}
+#see_id {
+    width: 228px;
+    height: 23px;
+    background-position: -202px -133px;
+    color:#556578;
+    font-weight: bold;
+}
+#sign_up_form {
+    position: relative;
+    background: url(divider.png) repeat-x bottom left;
+    padding-bottom: 54px;
+    margin-bottom: 12px;
+}
+#sign_up label {
+    display: block;
+    margin-bottom: 10px;
+    color: #536376;
+    font-size: .9em;
+    border: none;
+}
+#sign_up label input {
+    display: block;
+    width: 377px;
+    height: 31px;
+    background-position: -201px 0;
+    padding: 2px 8px;
+    font-size: 1.2em;
+    line-height: 31px;
+}
+.sprited {
+    background: url(../images/download_sprite.png) no-repeat;
+    line-height: 1000px;
+    overflow: hidden;
+    display: block;
+}
+#actions {
+    float: left;
+    position: absolute;
+    right: 0;
+    height: 31px;
+    bottom: 20px;
+}
+#cancel {
+    background-position: -198px -36px;
+}
+a.form_button {
+    float: left;
+    width: 93px;
+    height: 31px;
+    margin-right: 15px;
+}
+#log_in {
+    background-position: -291px -36px;
+}
+#left_out {
+    background-position: -202px -158px;
+    width: 113px;
+    height: 16px;
+}
+#close_x {
+    width: 24px;
+    height: 23px;
+    overflow: hidden;
+    line-height: 1000px;
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-position: -387px -102px;
+}

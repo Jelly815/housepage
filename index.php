@@ -2,6 +2,9 @@
 session_start();
 include_once('./lib/handling.php');
 
+$db = new db_function();
+//print_r($db->login('jelly6@yahoo.com','789456123'));exit;
+$op = isset($_GET['op'])?$_GET['op']:'';
 if($op==OUT){
 		$_SESSION['uid']=null;
 		$_SESSION['uname']=null;
@@ -13,19 +16,19 @@ if($op==OUT){
 		unset($_SESSION['umail']);
 		unset($_SESSION['uphone']);
 		unset($_SESSION['udepartment']);
-		
+
 		header('location:'.INDEXPATH);
 }
-	
-if($db->isConnected()){
+
+if($db->conn){
 	//if(chkLogin($uid)<>''){
 		$tpl  = new  TemplatePower(_TMAIN);
 		$tpl->assignInclude('header',_THEADER);
 		$tpl->assignInclude('footer',_TFOOTER);
 	//}
-    switch($op){    
+    switch($op){
 		case ADDPIC:	//新增作品
-			if(chkLogin($uid)<>''){ 
+			if(chkLogin($uid)<>''){
 				$headTitle=TITLEADDPIC;
 				$tpl -> assignInclude('themes',_PADDPIC);
 			}else header('location:'.OUTOPATH);
@@ -44,7 +47,7 @@ if($db->isConnected()){
 		  break;
 		case DELPIC:	//刪除作品
 			if(chkLogin($uid)<>''){
-				
+
 			}else header('location:'.OUTOPATH);
 		  break;
 		case SIGN:		//註冊
@@ -59,14 +62,14 @@ if($db->isConnected()){
 				include_once(_PMAIN);
 			}
 		  break;
-		default:		//首頁 
+		default:		//首頁
 			$headTitle=HEADERTITLE;
 			$tpl -> assignInclude('themes',_PINDEX);
-			
+
     }
 	//$tpl -> prepare ();
 
-	if(chkLogin($uid)<>''){
+	if($_SESSION['uname'] != ''){
 		$tpl -> prepare ();
 		$tpl -> assignGlobal('CSSPATH',CSSPATH);
 		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle));
@@ -77,13 +80,22 @@ if($db->isConnected()){
 	elseif($op==''){
 		$tpl -> prepare ();
 		$tpl -> assignGlobal('CSSPATH',CSSPATH);
-		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle));
+		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle,'HOMEPAGE'=>HOMEPAGE,'ADSEARCH'=>ADSEARCH));
 		//$tpl -> newBlock('nologinBlock');
-		$tpl-> assign(array('LOGIN'=>LOGIN,'LOGINPATH'=>LOGINPATH,'TITLESIGN'=>TITLESIGN,'SIGNPATH'=>SIGNPATH));
+		$text = array(
+			'LOGIN'		=> LOGIN,
+			'LOGINPATH'	=> LOGINPATH,
+			'TITLESIGN'	=> TITLESIGN,
+			'SIGNPATH'	=> SIGNPATH,
+			'COPYRIGHT'	=> COPYRIGHT,
+			'HEADERTITLEDTAIL'	=> HEADERTITLEDTAIL,
+			'ALERTXT05'	=> ALERTXT05
+		);
+		$tpl-> assign($text);
 		$tpl -> printToScreen ();
 	}
 	//$tpl -> printToScreen ();
-	
+
 }else{
       echo 'no connection';exit;
 }
