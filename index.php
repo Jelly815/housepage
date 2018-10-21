@@ -69,7 +69,7 @@ if($db->conn){
     }
 	//$tpl -> prepare ();
 
-	if($_SESSION['uname'] != ''){
+	if(isset($_SESSION['uname']) && $_SESSION['uname'] != ''){
 		$tpl -> prepare ();
 		$tpl -> assignGlobal('CSSPATH',CSSPATH);
 		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle));
