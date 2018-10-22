@@ -14,19 +14,20 @@ class db_function extends db_connect{
     // 登入
 	function login($email,$pwd){
 		$result = $re_array = array();
-		$pwd = md5($pwd);
+		$pwd 	= md5($pwd);
 
-		$sql = "select `ex_name`,`ex_mail` from `ex_user` where ex_mail=? and ex_pwd=?";
-		$vals = array($email,$pwd);
-		$sql = $this->db->prepare($sql);
+		$sql 	=  "SELECT 	`ex_name`,`ex_mail`
+					FROM 	`ex_user`
+					WHERE 	ex_mail = ? AND
+							ex_pwd 	= ? ";
+
+		$vals 	= array($email,$pwd);
+		$sql 	= $this->db->prepare($sql);
 
 		$result = $this->db->execute($sql,$vals);
 
-		if($result && $result->_numOfRows > 0){
-			$re_array = $result->getAll();
-
-			$_SESSION['uname']=$re_array[0]['ex_name'];
-			$_SESSION['umail']=$re_array[0]['ex_mail'];
+		if($result && $result->RecordCount() > 0){
+			$re_array 	= $result->getArray();
 		}
 		return $re_array;
 	}

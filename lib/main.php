@@ -1,12 +1,12 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
-include_once('./lib/lang.php');
+include_once('./lib/setting.php');
 
 class db_connect{
 	public $conn,$db;
 
-	public function __construct() 
-	{ 
+	public function __construct()
+	{
 		include_once('./include/adodb/adodb.inc.php');
 		$this->db = ADONewConnection(DATATYPE);
 		$this->db->Connect(SERVERNAME,USERNAME,USERPWD,DATANAME);

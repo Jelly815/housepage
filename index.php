@@ -1,102 +1,95 @@
 <?php
 session_start();
 include_once('./lib/handling.php');
+include_once('./lib/lang.php');
 
-$db = new db_function();
+$db 	= new db_function();
 //print_r($db->login('jelly6@yahoo.com','789456123'));exit;
-$op = isset($_GET['op'])?$_GET['op']:'';
-if($op==OUT){
-		$_SESSION['uid']=null;
-		$_SESSION['uname']=null;
-		$_SESSION['umail']=null;
-		$_SESSION['uphone']=null;
-		$_SESSION['udepartment']=null;
-		unset($_SESSION['uid']);
-		unset($_SESSION['uname']);
-		unset($_SESSION['umail']);
-		unset($_SESSION['uphone']);
-		unset($_SESSION['udepartment']);
+$op 	= isset($_GET['op'])?$_GET['op']:'';
 
-		header('location:'.INDEXPATH);
+$text 	= array(
+	'ADMINMAIL'		=> ADMINMAIL,
+	'HEADERTITLE' 	=> HEADERTITLE,
+	'INDEXPATH'		=> INDEXPATH,
+	'HOMEPAGE'		=> HOMEPAGE,
+	'ADSEARCH'		=> ADSEARCH,
+	'COPYRIGHT'		=> COPYRIGHT,
+	'HEADERTITLEDTAIL'	=> HEADERTITLEDTAIL,
+	'OUTOPATH'		=> OUTOPATH,
+	'LOGOUT'		=> LOGOUT,
+	'LOGIN_URL' 	=> '<a id="login_btn" href="javascript:;" title="'.LOGIN.'">'.LOGIN.'</a> | <a href="'.SIGNPATH.'" title="'.SIGNUP.'">'.SIGNUP.'</a>'
+);
+
+if(isset($_SESSION['uname']) && $op == OUT){
+	$_SESSION['uname']	= null;
+	$_SESSION['umail']	= null;
+	unset($_SESSION['uname']);
+	unset($_SESSION['umail']);
+
+	header('location:'.INDEXPATH);
+}elseif(isset($_SESSION['uname'])){
+	$text['USER_NAME']	= HI.$_SESSION['uname'];
+	$text['LOGIN_URL']	= '<a id="logout_btn" href="javascript:;" title="'.LOGOUT.'">'.LOGOUT.'</a>';
 }
 
-if($db->conn){
-	//if(chkLogin($uid)<>''){
-		$tpl  = new  TemplatePower(_TMAIN);
-		$tpl->assignInclude('header',_THEADER);
-		$tpl->assignInclude('footer',_TFOOTER);
-	//}
-    switch($op){
-		case ADDPIC:	//新增作品
-			if(chkLogin($uid)<>''){
-				$headTitle=TITLEADDPIC;
-				$tpl -> assignInclude('themes',_PADDPIC);
-			}else header('location:'.OUTOPATH);
-		  break;
-		case SHOWPIC:	//瀏覽作品
-			if(chkLogin($uid)<>''){
-				$headTitle=TITLEVIEWPIC;
-				$tpl -> assignInclude('themes',_PSHOWPIC);
-			}else header('location:'.OUTOPATH);
-		  break;
-		case EDITPIC:	//編輯作品
-			if(chkLogin($uid)<>''){
-				$headTitle=TITLEEDITPIC;
-				$tpl -> assignInclude('themes',_PEDITPIC);
-			}else header('location:'.OUTOPATH);
-		  break;
-		case DELPIC:	//刪除作品
-			if(chkLogin($uid)<>''){
+// 樣板
+$tpl  	= new  TemplatePower(_TMAIN);
+$tpl->assignInclude('header',_THEADER);
+$tpl->assignInclude('footer',_TFOOTER);
+$tpl->assignInclude('login',_TLOGIN);
+$tpl->prepare ();
 
-			}else header('location:'.OUTOPATH);
-		  break;
-		case SIGN:		//註冊
-			if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
-			else{
-				include_once(_PSIGN);
-			}
-		  break;
-		case ULOGIN:	//登入
-			if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
-			else{
-				include_once(_PMAIN);
-			}
-		  break;
-		default:		//首頁
-			$headTitle=HEADERTITLE;
-			$tpl -> assignInclude('themes',_PINDEX);
+$tpl->assignGlobal(array(
+	'CSSPATH'  		=> CSSPATH,
+    'JSPATH'  		=> JSPATH));
 
-    }
-	//$tpl -> prepare ();
+$tpl->assign($text);
 
-	if(isset($_SESSION['uname']) && $_SESSION['uname'] != ''){
-		$tpl -> prepare ();
-		$tpl -> assignGlobal('CSSPATH',CSSPATH);
-		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle));
-		$tpl -> newBlock('loginBlock');
-		$tpl-> assign(array('HI'=>HI,'USERNAME'=>$_SESSION['uname'],'TITLEADDPIC'=>TITLEADDPIC,'TITLEVIEWPIC'=>TITLEVIEWPIC,'LOGOUT'=>LOGOUT,'LOGINTOPATH'=>LOGINTOPATH,'ADDPICTOPATH'=>ADDPICTOPATH,'OUTOPATH'=>OUTOPATH));
-		$tpl -> printToScreen ();
-	}
-	elseif($op==''){
-		$tpl -> prepare ();
-		$tpl -> assignGlobal('CSSPATH',CSSPATH);
-		$tpl-> assign(array('HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH,'TITLEMAIN'=>$headTitle,'HOMEPAGE'=>HOMEPAGE,'ADSEARCH'=>ADSEARCH));
-		//$tpl -> newBlock('nologinBlock');
-		$text = array(
-			'LOGIN'		=> LOGIN,
-			'LOGINPATH'	=> LOGINPATH,
-			'TITLESIGN'	=> TITLESIGN,
-			'SIGNPATH'	=> SIGNPATH,
-			'COPYRIGHT'	=> COPYRIGHT,
-			'HEADERTITLEDTAIL'	=> HEADERTITLEDTAIL,
-			'ALERTXT05'	=> ALERTXT05
-		);
-		$tpl-> assign($text);
-		$tpl -> printToScreen ();
-	}
-	//$tpl -> printToScreen ();
+switch($op){
+	/*
+	case ADDPIC:	//新增作品
+		if(chkLogin($uid)<>''){
+			$headTitle=TITLEADDPIC;
+			$tpl -> assignInclude('themes',_PADDPIC);
+		}else header('location:'.OUTOPATH);
+	  break;
+	case SHOWPIC:	//瀏覽作品
+		if(chkLogin($uid)<>''){
+			$headTitle=TITLEVIEWPIC;
+			$tpl -> assignInclude('themes',_PSHOWPIC);
+		}else header('location:'.OUTOPATH);
+	  break;
+	case EDITPIC:	//編輯作品
+		if(chkLogin($uid)<>''){
+			$headTitle=TITLEEDITPIC;
+			$tpl -> assignInclude('themes',_PEDITPIC);
+		}else header('location:'.OUTOPATH);
+	  break;
+	case DELPIC:	//刪除作品
+		if(chkLogin($uid)<>''){
 
-}else{
-      echo 'no connection';exit;
+		}else header('location:'.OUTOPATH);
+	  break;
+	case SIGN:		//註冊
+		if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
+		else{
+			include_once(_PSIGN);
+		}
+	  break;
+
+	case ULOGIN:	//登入
+		if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
+		else{
+			include_once(_PMAIN);
+		}
+	  break;
+	 */
+	default:		//首頁
+		$headTitle=HEADERTITLE;
+		$tpl -> assignInclude('themes',_PINDEX);
+
 }
+
+$tpl-> assign($text);
+$tpl -> printToScreen ();
 ?>

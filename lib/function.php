@@ -6,18 +6,18 @@ function chkLogin($uid){
 function getImg($name,$tmp,$fileFolder,$page){
     if($page<>'') $page.="/";
 	$fileName=date('YmdHis').'.jpg';
-	
+
     if(is_dir($fileFolder.$page)){
         if(file_exists($fileFolder.$page.$fileName)){
-            $fileName="2_".$fileName; 
+            $fileName="2_".$fileName;
         }
     }else{
         mkdir($fileFolder.$page) ;
         if(file_exists($fileFolder.$page.$fileName)){
-            $fileName="2_".$fileName; 
+            $fileName="2_".$fileName;
         }
     }
-	
+
     if(copy($tmp,$fileFolder.$page.$fileName))return $fileName;
 	else return '';
 }

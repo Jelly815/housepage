@@ -1,16 +1,16 @@
 <div id="header">
     <ul id="navigation">
         <li>
-            <a href="index.php" id="home">Home</a>
+            <a href="index.php" id="home" title="Home">Home</a>
         </li>
         <li>
-            <a href="mailto:jellyandjar@yahoo.com.tw" id="email">Email</a>
+            <a href="mailto:{ADMINMAIL}" id="email" title="Email">Email</a>
         </li>
     </ul>
-
-    <a href="index.php" id="logo">
+    <div id="log_in_text">{USER_NAME}</div>
+    <a href="index.php" id="logo" title="{HEADERTITLE}">
         <h1>{HEADERTITLE}</h1>
-        <div style="position: relative;top: -20px;left: 30px;color:#093859;font-weight:bold;">{HEADERTITLEDTAIL}</div>
+        <div>{HEADERTITLEDTAIL}</div>
     </a>
     <ul class="navigation">
         <li class="selected first">
@@ -19,8 +19,8 @@
         <li>
             <a href="ships.html" title="{ADSEARCH}">{ADSEARCH}</a>
         </li>
-        <li>
-            <a id="login_btn" href="javascript:;" title="{LOGIN}">{LOGIN}</a> | <a href="{SIGNPATH}" title="{TITLESIGN}">{TITLESIGN}</a>
+        <li id="login_li">
+            {LOGIN_URL}
         </li>
     </ul>
     <div id="featured">
@@ -32,7 +32,7 @@
                         <a href="featured.html">
                             <img src="template/images/couples.jpg" alt=""/>
                         </a>
-                        <p>This website template has been designed by 
+                        <p>This website template has been designed by
                             <a href="http://www.freewebsitetemplates.com/">Free Website Templates</a> for you, for free. You can replace all this text with your own text.
                         </p>
                     </div>
@@ -96,60 +96,3 @@
         </div>
     </div>
 </div>
-<form action="" method="post" id="loginFrom" name="loginFrom">
-<div id="sign_up" style="display: none; left: 50%; margin-left: -223px; z-index: 1002; position: absolute; top: 840px; margin-top: 0px;">
-    <h3 id="see_id">會員登入</h3>
-    <div id="sign_up_form">
-        <label><strong>Username:</strong> <input type="text" name="mail" id="mail" placeholder="{EMAILTXT}" title="{EMAIL}" class="sprited" /></label>
-        <label><strong>Password:</strong> <input type="password" name="pwd" id="pwd" title="{PWD}" class="sprited"></label>
-        <div class="errorColor"></div>
-        <div id="actions">
-            
-            <a class="close form_button sprited" id="cancel" href="#">Cancel</a>
-            <a class="form_button sprited" id="log_in" title="{LOGINBTN}">Sign in</a>
-        </div>
-    </div>
-    <span>Don't be sad, just <a href="{SIGNPATH}">click here</a> to sign up!</span>
-    <a id="close_x" class="close sprited" href="#">close</a>
-</div>
-</form>
-<script>
-    $('#login_btn').click(function(e) {
-        $('#sign_up').lightbox_me({
-            centered: true, 
-            onLoad: function() { 
-                $('#sign_up').find('input:first').focus()
-                }
-            });
-        e.preventDefault();
-    });
-
-    $('#log_in').click(function(e) {
-        var url     = "action.php?action=login";
-        var user    = $("#mail").val();
-        var pwd     = $("#pwd").val();
-        if(user != '' && pwd != ''){
-            $.ajax({
-                type :"POST",
-                url  : url,
-                data : { 
-                    user : user, 
-                    pwd : pwd,                            
-                },
-                dataType: "text",
-                success : function(re_data) {
-console.log(re_data);                           
-                }
-            });
-        }else{
-            $('#sign_up').lightbox_me({
-                centered: true, 
-                onLoad: function() { 
-                    $('#sign_up').find('input:first').focus();
-                    $('.errorColor').text('{ALERTXT05}');
-                }
-            });
-            e.preventDefault();
-        }
-    });
-</script>

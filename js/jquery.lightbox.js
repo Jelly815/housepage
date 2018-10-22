@@ -1,11 +1,11 @@
 (function($) {
 
-    $.fn.lightbox_me = function(options) {
+    $.fn.lightbox = function(options) {
 
         return this.each(function() {
 
             var
-                opts = $.extend({}, $.fn.lightbox_me.defaults, options),
+                opts = $.extend({}, $.fn.lightbox.defaults, options),
                 $overlay = $(),
                 $self = $(this),
                 $iframe = $('<iframe id="foo" style="z-index: ' + (opts.zIndex + 1) + ';border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
@@ -69,7 +69,7 @@
                      .resize(setSelfPosition)
                      .scroll(setSelfPosition);
 
-            $(window).bind('keyup.lightbox_me', observeKeyPress);
+            $(window).bind('keyup.lightbox', observeKeyPress);
 
             if (opts.closeClick) {
                 $overlay.click(function(e) { closeLightbox(); e.preventDefault; });
@@ -112,11 +112,11 @@
                 $self.undelegate(opts.closeSelector, "click");
                 $self.unbind('close', closeLightbox);
                 $self.unbind('repositon', setSelfPosition);
-                
+
                 $(window).unbind('resize', setOverlayHeight);
                 $(window).unbind('resize', setSelfPosition);
                 $(window).unbind('scroll', setSelfPosition);
-                $(window).unbind('keyup.lightbox_me');
+                $(window).unbind('keyup.lightbox');
                 opts.onClose();
             }
 
@@ -182,7 +182,7 @@
 
     };
 
-    $.fn.lightbox_me.defaults = {
+    $.fn.lightbox.defaults = {
 
         // animation
         appearEffect: "fadeIn",

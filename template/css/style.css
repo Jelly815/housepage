@@ -1,8 +1,8 @@
 /* Website template by freewebsitetemplates.com */
-/*------------------------- Layout styles ------------------------*/ 
+/*------------------------- Layout styles ------------------------*/
 * {
     text-decoration: none;
-    border: none; 
+    border: none;
 }
 body{
 	background:url(../images/bg-body.jpg) repeat-x center top #09154F;
@@ -80,6 +80,13 @@ p a,h3 a{
 #header a#logo img,.header a#logo img{
 	border: 0;
 }
+#header a#logo div{
+	position: relative;
+	top: -20px;
+	left: 30px;
+	color:#093859;
+	font-weight:bold;
+}
 #header ul.navigation,.header ul.navigation{
 	list-style: none;
 	overflow: hidden;
@@ -93,7 +100,7 @@ p a,h3 a{
 	height: 48px;
 }
 #header ul.navigation li,.header ul.navigation li{
-	background: url(../images/bg-menu.gif) repeat-x;	
+	background: url(../images/bg-menu.gif) repeat-x;
 	padding: 0 10px;
 }
 #header ul.navigation li.selected,.header ul.navigation li.selected{
@@ -136,7 +143,7 @@ p a,h3 a{
 	_margin: 0 0 0 10px!important;
 }
 #header div#featured div.first ul li.selected{
-	background: url(../images/bg-feat-menu-selected-left.gif) no-repeat left top;	
+	background: url(../images/bg-feat-menu-selected-left.gif) no-repeat left top;
 	margin: 0 0 0 5px;
 }
 #header div#featured div ul li{
@@ -150,7 +157,7 @@ p a,h3 a{
 	background: url(../images/bg-feat-menu-selected-right.gif) no-repeat left top;
 	color: #191C21;
 	padding: 0 32px;
-} 
+}
 #header div#featured div ul li.selected a:hover{
 	color: #868686;
 }
@@ -206,7 +213,7 @@ p a,h3 a{
 	color: #393d42;
 	font-size: 16px;
 	width: auto;
-} 
+}
 #header div#featured div.first ul li.selected div p a{
 	color: #105272!important;
     font-weight: bold;
@@ -218,15 +225,15 @@ p a,h3 a{
 	font-family: arial;
 	font-size: 16px;
 	padding: 0 !important;
-} 
+}
 #header div#featured div.first ul li.selected div p a:hover{
 	color: #393d42!important;
     text-decoration: underline;
-} 
+}
 #header div#featured div ul li div p{
 	position: absolute;
 	left: -99999px;
-} 
+}
 #header div#featured div h3{
 	color: #666666;
     font-size: 18px;
@@ -259,7 +266,7 @@ p a,h3 a{
 	display: block;
 	width: 274px;
 	border: 1px solid #9A9A9A;
-	margin: 0 0 10px;	
+	margin: 0 0 10px;
 	font-size: 11px;
 }
 #header div#featured div div{
@@ -321,15 +328,15 @@ p a,h3 a{
 	overflow: hidden;
 	padding: 0 0 45px;
 }
-#content div{  
+#content div{
 	width: 960px;
 	margin: 0 auto;
 	overflow: hidden;
 }
-#content div div.first{   
+#content div div.first{
 	margin: 0;
 }
-#content div div{   
+#content div div{
 	float: left;
 	width: 344px;
 	margin: 0 0 0 30px;
@@ -542,7 +549,7 @@ p a,h3 a{
 	margin: 0;
 	color: #041c4c;
 	line-height: 67px;
-	text-indent: 30px;	
+	text-indent: 30px;
 	font-size: 30px;
 	text-transform: capitalize;
 }
@@ -662,7 +669,7 @@ p a,h3 a{
 	margin: 0;
 	color: #041c4c;
 	line-height: 67px;
-	text-indent: 30px;	
+	text-indent: 30px;
 	font-size: 30px;
 	text-transform: capitalize;
 }
@@ -708,7 +715,7 @@ p a,h3 a{
 	margin: 0;
     padding: 0;
 	border-width: 1px;
-	border-style: none none none solid; 
+	border-style: none none none solid;
 	border-color: #dfdfdf;
 }
 .content div#offers ul{
@@ -901,7 +908,7 @@ p a,h3 a{
 	list-style: none;
 	margin: 5px 50px 0 20px;
 	_margin: 5px 43px 0 20px;
-	padding: 0; 
+	padding: 0;
 	float: left;
 }
 #footer ul li{
@@ -968,9 +975,7 @@ p a,h3 a{
 	margin: 0;
 }
 
-
-
-
+/*-------------------------	Login/Signup --------------------------*/
 #sign_up {
     -moz-border-radius: 6px;
     background: #eef2f7;
@@ -1033,6 +1038,14 @@ a.form_button {
     width: 93px;
     height: 31px;
     margin-right: 15px;
+}
+#log_in_text {
+	float: right;
+	padding: 15px 10px 0px 0px;
+	line-height: 40px;
+	font-family: arial;
+	font-size: 16px;
+	color: #061558;
 }
 #log_in {
     background-position: -291px -36px;
