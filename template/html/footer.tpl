@@ -1,4 +1,4 @@
-<div id="footer">
+<div class="footer">
     <div>
         <ul>
             <li><a href="about.html">The Company</a></li>

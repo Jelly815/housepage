@@ -1,10 +1,11 @@
 <?php
+/*
 	switch($a){
 		 case 'add':
 			$dataArr=addUser();
 			break;
 		 default:
-	
+
 	}
 	$tpl=new TemplatePower(_TSIGN);
 	$tpl->prepare();
@@ -18,7 +19,7 @@
 		$tpl->newBlock('pic_row');
 		$tpl->assign(array('id'=>$getDepatm[$i]['ex_id'],'title'=>$getDepatm[$i]['ex_title']));
 	}
-	
-	$tpl->printToScreen();	
 
+	$tpl->printToScreen();
+*/
 ?>

@@ -1,4 +1,4 @@
-<div id="header">
+<div class="header">
     <ul id="navigation">
         <li>
             <a href="index.php" id="home" title="Home">Home</a>
@@ -23,6 +23,7 @@
             {LOGIN_URL}
         </li>
     </ul>
+    <!-- START BLOCK : index_header -->
     <div id="featured">
         <div class="first">
             <ul>
@@ -95,4 +96,5 @@
             </div>
         </div>
     </div>
+    <!-- END BLOCK : index_header -->
 </div>

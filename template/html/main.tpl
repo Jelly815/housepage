@@ -8,8 +8,8 @@
     </head>
     <body>
         <!-- INCLUDE BLOCK : header -->
-        <div id="content">
-            <!-- INCLUDESCRIPT BLOCK : themes -->
+        <div class="content">
+            <!-- INCLUDE BLOCK : themes -->
         </div>
         <!-- INCLUDE BLOCK : login -->
         <!-- INCLUDE BLOCK : alert -->

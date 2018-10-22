@@ -39,13 +39,9 @@ $tpl->assignInclude('header',_THEADER);
 $tpl->assignInclude('footer',_TFOOTER);
 $tpl->assignInclude('login',_TLOGIN);
 $tpl->assignInclude('alert',_TALERT);
-$tpl->prepare ();
 
-$tpl->assignGlobal(array(
-	'CSSPATH'  		=> CSSPATH,
-    'JSPATH'  		=> JSPATH));
 
-$tpl->assign($text);
+
 
 switch($op){
 	/*
@@ -72,12 +68,7 @@ switch($op){
 
 		}else header('location:'.OUTOPATH);
 	  break;
-	case SIGN:		//註冊
-		if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
-		else{
-			include_once(_PSIGN);
-		}
-	  break;
+
 
 	case ULOGIN:	//登入
 		if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
@@ -86,12 +77,29 @@ switch($op){
 		}
 	  break;
 	 */
+	case SIGN:		//註冊
+		if(!isset($_SESSION['uname'])){
+			//include_once(_PSIGN);
+
+			$tpl->assignInclude('themes',_TSIGN);
+		}else{
+			header('location:'.INDEXPATH);
+		}
+	break;
 	default:		//首頁
-		$headTitle=HEADERTITLE;
-		$tpl -> assignInclude('themes',_PINDEX);
+		$headTitle = HEADERTITLE;
+
+		$tpl -> assignInclude('themes',_TINDEX);
 
 }
-
-$tpl-> assign($text);
-$tpl -> printToScreen ();
+$tpl->prepare ();
+$tpl->assignGlobal(array(
+	'CSSPATH'  		=> CSSPATH,
+    'JSPATH'  		=> JSPATH
+));
+$tpl->assign($text);
+if($op == ''){
+	$tpl->newBlock("index_header");
+}
+$tpl->printToScreen ();
 ?>
