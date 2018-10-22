@@ -6,6 +6,7 @@ include_once('./lib/lang.php');
 $db 	= new db_function();
 //print_r($db->login('jelly6@yahoo.com','789456123'));exit;
 $op 	= isset($_GET['op'])?$_GET['op']:'';
+$selected = 'class="selected first"';
 
 $text 	= array(
 	'ADMINMAIL'		=> ADMINMAIL,
@@ -79,8 +80,8 @@ switch($op){
 	 */
 	case SIGN:		//註冊
 		if(!isset($_SESSION['uname'])){
-			//include_once(_PSIGN);
-
+			include_once(_PSIGN);
+			$text['SELECTED_SIGNUP']= $selected;
 			$tpl->assignInclude('themes',_TSIGN);
 		}else{
 			header('location:'.INDEXPATH);
@@ -88,7 +89,7 @@ switch($op){
 	break;
 	default:		//首頁
 		$headTitle = HEADERTITLE;
-
+		$text['SELECTED_DEFAULT']	= $selected;
 		$tpl -> assignInclude('themes',_TINDEX);
 
 }

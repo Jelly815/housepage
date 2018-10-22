@@ -13,13 +13,13 @@
         <div>{HEADERTITLEDTAIL}</div>
     </a>
     <ul class="navigation">
-        <li class="selected first">
+        <li {SELECTED_DEFAULT}>
             <a href="index.php" title="{HOMEPAGE}">{HOMEPAGE}</a>
         </li>
         <li>
             <a href="ships.html" title="{ADSEARCH}">{ADSEARCH}</a>
         </li>
-        <li id="login_li">
+        <li {SELECTED_SIGNUP} id="login_li">
             {LOGIN_URL}
         </li>
     </ul>
