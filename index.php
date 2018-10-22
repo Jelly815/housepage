@@ -17,6 +17,7 @@ $text 	= array(
 	'HEADERTITLEDTAIL'	=> HEADERTITLEDTAIL,
 	'OUTOPATH'		=> OUTOPATH,
 	'LOGOUT'		=> LOGOUT,
+	'LOGIN'			=> LOGIN,
 	'LOGIN_URL' 	=> '<a id="login_btn" href="javascript:;" title="'.LOGIN.'">'.LOGIN.'</a> | <a href="'.SIGNPATH.'" title="'.SIGNUP.'">'.SIGNUP.'</a>'
 );
 
@@ -37,6 +38,7 @@ $tpl  	= new  TemplatePower(_TMAIN);
 $tpl->assignInclude('header',_THEADER);
 $tpl->assignInclude('footer',_TFOOTER);
 $tpl->assignInclude('login',_TLOGIN);
+$tpl->assignInclude('alert',_TALERT);
 $tpl->prepare ();
 
 $tpl->assignGlobal(array(

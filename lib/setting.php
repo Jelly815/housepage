@@ -21,6 +21,7 @@ define('_TSHOWPIC',THEMES.'showPic.tpl');
 define('_TADDPIC',THEMES.'addPic.tpl');
 define('_TEDITPIC',THEMES.'editPic.tpl');
 define('_TINDEX',THEMES.'index.tpl');
+define('_TALERT',THEMES.'alert.tpl');
 
 define('INDEXPATH','index.php');
 define('LOGINPATH','index.php?op=ulogin');

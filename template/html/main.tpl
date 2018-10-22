@@ -12,6 +12,7 @@
             <!-- INCLUDESCRIPT BLOCK : themes -->
         </div>
         <!-- INCLUDE BLOCK : login -->
+        <!-- INCLUDE BLOCK : alert -->
         <!-- INCLUDE BLOCK : footer -->
     </body>
 </html>

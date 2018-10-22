@@ -8,7 +8,7 @@ $action     = isset($_GET['action'])?$_GET['action']:'';
 $log_msg    = array('status' => True,'msg' => '','data' => array());
 
 switch($action){
-	case 'login':	//新增作品
+	case 'login':	// 登入
 		$user_mail 	= isset($_POST['user'])?filter_var($_POST['user'], FILTER_VALIDATE_EMAIL):'';
 		$user_psw 	= isset($_POST['pwd'])?filter_var($_POST['pwd'], FILTER_SANITIZE_STRING):'';
 
@@ -27,6 +27,14 @@ switch($action){
         echo json_encode($log_msg);
 	break;
 
+    case 'logout':   // 登出
+        $_SESSION['uname']  = null;
+        $_SESSION['umail']  = null;
+        unset($_SESSION['uname']);
+        unset($_SESSION['umail']);
+
+        header("Refresh:0; url=".INDEXPATH);
+    break;
 	default:
 
 }

@@ -975,8 +975,8 @@ p a,h3 a{
 	margin: 0;
 }
 
-/*-------------------------	Login/Signup --------------------------*/
-#sign_up {
+/*-------------------------	Login/Signup/Logout --------------------------*/
+.light_box {
     -moz-border-radius: 6px;
     background: #eef2f7;
     -webkit-border-radius: 6px;
@@ -997,18 +997,17 @@ p a,h3 a{
 }
 #sign_up_form {
     position: relative;
-    background: url(divider.png) repeat-x bottom left;
     padding-bottom: 54px;
     margin-bottom: 12px;
 }
-#sign_up label {
+.light_box label {
     display: block;
     margin-bottom: 10px;
     color: #536376;
     font-size: .9em;
     border: none;
 }
-#sign_up label input {
+.light_box label input {
     display: block;
     width: 377px;
     height: 31px;
@@ -1065,4 +1064,10 @@ a.form_button {
     top: 5px;
     right: 5px;
     background-position: -387px -102px;
+}
+#alert_cancel {
+    background-position: -198px -99px;
+}
+#alert_yes {
+    background-position: -290px -99px;
 }
