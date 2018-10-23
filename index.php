@@ -19,7 +19,9 @@ $text 	= array(
 	'OUTOPATH'		=> OUTOPATH,
 	'LOGOUT'		=> LOGOUT,
 	'LOGIN'			=> LOGIN,
-	'LOGIN_URL' 	=> '<a id="login_btn" href="javascript:;" title="'.LOGIN.'">'.LOGIN.'</a> | <a href="'.SIGNPATH.'" title="'.SIGNUP.'">'.SIGNUP.'</a>'
+	'LOGIN_URL' 	=> '<a id="login_btn" href="javascript:;" title="'.LOGIN.'">'.LOGIN.'</a> | <a href="'.SIGNPATH.'" title="'.SIGNUP.'">'.SIGNUP.'</a>',
+	'SUBMIT'		=> SUBMIT,
+	'RETURNBTN'		=> RETURNBTN
 );
 
 if(isset($_SESSION['uname']) && $op == OUT){
@@ -40,9 +42,6 @@ $tpl->assignInclude('header',_THEADER);
 $tpl->assignInclude('footer',_TFOOTER);
 $tpl->assignInclude('login',_TLOGIN);
 $tpl->assignInclude('alert',_TALERT);
-
-
-
 
 switch($op){
 	/*
@@ -79,6 +78,7 @@ switch($op){
 	  break;
 	 */
 	case SIGN:		//註冊
+		$text['PAGE_TITLE']			= SIGNUP;
 		if(!isset($_SESSION['uname'])){
 			include_once(_PSIGN);
 			$text['SELECTED_SIGNUP']= $selected;
@@ -88,7 +88,7 @@ switch($op){
 		}
 	break;
 	default:		//首頁
-		$headTitle = HEADERTITLE;
+		//$headTitle = HEADERTITLE;
 		$text['SELECTED_DEFAULT']	= $selected;
 		$tpl -> assignInclude('themes',_TINDEX);
 

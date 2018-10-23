@@ -18,7 +18,7 @@ p a,h3 a{
 	width: 960px;
 	margin: 0 auto;
 	overflow: hidden;
-	height: 710px;
+	min-height:220px;
 }
 .header ul#navigation{
 	list-style: none;
@@ -523,11 +523,13 @@ p a,h3 a{
 	border-radius: 5px;
 }
 .content div#signup{
-	margin-top: -490px;
-	background-color: #fff;
-	padding: 0 0 200px;
-	overflow: hidden;
-	border-radius: 5px;
+	width: 960px;
+	min-height:502px;
+	margin:auto;
+    background-color: #fff;
+    padding: 0 0 200px;
+    overflow: hidden;
+    border-radius: 5px;
 }
 .content div#blog h2,.content div#activities h2,.content div#signup h2,.content div#restaurant h2,.content div#destinations h2,.content div#deals h2,.content div#ships-and-activities h2,
 .content div#offers h2,.content div#featured h2{
@@ -884,10 +886,14 @@ p a,h3 a{
 	border-width: 1px;
 	border-style: solid none none;
 	border-color: #A0A0A0;
-	margin: 5px 0 0;
+	margin: -5px 0 0;
 	background-color: #fff;
+
+	position: relative;
+
+	margin-bottom: -50px;
 }
-.footer div{
+.footer div{bottom:0px;
 	width: 960px;
 	margin: 0 auto;
 	padding: 15px 0 0;
@@ -1062,10 +1068,23 @@ a.form_button {
 #signup label input{
     display: block;
     width: 393px;
-    height: 34px;
     background-position: -201px 0;
     padding: 2px 8px;
     font-size: 1.2em;
     line-height: 31px;
-    margin-left: 30px;
+}
+
+#signup #sign_sent{
+	background-position: -419px -96px;
+	float: left;
+    width: 92px;
+    height: 30px;
+    margin: 100px 20px;
+}
+#signup #sign_cancel{
+	background-position: -199px -36px;
+	float: left;
+    width: 92px;
+    height: 30px;
+    margin: 100px 0px;
 }

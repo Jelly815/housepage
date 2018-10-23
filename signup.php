@@ -1,4 +1,12 @@
 <?php
+$sign_txt 	= array(
+	'INPUTNAME' => INPUTNAME,
+	'PWD'		=> PWD,
+	'ALERTXT02'	=> ALERTXT02,
+	'EMAIL'		=> EMAIL,
+	'ALERTXT09'	=> ALERTXT09
+);
+$text 		= array_replace_recursive($text,$sign_txt);
 /*
 	switch($a){
 		 case 'add':

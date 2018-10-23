@@ -55,6 +55,7 @@ define('ALERTXT05','登入錯誤，請重新登入!');
 define('ALERTXT06','Error:請洽系統管理員!');
 define('ALERTXT07','您作品數量已達上限');
 define('ALERTXT08','請選擇檔案');
+define('ALERTXT09','Email為您註冊的帳號');
 
 // FOOTER
 define('COPYRIGHT','Welcome to Jelly.Chang website '.date('Y'));
