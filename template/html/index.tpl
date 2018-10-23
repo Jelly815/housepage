@@ -1,4 +1,4 @@
-<div>
+<div id="content">
     <div class="first">
         <h2>Hot Deals</h2>
         <ul>
