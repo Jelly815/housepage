@@ -354,7 +354,7 @@ p a,h3 a{
 	height: 1%;
 	overflow: hidden;
 	margin: 0 0 20px 0;
-	_margin: 0 0 10px 0;
+	height: 90px;
 }
 .content div ul li a{
 	float: left;
@@ -420,7 +420,15 @@ p a,h3 a{
 	position: static;
 	padding: 0;
 }
-.content div a{
+.content div a {
+    font-family: arial;
+    font-size: 14px;
+    color: #4d4d4d;
+    text-decoration: none;
+    top: 480px;
+    right: 15px;
+}
+.content div a.view_all{
 	font-family:arial;
 	font-size: 14px;
 	color: #4d4d4d;
