@@ -1065,21 +1065,21 @@ a.form_button {
 #alert_yes {
     background-position: -290px -99px;
 }
-#signup label input{
+#signup #profile label input{
     display: block;
     width: 377px;
     background-position: -201px 0;
     padding: 2px 8px;
     line-height: 31px;
 }
-#signup #sign_sent{
+#signup .next{
 	background-position: -419px -96px;
 	float: left;
     width: 79px;
     height: 27px;
     margin: 100px 20px;
 }
-#signup #sign_cancel{
+#signup .cancel{
 	background-position: -199px -36px;
 	float: left;
     width: 79px;

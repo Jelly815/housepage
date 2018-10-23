@@ -2,8 +2,9 @@
 $sign_txt 	= array(
 	'INPUTNAME' => INPUTNAME,
 	'PWD'		=> PWD,
-	'ALERTXT02'	=> ALERTXT02,
 	'EMAIL'		=> EMAIL,
+	'ALERTXT02'	=> ALERTXT02,
+	'ALERTXT03' => ALERTXT03,
 	'ALERTXT09'	=> ALERTXT09
 );
 $text 		= array_replace_recursive($text,$sign_txt);

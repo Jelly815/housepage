@@ -4,135 +4,103 @@
 
     <div class="w3-container">
         <div class="w3-row">
-            <a href="javascript:void(0)" onclick="openCity(event, 'profile');">
-                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Profile</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openCity(event, 'setting');">
-                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Setting</div>
-            </a>
-            <a href="javascript:void(0)" onclick="openCity(event, 'complete');">
-                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Complete</div>
-            </a>
+            <div id="profile_tab" class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Profile</div>
+
+            <div id="setting_tab" class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Setting</div>
+
+            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Complete</div>
         </div>
 
         <div id="profile" class="w3-panel city" style="display:block">
-            <h6><font color="red">＊</font> {INPUTNAME}</h6>
+            <h6>{INPUTNAME}<label id="sign_name_error"></label></h6>
             <label>
                 <input type="text" name="sname" id="sign_name" value="{name}" title="{INPUTNAME}" class="sprited" />
             </label>
-            <h6><font color="red">＊</font> {PWD}</h6>
+            <h6>{PWD}<label id="sign_pwd_error"></label></h6>
             <label>
                 <input type="password" name="pwd" id="sign_pwd" placeholder="{ALERTXT02}" title="{PWD}" class="sprited" />
             </label>
-            <label id="pwdtxt" class="errorColor"></label>
-
-            <h6><font color="red">＊</font> {EMAIL}</h6>
+            <label id="pwdtxt"></label>
+            <h6>{EMAIL}<label id="sign_mail_error"></label></h6>
             <label>
-                <input type="text" name="mail" id="sign_mail"  value="{mail}" title="{EMAIL}" class="sprited">
+                <input type="text" name="mail" id="sign_mail" placeholder="{ALERTXT09}" value="{mail}" title="{EMAIL}" class="sprited">
             </label>
-            <label id="mailtxt" class="errorColor"></label>
-
+            <label id="mailtxt"></label>
             <p>
-                <input type="button" name="cancel" id="sign_cancel" value="{RETURNBTN}" class="sprited" onClick="self.location.href='index.php'" />
-                <input type="button" name="sentSign" id="sign_sent" value="{SUBMIT}" class="sprited" title="{SUBMIT}" />
-
-                <label class="errorColor">{error}</label>
-                <input type="hidden" name="signHid" value="signForm">
+                <input type="button" id="sign_cancel" class="sprited cancel" onClick="self.location.href='index.php'" title="Cancel" />
+                <input type="button" id="sign_sent" value="{SUBMIT}" class="sprited next" title="Next" />
             </p>
-
         </div>
 
         <div id="setting" class="w3-panel city" style="display:none">
-            <h2>Setting</h2>
-            <p>Setting.</p>
+            <form id="setting_form">
+                <input type="hidden" id="profile_hid" name="profile_hid" value="">
+            </form>
+            <p>
+                <input type="button" id="setting_cancel" class="sprited cancel" onclick="changeTab(0, 'profile');" title="Back" />
+                <input type="button" id="setting_sent" class="sprited next" title="Next" />
+            </p>
         </div>
 
         <div id="complete" class="w3-panel city" style="display:none">
-            <h2>Complete</h2>
             <p>Complete.</p>
         </div>
     </div>
-
-
-    <h3></h3>
-
-
-
 </div>
 <script>
 $(document).ready(function(){
-    function validate() {
-        var error=0;
-        var pwdLen =$("#pwd").val().length;
-        var reg = new RegExp(/([\w\-]+\@[\w\-]+\.[\w\-]+)/);
-        var reg2 = new RegExp(/^[09]{2}[0-9]{8}$/);
-        var reg3 = new RegExp(/[^\u4e00-\u9fa5]/);
-        //name
-        if( $("#name").val()=='' ){
-            $("#name").css("border-color","red");
-            error++;
-        }else{
-            $("#name").css("border-color","");
-        }
-        //pwd
-        if( $("#pwd").val()==''){
-            $("#pwd").css("border-color","red");
-            error++;
-        }else if(!reg3.test($("#pwd").val())){
-            $("#pwd").css("border-color","red");
-            $("#pwdtxt").text("{ALERTXT01}");
-            error++;
-        }else if(pwdLen < 6){
-            $("#pwd").css("border-color","red");
-            $("#pwdtxt").text("{ALERTXT02}");
-            error++;
-        }else{
-            $("#pwd").css("border-color","");
-            $("#pwdtxt").text("");
-        }
-        //phone
-        if( $("#phone").val()=='' ){
-            $("#phone").css("border-color","red");
-            error++;
-        }else if(!reg3.test($("#phone").val())){
-            $("#phone").css("border-color","red");
-            $("#phonetxt").text("{ALERTXT01}");
-            error++;
-        }
-        else{
-            $("#phone").css("border-color","");
-            $("#phonetxt").text("");
-        }
-        //mail
-        if( $("#mail").val()=='' ){
-            $("#mail").css("border-color","red");
-            error++;
-        }else if(!reg.test($("#mail").val())){
-            $("#mail").css("border-color","red");
-            $("#mailtxt").text("{ALERTXT03}");
-            error++;
-        }else{
-            $("#mail").css("border-color","");
-            $("#mailtxt").text("");
-        }
-        //departmant
-        if( $("#departmant").val()=='' ){
-            $("#departmant").css("border-color","red");
-            error++;
-        }else{
-            $("#departmant").css("border-color","");
-        }
-        //error
-        if(error!=0) return false;
-        else return true;
-    }
-    $("#sentSign").click(function(){
+    var profile_hid = '';
+    // Profile next
+    $("#sign_sent").click(function(){
         if (!validate()) {
             return false;
+        }else{
+            profile_hid += $("#sign_name").val() + ';;';
+            profile_hid += $("#sign_pwd").val()  + ';;';
+            profile_hid += $("#sign_mail").val() + ';;';
+
+            $("#profile_hid").val(profile_hid);
+            changeTab(1, 'setting');
         }
     });
+    // Setting next
+    $("#setting_sent").click(function(){
+        //if (!validate()) {
+        //    return false;
+        //}else{
+            var url         = "action.php?action=signup";
+            var form_data   = $('#setting_form').serialize();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: form_data,
+            })
+            .done(function(re_data) {
+                if(re_data['status']){
+                    var view_html =
+                    "{INPUTNAME}："+re_data['data']['user_name']+"<br>"+
+                    "{EMAIL}："+re_data['data']['user_mail'];
+
+                    $("#complete p").html(view_html);
+                    changeTab(2, 'complete');
+                }else{
+                    $("#complete p").css("color","red").text(re_data['msg']);
+                }
+            })
+            .fail(function() {
+                //console.log("error");
+            })
+            .always(function() {
+                //console.log("complete");
+            });
+
+            //changeTab(2, 'complete');
+        //}
+    });
 });
-function openCity(evt, cityName) {
+// Tab 切換
+function changeTab(evt, tabName) {
     var i, x, tablinks;
     x = document.getElementsByClassName("city");
     for (i = 0; i < x.length; i++) {
@@ -142,7 +110,76 @@ function openCity(evt, cityName) {
     for (i = 0; i < x.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
     }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.firstElementChild.className += " w3-border-red";
+    document.getElementById(tabName).style.display = "block";
+    tablinks[evt].className += " w3-border-red";
+}
+// 檢查Profile資料
+function validate() {
+    var error   = 0;
+    var pwdLen  = $("#sign_pwd").val().length;
+    var reg     = new RegExp(/([\w\-]+\@[\w\-]+\.[\w\-]+)/);
+    //var reg2    = new RegExp(/^[09]{2}[0-9]{8}$/);
+    var reg3    = new RegExp(/[^\u4e00-\u9fa5]/);
+
+    // name
+    if( $("#sign_name").val() == '' ){
+        $("#sign_name_error").css("color","red").text('＊');
+        error++;
+    }else{
+        $("#sign_name_error").text('');
+    }
+    // pwd
+    if( $("#sign_pwd").val() == ''){
+        $("#sign_pwd_error").css("color","red").text('＊');
+        error++;
+    }else if(!reg3.test($("#sign_pwd").val())){
+        $("#sign_pwd_error").css("color","red").text('＊');
+        $("#pwdtxt").text("{ALERTXT01}");
+        error++;
+    }else if(pwdLen < 6){
+        $("#sign_pwd_error").css("color","red").text('＊');
+        $("#pwdtxt").css("color","red").text("{ALERTXT02}");
+        error++;
+    }else{
+        $("#sign_pwd_error").text('');
+        $("#pwdtxt").text("");
+    }
+    // mail
+    if( $("#sign_mail").val() == '' ){
+        $("#sign_mail_error").css("color","red").text('＊');
+        error++;
+    }else if(!reg.test($("#sign_mail").val())){
+        $("#sign_mail_error").css("color","red").text('＊');
+        $("#mailtxt").text("{ALERTXT03}");
+        error++;
+    }else{
+        $.ajax({
+            url: "action.php?action=chkmail",
+            type: 'POST',
+            dataType: 'json',
+            data: {email: $("#sign_mail").val()},
+            async: false,
+        })
+        .done(function(re_data) {
+            if(!re_data['status']){
+                $("#sign_mail_error").css("color","red").text('＊');
+                $("#mailtxt").css("color","red").text(re_data['msg']);
+                error++;
+            }else{
+                $("#sign_mail_error").text('');
+            }
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            //console.log("complete");
+        });
+
+    }
+
+    // error
+    if(error != 0) return false;
+    else return true;
 }
 </script>

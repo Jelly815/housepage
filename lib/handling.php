@@ -32,56 +32,48 @@ class db_function extends db_connect{
 		return $re_array;
 	}
 
-	//首頁顯示
-	function indexShow($start,$end){
-		$start=intval($start);
-		$end=intval($end);
-		$sql = sprintf("select a.ex_title,a.ex_txt,b.ex_pic,c.ex_name,(select ex_title from `ex_department` where ex_id=c.ex_department) AS 'depatm' from `ex_data` a,`ex_pic` b,`ex_user` c where a.ex_id=b.ex_did and c.ex_id=b.ex_uid order by a.ex_date desc limit %s,%s",$start,$end);
-		$result = $this->db->execute($sql);
+	// 註冊
+	function add_user($data){
+		$result = $re_array = array();
 
-		return $result;
+		$sql 	=  "INSERT INTO `ex_user`
+						(ex_name,ex_pwd,ex_mail)
+					VALUES
+						(?,?,?)";
+
+		$val 	= array($data[0],$data[1],$data[2]);
+		$sql 	= $this->db->prepare($sql);
+		$result = $this->db->execute($sql,$val);
+		$user_id 		= $this->db->Insert_ID();
+
+		if($user_id != ''){
+			$re_array 	= array(
+				'user_name' => $data[0],
+				'user_mail' => $data[2]
+			);
+		}
+
+		return $re_array;
 	}
-	//作品瀏覽
-	function showPic($id=''){
-		global $uid;
-		$sql = sprintf("select a.ex_id,a.ex_title,a.ex_txt,b.ex_pic,c.ex_name,(select ex_title from `ex_department` where ex_id=c.ex_department) AS 'depatm' from `ex_data` a,`ex_pic` b,`ex_user` c where a.ex_id=b.ex_did and c.ex_id=b.ex_uid and c.ex_id=%s",$uid);
-		if($id<>'')$sql .= sprintf(" and a.ex_id=%s",$id);
-		$sql .= ' order by a.ex_date desc';
+	// 檢查mail
+	function chk_mail($email){
+		$result = array();
+		$re_chk = true;
+		$sql 	=  "SELECT 	`ex_mail`
+					FROM 	`ex_user`
+					WHERE 	ex_mail = ? ";
 
-	    $array = $this->db->getAll($sql);
-		return $array;
+		$vals 	= array($email);
+		$sql 	= $this->db->prepare($sql);
+
+		$result = $this->db->execute($sql,$vals);
+
+		if($result && $result->RecordCount() > 0){
+			$re_chk = false;
+		}
+		return $re_chk;
 	}
-	//註冊
-	function addUser(){
-		global $name,$phone,$email,$prtm,$error;
-	    $name = (isset($_POST['name'])&&$_POST['name']<>'')?$this->db->qstr($_POST['name']):$this->db->qstr('');
-	    $pwd = (isset($_POST['pwd'])&&$_POST['pwd']<>'')?$this->db->qstr($_POST['pwd']):$this->db->qstr('');
-	    $phone = (isset($_POST['phone'])&&$_POST['phone']<>'')?$this->db->qstr($_POST['phone']):$this->db->qstr('');
-	    $email = (isset($_POST['mail'])&&$_POST['mail']<>'')?$this->db->qstr($_POST['mail']):$this->db->qstr('');
-	    $prtm = (isset($_POST['departmant'])&&$_POST['departmant']<>'')?intval($_POST['departmant']):$this->db->qstr('');
 
-	    $sql = sprintf("select * from `ex_user` where ex_mail=%s",$email);
-	    $array = $this->db->getRow($sql);
-	    if(empty($array)){
-	            $pwd=md5(trim($pwd,"'"));
-
-	            $sql = sprintf("insert into `ex_user` (ex_name,ex_mail,ex_pwd,ex_phone,ex_department,ex_date) values (%s,%s,'%s',%s,%s,'%s')",$name,$email,$pwd,$phone,$prtm,date("Y-m-d H:i:s"));
-
-	            if ($this->db->Execute($sql) === false) {
-	                echo ALERTXT06;exit;
-	            }else{
-					echo "<script charset='UTF-8'>alert('".INSERTUSERSUCC."');location.href = '".INDEXPATH."';</script>";
-	            }
-	    }else{
-	              $name=trim($name,"'");
-	              $phone=trim($phone,"'");
-	              $email=trim($email,"'");
-	              $prtm=trim($prtm,"'");
-	              $dataArr=array('name'=>$name,'phone'=>$phone,'mail'=>$email,'prtm'=>$prtm);
-	              $error=ALERTXT04;
-				  return $dataArr;
-	    }
-	}
 	//新增作品
 	function addPic(){
 		global $uid;
