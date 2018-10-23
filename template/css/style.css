@@ -1067,24 +1067,22 @@ a.form_button {
 }
 #signup label input{
     display: block;
-    width: 393px;
+    width: 377px;
     background-position: -201px 0;
     padding: 2px 8px;
-    font-size: 1.2em;
     line-height: 31px;
 }
-
 #signup #sign_sent{
 	background-position: -419px -96px;
 	float: left;
-    width: 92px;
-    height: 30px;
+    width: 79px;
+    height: 27px;
     margin: 100px 20px;
 }
 #signup #sign_cancel{
 	background-position: -199px -36px;
 	float: left;
-    width: 92px;
-    height: 30px;
-    margin: 100px 0px;
+    width: 79px;
+    height: 27px;
+    margin: 100px 0px 0px -25px;
 }

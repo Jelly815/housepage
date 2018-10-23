@@ -1,13 +1,6 @@
-*, *:before, *:after {
-    box-sizing: inherit;
-}
-a {
-    color: inherit;
-}
-a {
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
-}
+*, *:before, *:after {box-sizing: inherit;}
+a {color: inherit;}
+a {background-color: transparent;-webkit-text-decoration-skip: objects;}
 h6{font-size:16px}
 .w3-container,.w3-panel{padding:0.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}
 .w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row:after,.w3-row:before,.w3-row-padding:after,.w3-row-padding:before,
