@@ -23,6 +23,9 @@
             {LOGIN_URL}
         </li>
     </ul>
+    <div id="search_div" style="background-color:#FFFFFF;width:384px;display: inline-block;margin: 120px 0 0 -29px;position:absolute;z-index:1">
+        <input type="text" id="search_key" value="" />
+    </div>
     <!-- START BLOCK : index_header -->
     <div id="featured">
         <div class="first">
@@ -61,7 +64,7 @@
             </ul>
         </div>
         <div>
-            <h3>Find A Cruise</h3>
+            <h3>Search</h3>
             <form action="">
                 <select name="" id="">
                     <option value="month">Any Month</option>
