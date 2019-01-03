@@ -2,11 +2,10 @@
 session_start();
 include_once('./lib/handling.php');
 include_once('./lib/lang.php');
-
+echo "<pre>";print_r($_SERVER['REMOTE_ADDR']);echo "</pre>";
 $db 	= new db_function();
-//print_r($db->login('jelly6@yahoo.com','789456123'));exit;
-$op 	= isset($_GET['op'])?$_GET['op']:'';
-$selected = 'class="selected first"';
+$op 	= isset($_GET['op'])?filter_var($_GET['op'], FILTER_SANITIZE_STRING):'';
+$selected 			= 'class="selected first"';
 
 $text 	= array(
 	'ADMINMAIL'		=> ADMINMAIL,
@@ -21,7 +20,11 @@ $text 	= array(
 	'LOGIN'			=> LOGIN,
 	'LOGIN_URL' 	=> '<a id="login_btn" href="javascript:;" title="'.LOGIN.'">'.LOGIN.'</a> | <a href="'.SIGNPATH.'" title="'.SIGNUP.'">'.SIGNUP.'</a>',
 	'SUBMIT'		=> SUBMIT,
-	'RETURNBTN'		=> RETURNBTN
+	'RETURNBTN'		=> RETURNBTN,
+	'ALERTXT06'		=> ALERTXT06,
+	'ALERTXT08'		=> ALERTXT08,
+	'ALERTXT10'		=> ALERTXT10,
+	'ALERTXT11'		=> ALERTXT11
 );
 
 if(isset($_SESSION['uname']) && $op == OUT){
@@ -101,6 +104,17 @@ $tpl->assignGlobal(array(
 $tpl->assign($text);
 if($op == ''){
 	$tpl->newBlock("index_header");
+}
+
+// 初始化搜尋
+$city_arr 	= $db->get_table_value('`ex_area`','`id`,`name`','`city_id` = 0 AND `disable` = 0','`sort`');
+
+foreach ($city_arr as $city_value) {
+	//$tpl->newBlock("city_option");
+	//$tpl->assign(array(
+	//	'city_id'	=> $city_value['id'],
+	//	'city_name'	=> $city_value['name'],
+	//));
 }
 $tpl->printToScreen ();
 ?>

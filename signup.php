@@ -3,6 +3,7 @@ $sign_txt 	= array(
 	'INPUTNAME' => INPUTNAME,
 	'PWD'		=> PWD,
 	'EMAIL'		=> EMAIL,
+	'AGE'		=> INPUTAGE,
 	'ALERTXT02'	=> ALERTXT02,
 	'ALERTXT03' => ALERTXT03,
 	'ALERTXT09'	=> ALERTXT09

@@ -2,7 +2,7 @@
 <div class="light_box" id="sign_up" style="display: none; left: 50%; margin-left: -223px; z-index: 1002; position: absolute; top: 840px; margin-top: 0px;">
     <h3 id="see_id">{LOGIN}</h3>
     <div id="sign_up_form">
-        <label><strong>Username:</strong> <input type="text" name="mail" id="mail" placeholder="{EMAILTXT}" title="{EMAIL}" class="sprited" /></label>
+        <label><strong>Account:</strong> <input type="text" name="mail" id="mail" placeholder="{EMAILTXT}" title="{EMAIL}" class="sprited" /></label>
         <label><strong>Password:</strong> <input type="password" name="pwd" id="pwd" title="{PWD}" class="sprited"></label>
         <div class="errorColor"></div>
         <div id="actions">

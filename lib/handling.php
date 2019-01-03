@@ -11,6 +11,31 @@ class db_function extends db_connect{
         parent::__construct();
     }
 
+
+	function insert_data($sql,$vals){
+		$re_id 	= 0;
+		$sql 	= $this->db->prepare($sql);
+
+		$result = $this->db->execute($sql,$vals);
+
+		if($result && $result->RecordCount() > 0){
+			$re_id 	= $this->db->Insert_ID();
+		}
+		return $re_id;
+	}
+
+	function update_data($sql,$vals){
+		$re_data 	= false;
+		$sql 		= $this->db->prepare($sql);
+
+		$result 	= $this->db->execute($sql,$vals);
+
+		if($result && $result->RecordCount() > 0){
+			$re_data= true;
+		}
+		return $re_data;
+	}
+
     // 登入
 	function login($email,$pwd){
 		$result = $re_array = array();
@@ -27,7 +52,7 @@ class db_function extends db_connect{
 		$result = $this->db->execute($sql,$vals);
 
 		if($result && $result->RecordCount() > 0){
-			$re_array 	= $result->getArray();
+			$re_array 	= $this->db->Insert_ID();
 		}
 		return $re_array;
 	}
@@ -37,7 +62,7 @@ class db_function extends db_connect{
 		$result = $re_array = array();
 
 		$sql 	=  "INSERT INTO `ex_user`
-						(ex_name,ex_pwd,ex_mail)
+						(ex_name,ex_pwd,ex_mail,ex_age)
 					VALUES
 						(?,?,?)";
 
@@ -176,6 +201,26 @@ class db_function extends db_connect{
 		$sql = "select * from `ex_department` order by ex_sort";
 	    $array = $this->db->getAll($sql);
 		return $array;
+	}
+	// 取得table資料
+	function get_table_value($table,$select_field='',$where_str='',$order_by=''){
+        $rs     = array();
+        if($select_field == ''){
+        	$select_field 	= '*';
+        }
+        $sql 	= "SELECT $select_field FROM $table";
+
+ 		if($where_str != ''){
+ 			$sql 			.= " WHERE ".$where_str;
+ 		}
+ 		if($order_by != ''){
+ 			$sql 			.= " ORDER BY ".$order_by;
+ 		}
+        if($rs 	= $this->db->getAll($sql)){
+        	return  $rs;
+        }else{
+			return  array();
+		}
 	}
 }
 ?>

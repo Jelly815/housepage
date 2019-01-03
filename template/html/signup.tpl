@@ -26,6 +26,17 @@
                 <input type="text" name="mail" id="sign_mail" placeholder="{ALERTXT09}" value="{mail}" title="{EMAIL}" class="sprited">
             </label>
             <label id="mailtxt"></label>
+            <h6>{AGE}<label id="sign_mail_error"></label></h6>
+            <label>
+                <select name="age" id="sign_age" style="height: 30px;width: 390px;border:1pt solid #8191A5;border-radius:4px;">
+                    <option value="25">低於25歲</option>
+                    <option value="34">25~34歲</option>
+                    <option value="44">35~44歲</option>
+                    <option value="54">45~54歲</option>
+                    <option value="64">55~64歲</option>
+                    <option value="65">65歲以上</option>
+                </select>
+            </label>
             <p>
                 <input type="button" id="sign_cancel" class="sprited cancel" onClick="self.location.href='index.php'" title="Cancel" />
                 <input type="button" id="sign_sent" value="{SUBMIT}" class="sprited next" title="Next" />
@@ -58,6 +69,7 @@ $(document).ready(function(){
             profile_hid += $("#sign_name").val() + ';;';
             profile_hid += $("#sign_pwd").val()  + ';;';
             profile_hid += $("#sign_mail").val() + ';;';
+            profile_hid += $("#sign_age").val() + ';;';
 
             $("#profile_hid").val(profile_hid);
             changeTab(1, 'setting');
@@ -80,7 +92,8 @@ $(document).ready(function(){
                 if(re_data['status']){
                     var view_html =
                     "{INPUTNAME}："+re_data['data']['user_name']+"<br>"+
-                    "{EMAIL}："+re_data['data']['user_mail'];
+                    "{EMAIL}："+re_data['data']['user_mail']+"<br>"+
+                    "{AGE}："+re_data['data']['user_age'];
 
                     $("#complete p").html(view_html);
                     changeTab(2, 'complete');

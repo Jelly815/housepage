@@ -43,12 +43,15 @@ switch($action){
         if(str_replace(';;', '', $profile_hid) == ''){
             exit(json_encode(array('status' => false,'msg' => ALERTXT06)));
         }else{
-            list($name,$pwd,$email) = explode(';;', $profile_hid);
+            list($name,$pwd,$email,$age) = explode(';;', $profile_hid);
+            $unid       = MEMBERID;
             $name       = filter_var($name, FILTER_SANITIZE_STRING);
             $pwd        = md5($pwd);
             $email      = filter_var($email, FILTER_SANITIZE_EMAIL);
+            $age        = filter_var($age, FILTER_VALIDATE_INT);
 
-            $data       = array($name,$pwd,$email);
+
+            $data       = array($unid,$name,$pwd,$email,$age);
             $dataArr    = $db->add_user($data);
 
             if(!empty($dataArr)){
@@ -72,6 +75,25 @@ switch($action){
         }
 
         echo json_encode($log_msg);
+    break;
+    // 取得地區
+    case 'getarea':
+        $city_id    = isset($_GET['city_id'])?filter_var($_GET['city_id'], FILTER_VALIDATE_INT) + 0:'';
+        $get_area   = $db->get_table_value('`ex_area`','`id`,`name`',"`city_id` = $city_id AND `disable` = 0",'`sort`');
+        $re_area    = array();
+        foreach ($get_area as $area_val) {
+            $re_area[]  = array(
+                'text'  => $area_val['name'],
+                'value' => $area_val['id']
+            );
+        }
+
+        $json_file  = fopen("json/data.json", "w") or die("Unable to open file!");
+        $w_json     = json_encode($re_area);
+        fwrite($json_file, $w_json);
+        fclose($json_file);
+
+        echo $w_json;
     break;
 	default:
 

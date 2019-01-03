@@ -1,7 +1,11 @@
 <?php
 function chkLogin($uid){
-     if($uid<>'')return true;
-     else return false;
+    if($uid != '')return true;
+    else return false;
+}
+function grave($str){
+    if($str != '')return '`'.$str.'`';
+    else return '';
 }
 function getImg($name,$tmp,$fileFolder,$page){
     if($page<>'') $page.="/";

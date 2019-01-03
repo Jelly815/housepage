@@ -17,14 +17,29 @@
             <a href="index.php" title="{HOMEPAGE}">{HOMEPAGE}</a>
         </li>
         <li>
-            <a href="ships.html" title="{ADSEARCH}">{ADSEARCH}</a>
+            <a id="navi_search" href="javascript:;" title="{ADSEARCH}">{ADSEARCH}</a>
         </li>
         <li {SELECTED_SIGNUP} id="login_li">
             {LOGIN_URL}
         </li>
     </ul>
-    <div id="search_div" style="background-color:#FFFFFF;width:384px;display: inline-block;margin: 120px 0 0 -29px;position:absolute;z-index:1">
-        <input type="text" id="search_key" value="" />
+    <div id="search_div">
+        <input id="search_key" name="key" type="text" value="" placeholder="{ALERTXT11}">
+        <a class="search_key_button sprited" id="key_button" href="javascript:;" title=""></a>
+        <!--
+        <form class="attireCodeToggleBlock" action="" style="display: none">
+            <input
+                    type="text"
+                    multiple = "multiple"
+                    class="multipleInputDynamicWithInitialValue"
+                    name="search_key"
+                    data-url="json/data.json"
+                    placeholder="{ALERTXT10}"
+                    id="area"
+            />
+
+            <button class="submitBtn" type="submit">Submit</button>
+        </form>-->
     </div>
     <!-- START BLOCK : index_header -->
     <div id="featured">
@@ -63,41 +78,83 @@
                 </li>
             </ul>
         </div>
-        <div>
-            <h3>Search</h3>
-            <form action="">
-                <select name="" id="">
-                    <option value="month">Any Month</option>
-                </select>
-                <select name="" id="">
-                    <option value="destinations">Any Destinations</option>
-                </select>
-                <select name="" id="">
-                    <option value="ship">Any Ship</option>
-                </select>
-                <select name="" id="">
-                    <option value="port">Any Departure Port</option>
-                </select>
-                <input type="submit" value=""/>
-            </form>
-            <div>
-                <h3>Already Booked?</h3>
-                <ul>
-                    <li>
-                        <a href="excursions.html">Check out our Excursions</a>
-                        <p>You can remove any link to our website from this website template.</p>
-                    </li>
-                    <li>
-                        <a href="restaurant.html">Check out our Specialty Restaurant</a>
-                        <p>You're free to use this website template without linking back to us.</p>
-                    </li>
-                    <li>
-                        <a href="activities.html">Check out our Special Activities</a>
-                        <p>Please don't hesitate to ask for help on the <a href="http://www.freewebsitetemplates.com/forum/">Forum</a>.</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
+
     </div>
     <!-- END BLOCK : index_header -->
 </div>
+<script>
+$(function () {
+    //var $select = $('select');
+
+    // Run, fire and forget
+    //$select.fastselect()
+
+    // Run via plugin facade and get instance
+    //var fastSelectInstance = $select.fastselect(options).data('fastselect');
+
+    // run directly
+    //var fastSelectInstance = new $.Fastselect($select.get(0), options);
+    // 關鍵字搜尋
+    $('#search_key').tagsInput({placeholder:'{ALERTXT11}'});
+    // 縣市
+    //$('.singleSelect').fastselect();
+    //$('.multipleInputDynamicWithInitialValue').fastselect();
+    $('#search_city').change(function(event) {
+        if($(this).select().val() != ''){
+            $('.attireCodeToggleBlock').show();
+            //$('.fstMultipleMode .fstResultItem').remove();
+//console.log('start');
+            $.ajax({
+                url: 'action.php',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                data: {
+                    action: 'getarea',
+                    city_id: $(this).select().val()},
+            })
+            .done(function(re_data) {
+                var new_option = '';
+
+                $.each(re_data, function(i, val) {
+                     new_option += '<span id="'+re_data[i].value+'" class="fstResultItem">'+re_data[i].text+'</span>';
+                });
+
+                $('.attireCodeToggleBlock .fstResults').remove('span').html(new_option);
+
+                $('.multipleInputDynamicWithInitialValue').fastselect();
+                $('.multipleInputDynamicWithInitialValue').data('data-url', 'json/data.json');
+            })
+            .fail(function() {
+                console.log("error");
+            });
+            /*
+            $.get('action.php',
+                {
+                    action: 'getarea',
+                    city_id: $(this).select().val()
+                },
+                function(re_data){
+                    var restaurant = $('.multipleInputDynamicWithInitialValue');
+
+                    var owner = restaurant.data("data-url");
+                    restaurant.data("data-url", JSON.parse("json/data.json"));
+                    //console.log(re_data);
+                    //$('.multipleInputDynamicWithInitialValue').data(re_data);
+
+                    //var a = $('.multipleInputDynamicWithInitialValue').data('data-url'); //getter
+
+                    //$('.multipleInputDynamicWithInitialValue').data('data-url',"json/data.json"); //setter
+                }
+            );*/
+        }else{
+            $('.attireCodeToggleBlock').hide();
+        }
+    });
+    $('#navi_search').click(function(event) {
+        $('.navigation li').removeClass('selected first');
+        $(this).parent('li').addClass('selected first');
+        $('#search_div').show().css('display',"inline-block" );
+    });
+});
+</script>

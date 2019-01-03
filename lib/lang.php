@@ -3,7 +3,7 @@
 define('HEADERTITLE','Jelly website');
 define('HEADERTITLEDTAIL','Welcome to my word');
 define('HOMEPAGE','Homepage');
-define('ADSEARCH','Advanced search');
+define('ADSEARCH','Keyword');
 define('LOGIN','LOGIN');
 define('SIGNUP','SIGNUP');
 define('TITLEADDPIC','新增作品');   // del
@@ -34,6 +34,7 @@ define('SIGNBTN','註冊');
 define('INPUTNAME','姓名');
 define('INPUTPHONE','電話');
 define('IMPUTPRTM','部門');
+define('INPUTAGE','年齡');
 
 // 新增作品
 define('PICTITLE','作品名稱');
@@ -54,8 +55,10 @@ define('ALERTXT04','已有相同Email');
 define('ALERTXT05','登入錯誤，請重新登入!');
 define('ALERTXT06','Error:請洽系統管理員!');
 define('ALERTXT07','您作品數量已達上限');
-define('ALERTXT08','請選擇檔案');
+define('ALERTXT08','請選擇縣市');
 define('ALERTXT09','Email為您的帳號');
+define('ALERTXT10','請選擇地區');
+define('ALERTXT11','請輸入關鍵字');
 
 // FOOTER
 define('COPYRIGHT','Welcome to Jelly.Chang website '.date('Y'));
