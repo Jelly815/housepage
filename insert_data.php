@@ -1,5 +1,5 @@
 <?php
-echo "<pre>";print_r(md5(uniqid(rand())));echo "</pre>";exit;
+//echo "<pre>";print_r(md5(uniqid(rand())));echo "</pre>";exit;
 include_once('./lib/handling.php');
 
 $db 	= new db_function();
@@ -9,13 +9,15 @@ $db 	= new db_function();
 	$add_user_sql =
 		"INSERT INTO `ex_user` (`unid`,`name`,`email`,`pwd`,`age`,`area_id`,`add_date`,`login_time`) values (?,?,?,?,?,?,?,?)";
 	$add_user_arr = array(
-		array('m'.md5(uniqid(rand())),'張小姐','jellyandjar@yahoo.com.tw',md5('789456123'),'35',282,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'郭先生','jellyandjar@yahoo.com.tw',md5('789456123'),'25',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'劉先生','jellyandjar@yahoo.com.tw',md5('789456123'),'35',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'陳先生','jellyandjar@yahoo.com.tw',md5('789456123'),'30',282,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'潘先生','jellyandjar@yahoo.com.tw',md5('789456123'),'25',276,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'張小姐','jellyandjar@yahoo.com.tw',md5('789456123'),'30',284,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
-		array('m'.md5(uniqid(rand())),'鍾先生','jellyandjar@yahoo.com.tw',md5('789456123'),'30',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'張小姐','jellyandjar@yahoo.com.tw',md5('789456123'),'35',282,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'郭先生','jellyandjar@yahoo.com.tw',md5('789456123'),'25',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'劉先生','jellyandjar@yahoo.com.tw',md5('789456123'),'35',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'陳先生','jellyandjar@yahoo.com.tw',md5('789456123'),'30',282,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'潘先生','jellyandjar@yahoo.com.tw',md5('789456123'),'25',276,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'張小姐','jellyandjar@yahoo.com.tw',md5('789456123'),'30',284,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'鍾先生','jellyandjar@yahoo.com.tw',md5('789456123'),'30',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		//array('m'.md5(uniqid(rand())),'黃先生','jellyandjar@yahoo.com.tw',md5('789456123'),'35',251,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
+		array('m'.md5(uniqid(rand())),'蕭先生','jellyandjar@yahoo.com.tw',md5('789456123'),'25',304,date('Y-m-d H:i:s'),date('Y-m-d H:i:s')),
 	);
 	foreach ($add_user_arr as $user_key => $user_value) {
 		$unid 		= filter_var($user_value[0], FILTER_SANITIZE_STRING);
@@ -97,6 +99,20 @@ $db 	= new db_function();
 				array(1,3,4), 		// 類型
 				array(3), 			// 房數
 		),
+		'm50fc03640e41b3fb483812dab6a8ee7e' => array(
+				array(237,245,251), 		// 區域
+				array(50,51), 		// 坪數
+				array(1000), 		// 金額
+				array(4), 			// 類型
+				array(34), 			// 房數
+		),
+		'm6dcd3e8e87edfa412028750da8c315b2' => array(
+				array(275,304), 				// 區域
+				array(30,40), 		// 坪數
+				array(1000), 		// 金額
+				array(3), 			// 類型
+				array(2,3), 		// 房數
+		),
 	);
 
 	foreach ($add_record_arr as $record_key => $record_value) {
@@ -136,11 +152,11 @@ $db 	= new db_function();
 
 
 
-	// ex_record
+// ex_record
 
-	// ex_record_items
+// ex_record_items
 
-	// ex_record_items_stay
+// ex_record_items_stay
 
 
 
