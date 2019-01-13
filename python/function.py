@@ -22,21 +22,29 @@ def get_this_user_search(user_id):
     
     # 取得user 最後搜尋的條件
     if user_id != '':
-        user_last_sql = "SELECT `record_id` FROM `ex_record_items` WHERE `user_id` = " + user_id + " ORDER BY `last_time` DESC"
-        setting.db_cursor.execute(user_last_sql)
+        user_last_sql = """
+            SELECT `area`,`price`,`ping`,`style`,`type` 
+            FROM `ex_record` record 
+            WHERE `user_id` = %s AND `id` = (
+                   SELECT `record_id` 
+                   FROM `ex_record_items` 
+                   WHERE  `user_id` = record.`user_id` AND 
+                          `user_id` = %s 
+                   ORDER BY `last_time` DESC LIMIT 1)
+            """
+        setting.db_cursor.execute(user_last_sql,[user_id,user_id])
         user_last_arr = setting.db_cursor.fetchone()
-        user_last_record = str(user_last_arr['record_id']) if int(user_last_arr['record_id']) != 0 else ''
+        if(user_last_arr != None):
+            user_record['last_record'] = [user_last_arr['area'],user_last_arr['price'],user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']]
         
-        if user_last_record != '':
-            user_record_sql = "SELECT * FROM `ex_record` WHERE `user_id` = " + user_id + " AND `id` = " + user_last_record
-            setting.db_cursor.execute(user_record_sql)
-            user_record_arr = setting.db_cursor.fetchone()
-            if(user_record_arr != None):
-                user_record['last_record'] = [user_record_arr['area'],user_record_arr['price'],user_record_arr['ping'],user_record_arr['style'],user_record_arr['type']]
-
         # 取得user 經常搜尋的條件
-        user_often_sql = "SELECT * FROM `ex_record` WHERE `user_id`=" + user_id + " ORDER BY `times` DESC"
-        setting.db_cursor.execute(user_often_sql)
+        user_often_sql = """
+            SELECT `area`,`price`,`ping`,`style`,`type` 
+            FROM `ex_record` 
+            WHERE `user_id` = %s 
+            ORDER BY `times` DESC
+            """
+        setting.db_cursor.execute(user_often_sql,[user_id])
         user_often_arr = setting.db_cursor.fetchone()
         
         if(user_often_arr != None):
@@ -49,8 +57,18 @@ def get_same_record(user_id,record):
     user_record = {}
     
     # 取得user record
-    record_sql = "SELECT `user_id` FROM `ex_record` WHERE `user_id` != " + user_id + " AND `area`=" + str(record[0]) + " AND `price`=" + str(record[1]) + " AND `ping` =" + str(record[2]) + " AND `style`= " + str(record[3]) + " AND `type`=" + str(record[4]) + " AND `times` > " + setting.search_times
-    setting.db_cursor.execute(record_sql)
+    record_sql = """
+        SELECT `user_id` 
+        FROM `ex_record` 
+        WHERE   `user_id` != %s AND 
+                `area`  = %s AND 
+                `price` = %s AND 
+                `ping`  = %s AND 
+                `style` = %s AND 
+                `type`  = %s AND 
+                `times` > %s
+        """
+    setting.db_cursor.execute(record_sql,[user_id,record[0],record[1],record[2],record[3],record[4],setting.search_times])
     record_arr = setting.db_cursor.fetchall()
    
     print(record_sql)
