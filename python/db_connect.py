@@ -5,9 +5,9 @@ import mysql.connector
 class DB_CONN:
     def __init__(self):
         self._db_connection = mysql.connector.connect(host="localhost", user="root",   password ="root", database="myweb")
-        self._cursor = self._db_connection.cursor(dictionary=True)
+        self._cursor = self._db_connection.cursor(buffered=True,dictionary=True)
 
-   
+
     def __del__(self):
         self._db_connection.close()
 
@@ -26,7 +26,7 @@ class DB_CONN:
 
 
 '''
-import db_connect  
+import db_connect
 x = db_connect.DB_CONN()
 
 AA = x.execute("SELECT `id` FROM `ex_user` WHERE `unid` = 'm199cdc39ee6e65811960a187ccf1fcb9'")
