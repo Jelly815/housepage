@@ -16,6 +16,6 @@ db_conn = mysql.connector.connect(
 )
  
 db_cursor = db_conn.cursor(buffered=True,dictionary=True)
-
+db_cursor2 = db_conn.cursor(buffered=True)
 # 搜尋紀錄的次數，不可以小於search_times
 search_times = '2'
