@@ -2,10 +2,10 @@
 
 import mysql.connector
 
-class DB_CONN(object):
+class DB_CONN:
     def __init__(self):
         self._db_connection = mysql.connector.connect(host="localhost", user="root",   password ="root", database="myweb")
-        self._cursor = self._db_connection.cursor()
+        self._cursor = self._db_connection.cursor(dictionary=True)
 
    
     def __del__(self):

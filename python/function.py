@@ -8,23 +8,23 @@ Created on Sun Jan 13 00:58:08 2019
 from db_connect import DB_CONN 
 
 class FUNC_CLASS(DB_CONN):
+    db = None
+    
     def __init__(self):
-        #super(FUNC_CLASS, self).__init__() 
         super().__init__()
-        
     
     # 取得user的id
     def get_user_id(self,user):  
-        user_id = ''
-        user_sql = "SELECT `id` FROM `ex_user` WHERE `unid` = '" + user + "'"
+        user_id = 0
+        user_sql = "SELECT `id` FROM `ex_user` WHERE `unid` = %s"
     
         try: 
-            self.execute(user_sql)
+            self.execute(user_sql,[user])
             user_id_arr = self.fetchone()
             user_id = str(user_id_arr['id']) if int(user_id_arr['id']) != 0 else ''
         except:
-            user_id = 'exit'
-        
+            user_id = 0
+      
         return user_id
     
     # 取得user的搜尋紀錄
@@ -63,9 +63,6 @@ class FUNC_CLASS(DB_CONN):
             
                 if(user_often_arr != None):
                     user_record['often_record'] = [user_often_arr['area'],user_often_arr['price'],user_often_arr['ping'],user_often_arr['style'],user_often_arr['type']]
-            
-                #setting.db_cursor.close()
-                #setting.db_conn.close()
             except:
                 user_record = {}
                 
@@ -91,9 +88,6 @@ class FUNC_CLASS(DB_CONN):
         try:
             self.execute(record_sql,[user_id,record[0],record[1],record[2],record[3],record[4],2])
             record_arr = self.fetchall()
-            
-            #setting.db_cursor.close()
-            #setting.db_conn.close()
         except:
             record_arr = {}
        
@@ -122,9 +116,6 @@ class FUNC_CLASS(DB_CONN):
         try:
             self.execute(record_sql,[user_id,record[0],record[1],record[2],record[3],record[4],2])
             record_arr = self.fetchall()
-            
-            #setting.db_cursor2.close()
-            #setting.db_conn.close()
         except:
             record_arr = {}
        
