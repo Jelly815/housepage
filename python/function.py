@@ -101,11 +101,12 @@ class FUNC_CLASS(DB_CONN):
         range_arr = {}
 
         record_sql = """
-            SELECT IFNULL(
-                    (SELECT SUM(`stay_time`) 
-                    FROM `ex_record_items_stay` items_stay
-                    WHERE   items_stay.`record_items_id` = items.`id` AND
-                            `stay_time` > %s
+            SELECT  items.click_map,items.add_favorite,items.main_id,
+                    IFNULL(
+                        (SELECT SUM(`stay_time`) 
+                        FROM    `ex_record_items_stay` items_stay
+                        WHERE   items_stay.`record_items_id` = items.`id` AND
+                                `stay_time` > %s
                     ),0) AS 'all_seconds'
             FROM `ex_record` record,`ex_record_items` items 
             WHERE items.`record_id` = record.`id` AND
@@ -135,7 +136,7 @@ class FUNC_CLASS(DB_CONN):
                 if times_arr:
                     # 取得中位數的前後值
                     range_arr = self.get_median_range(times_arr)
-                   
+                range_arr['AA']=123   
         except:
             range_arr = {}
 

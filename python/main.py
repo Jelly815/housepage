@@ -22,7 +22,7 @@ record_data = func.get_this_user_search(user_id)
 for _,record in enumerate(record_data):
     # 取得非user的相同的紀錄
     same_records = func.get_same_record(user_id,record_data[record])
-
+    print(record_data[record])
     if same_records != None:
         for same_record in (same_records):
             # 取得瀏覽物件的時間區間(單位:秒)
