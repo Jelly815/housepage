@@ -86,15 +86,13 @@ class FUNC_CLASS(DB_CONN):
                     `type`  = %s AND
                     `times` > %s
             """
-        if(record):
-            self.execute(record_sql,(user_id,record[0],record[1],record[2],record[3],record[4],setting.search_times))
-            record_arr = self.fetchall()
-        #try:
-        #self.execute(record_sql,(user_id,record[0],record[1],record[2],record[3],record[4],record[5],setting.search_times))
-        #print("BB")
-        #record_arr = self.fetchall()
-        #except:
-            #record_arr = {}
+        
+        try:
+            if(record):
+                self.execute(record_sql,(user_id,record[0],record[1],record[2],record[3],record[4],setting.search_times))
+                record_arr = self.fetchall()
+        except:
+            record_arr = {}
 
         return record_arr
 
@@ -103,15 +101,13 @@ class FUNC_CLASS(DB_CONN):
         range_arr = {}
 
         record_sql = """
-            SELECT items_stay.`all_seconds`
+            SELECT IFNULL(
+                    (SELECT SUM(`stay_time`) 
+                    FROM `ex_record_items_stay` items_stay
+                    WHERE   items_stay.`record_items_id` = items.`id` AND
+                            `stay_time` > %s
+                    ),0) AS 'all_seconds'
             FROM `ex_record` record,`ex_record_items` items 
-            LEFT JOIN (
-            	SELECT `record_items_id`,SUM(stay_time) AS 'all_seconds'
-                FROM `ex_record_items_stay`
-                WHERE `stay_time` > %s
-                GROUP BY `record_items_id`
-            ) items_stay
-            ON items_stay.`record_items_id` = items.`id`            
             WHERE items.`record_id` = record.`id` AND
                   items.`user_id` = record.`user_id` AND
                   record.`user_id` = %s AND
