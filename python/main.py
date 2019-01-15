@@ -27,4 +27,8 @@ for _,record in enumerate(record_data):
         for same_record in (same_records):
             # 取得瀏覽物件的時間區間(單位:秒)
             times_range = func.get_times_range(same_record['user_id'],record_data[record])
+            print(times_range)
+            # 取得該User是否有加入最愛的習慣
+            
+            # 取得該User瀏覽地圖的時間
 

@@ -42,7 +42,8 @@ class FUNC_CLASS(DB_CONN):
                        SELECT `record_id`
                        FROM `ex_record_items`
                        WHERE  `user_id` = record.`user_id` AND
-                              `user_id` = %s
+                              `user_id` = %s AND
+                              `last_time` >= (NOW() - INTERVAL %s DAY)
                        ORDER BY `last_time` DESC LIMIT 1)
                 """
             # 取得user 經常搜尋的條件
@@ -54,16 +55,15 @@ class FUNC_CLASS(DB_CONN):
                 """
 
             try:
-                self.execute(user_last_sql,[user_id,user_id])
+                self.execute(user_last_sql,[user_id,user_id,setting.search_house_seconds])
                 user_last_arr = self.fetchone()
                 if(user_last_arr != None):
                     user_record['last_record'] = [user_last_arr['area'],user_last_arr['price'],user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']]
 
-
                 self.execute(user_often_sql,[user_id])
                 user_often_arr = self.fetchone()
 
-                if(user_often_arr != None):
+                if user_often_arr != None:
                     user_record['often_record'] = [user_often_arr['area'],user_often_arr['price'],user_often_arr['ping'],user_often_arr['style'],user_often_arr['type']]
             except:
                 user_record = {}
@@ -134,30 +134,40 @@ class FUNC_CLASS(DB_CONN):
                 
                 if times_arr:
                     # 取得中位數的前後值
-                    times_arr_len = len(times_arr)
-                    if times_arr_len == 1:
-                        range_arr['seconds_start'] = times_arr[0]
-                        range_arr['seconds_end'] = times_arr[0]
-                    elif times_arr_len == 2:
-                        range_arr['seconds_start'] = times_arr[0]
-                        range_arr['seconds_end'] = times_arr[1]
-                    elif times_arr_len%2 == 0:
-                        median_index = (times_arr_len / 2)
-                        range_arr['seconds_start'] = times_arr[median_index - 1]
-                        range_arr['seconds_end'] = times_arr[median_index + 1]
-                    elif times_arr_len%2 != 0:
-                        median_index = math.floor(times_arr_len / 2)
-                        range_arr['seconds_start'] = times_arr[median_index - 1]
-                        
-                        median_index = math.ceil(times_arr_len / 2)
-                        range_arr['seconds_end'] = times_arr[median_index]
-                       
-                print(range_arr)
+                    range_arr = self.get_median_range(times_arr)
+                   
         except:
             range_arr = {}
 
         return range_arr
-
+    
+    # 取得中位數的前後值
+    def get_median_range(self,times_arr):
+        range_arr = {}
+        times_arr_len = len(times_arr)
+        
+        if times_arr_len == 1:
+            range_arr['seconds_start'] = times_arr[0]
+            range_arr['seconds_end'] = times_arr[0]
+        elif times_arr_len == 2:
+            range_arr['seconds_start'] = times_arr[0]
+            range_arr['seconds_end'] = times_arr[1]
+        elif times_arr_len%2 == 0:
+            median_index = (times_arr_len / 2)
+            range_arr['seconds_start'] = times_arr[median_index - 1]
+            range_arr['seconds_end'] = times_arr[median_index + 1]
+        elif times_arr_len%2 != 0:
+            median_index = math.floor(times_arr_len / 2)
+            range_arr['seconds_start'] = times_arr[median_index - 1]
+            
+            median_index = math.ceil(times_arr_len / 2)
+            range_arr['seconds_end'] = times_arr[median_index]
+        
+        return range_arr
+        
+    # 取得該User是否有加入最愛的習慣
+    def get_is_favorite(self,user_id):
+        return ''
 '''
 import function
 x = function.DB_CONN()

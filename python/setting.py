@@ -10,3 +10,6 @@ search_times = '2'
 
 # 瀏覽時間不可低於view_seconds，單位:秒
 view_seconds = 40
+
+# 設定尋找房子的時間(預設6個月)，單位:天(60*60*24*180)
+search_house_seconds = 180
