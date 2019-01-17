@@ -6,6 +6,7 @@ Created on Wed Jan 16 23:31:02 2019
 """
 import random
 from functools import reduce
+import matplotlib.pyplot as plt
 
 class KMeans:
     """performs k-means clustering"""
@@ -82,8 +83,8 @@ print("2-means:")
 print(clusterer.means)
 print()
 
-plt.scatter([8,8,8,8,8],[200,300,400,500,600])
-plt.title('test')
-plt.xlabel('main_id')
-plt.ylabel('秒')
-plt.show
+#plt.scatter([8,8,8,8,8],[200,300,400,500,600])
+#plt.title('test')
+#plt.xlabel('main_id')
+#plt.ylabel('秒')
+#plt.show

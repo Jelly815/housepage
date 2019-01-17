@@ -7,4 +7,4 @@ ON((`items_stay`.`record_items_id` = `items`.`id`)))
 LEFT JOIN `ex_record_items_map` `items_map`
 ON((`items_map`.`record_items_id` = `items`.`id`))))
 
-WHERE (`record`.`id` = `items`.`record_id` AND record.`times` > 2 AND `items_stay`.`stay_time` > 40 AND `items`.`last_time` >= (NOW() - INTERVAL 180 DAY))
+WHERE (`record`.`id` = `items`.`record_id` AND record.`times` > 1 AND `items_stay`.`stay_time` > 5 AND `items`.`last_time` >= (NOW() - INTERVAL 180 DAY))
