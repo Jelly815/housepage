@@ -21,13 +21,15 @@ record_data = func.get_this_user_search(user_id)
 same_records_user_id = {}
 
 for _,record in enumerate(record_data):
-    # 取得非user的相同的紀錄
-    same_records_user_id = func.get_same_record(user_id,record_data[record])
-    print(same_records_user_id)
-    if same_records_user_id:
-        for other_user_id in same_records_user_id:
-            # 取得瀏覽物件的時間區間(單位:秒)
-            times_range = func.get_times_range(other_user_id,record_data[record])
+    # 取得非user的相同紀錄
+    if record_data[record]:
+        for record_val in record_data[record]:
+            same_records_user_id = func.get_same_record(user_id,record_val)
+            
+            if same_records_user_id:
+                for other_user_id in same_records_user_id:
+                    # 取得瀏覽物件的時間區間(單位:秒)
+                    times_range = func.get_times_range(other_user_id['id'],record_val)
 
     # 取得該User是否有加入最愛的習慣
             

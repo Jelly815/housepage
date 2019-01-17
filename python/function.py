@@ -48,23 +48,31 @@ class FUNC_CLASS(DB_CONN):
                 FROM `ex_record`
                 WHERE `user_id` = %s
                 ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 2
-                """
-
-            try:
-                # 取得user [最後]搜尋的條件
-                self.execute(user_last_sql,[user_id])
-                user_last_arr = self.fetchone()
-                if(user_last_arr != None):
-                    user_record['last_record'] = [user_last_arr['area'],user_last_arr['price'],user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']]
-                
-                # 取得user [經常]搜尋的條件
-                self.execute(user_often_sql,[user_id])
-                user_often_arr = self.fetchone()
-
-                if user_often_arr != None:
-                    user_record['often_record'] = [user_often_arr['area'],user_often_arr['price'],user_often_arr['ping'],user_often_arr['style'],user_often_arr['type']]
-            except:
-                user_record = {}
+                """ 
+            #try:
+            # 取得user [最後]搜尋的條件
+            self.execute(user_last_sql,[user_id])
+            user_last_arr = self.fetchone()
+            if(user_last_arr != None):
+                user_record['last_record'] = []
+                user_record['last_record'].append([user_last_arr['area'],user_last_arr['price'],user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']])
+            #print(user_record['last_record'][0])
+            # 取得user [經常]搜尋的條件
+            self.execute(user_often_sql,[user_id])
+            user_often_arr = self.fetchall()
+            
+            if user_often_arr != None:
+                user_record['often_record'] = []
+                for x in range(len(user_often_arr)):
+                    user_record['often_record'].append([user_often_arr[x]['area'],user_often_arr[x]['price'],user_often_arr[x]['ping'],user_often_arr[x]['style'],user_often_arr[x]['type']])
+                    if user_record['last_record']:
+                        diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
+                    
+                    # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
+                    if diff == set():
+                        user_record['last_record'] = []
+            #except:
+                #user_record = {}
 
         return user_record
 
@@ -97,7 +105,6 @@ class FUNC_CLASS(DB_CONN):
             if(record):
                 self.execute(record_sql,record_vals)
                 record_arr = self.fetchall()
-
         except:
             record_arr = {}
 
@@ -132,7 +139,7 @@ class FUNC_CLASS(DB_CONN):
             """
         
         record_vals = [
-                user_id['id'],record[0],
+                user_id,record[0],
                 record[1],record[2],record[3],
                 record[4]]
 
@@ -140,7 +147,7 @@ class FUNC_CLASS(DB_CONN):
         if(record):
             self.execute(record_sql,record_vals)
             record_arr = self.fetchall()
-
+            print(record_arr)
             if record_arr:
                 for record in record_arr:
                     for x in record:
@@ -148,7 +155,7 @@ class FUNC_CLASS(DB_CONN):
 
             # 刪除離群值
             outlier = self.get_outlier(new_arr,'item_stay_time')
-            print(outlier['Outlier'])
+            #print(outlier['Outlier'])
             # 某user喜歡物件的時間圓餅圖
             if new_arr['item_stay_time']:
                 self.plt_pie(new_arr)
@@ -255,7 +262,7 @@ class FUNC_CLASS(DB_CONN):
         ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
                 shadow=True)
         ax1.axis('equal')    
-        plt.show()
+        #plt.show()
         
     # 取得離群值
     def get_outlier(self,data,field):
