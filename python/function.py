@@ -110,7 +110,7 @@ class FUNC_CLASS(DB_CONN):
 
         return record_arr
 
-    # 取得瀏覽物件的時間區間(單位:秒)
+    # 取得某位User瀏覽物件的資料
     def get_times_range(self,user_id,record):
         record_arr = {}
         new_arr = {
@@ -147,24 +147,25 @@ class FUNC_CLASS(DB_CONN):
         if(record):
             self.execute(record_sql,record_vals)
             record_arr = self.fetchall()
-            print(record_arr)
+   
             if record_arr:
+                print(record_arr)
                 for record in record_arr:
                     for x in record:
                         new_arr[x].append(record[x])
 
             # 刪除離群值
-            outlier = self.get_outlier(new_arr,'item_stay_time')
-            #print(outlier['Outlier'])
-            # 某user喜歡物件的時間圓餅圖
-            if new_arr['item_stay_time']:
-                self.plt_pie(new_arr)
             
-            #df = self.del_outlier(record_arr,'item_stay_time')
-            #df = self.df_groupby(record_arr,'add_favorite')
-            #df = pd.DataFrame(record_arr, columns=['main_id','add_favorite'])
-            #print(df)
-          
+            outlier_index = self.get_outlier(new_arr,'item_stay_time')
+            if outlier_index != None :
+                del record_arr[outlier_index]
+            print('Result:',record_arr)
+                    #this_index = df.index[-1])
+                    #print(df.iloc[-1]['Outlier'])
+            # 某user喜歡物件的時間圓餅圖
+            #if new_arr['item_stay_time']:
+                #self.plt_pie(new_arr)
+            
         #except:
             #record_arr = {}
 
@@ -255,26 +256,32 @@ class FUNC_CLASS(DB_CONN):
         
         for zero in range(len(data['item_stay_time'])):
             explode.append(0.1 if (zero + 1) == median_num else 0)
-            
-        #explode = (0,0,0,0.1,0,0)  
         
         fig1, ax1 = plt.subplots()
         ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
                 shadow=True)
         ax1.axis('equal')    
-        #plt.show()
+        plt.show()
         
-    # 取得離群值
+    # 取得離群值的資料index
     def get_outlier(self,data,field):
+        del_index       = None
         df = pd.DataFrame(data, columns=[field])
 
         # abs:絕對值;  abs(X - 平均值)
-        df['x-Mean'] = abs(df[field] - df[field].mean())
+        df['x-Mean']    = abs(df[field] - df[field].mean())
         # std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
-        df['1.96*std'] = 1.96*df[field].std()  
-        df['Outlier'] = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
+        df['1.96*std']  = 1.96*df[field].std()  
+        df['Outlier']   = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
         
-        return df
+        # 刪除為True的資料
+        if not df.empty:
+                for x in range(len(df)):
+                    this_bool = df.iloc[x]['Outlier']
+                    if this_bool:
+                        del_index = x
+        
+        return del_index
     
     # 取得該User是否有加入最愛的習慣
     def get_is_favorite(self,user_id):
