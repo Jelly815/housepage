@@ -8,6 +8,7 @@ Created on Sun Jan 13 00:58:08 2019
 from db_connect import DB_CONN
 import setting
 import math
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -149,19 +150,26 @@ class FUNC_CLASS(DB_CONN):
             record_arr = self.fetchall()
    
             if record_arr:
-                print(record_arr)
                 for record in record_arr:
                     for x in record:
                         new_arr[x].append(record[x])
 
             # 刪除離群值
-            
-            outlier_index = self.get_outlier(new_arr,'item_stay_time')
-            if outlier_index != None :
-                del record_arr[outlier_index]
-            print('Result:',record_arr)
-                    #this_index = df.index[-1])
-                    #print(df.iloc[-1]['Outlier'])
+            is_outlier = True
+            while is_outlier:
+                outlier_index = self.get_outlier(new_arr,'item_stay_time')
+                if outlier_index != None :
+                    del record_arr[outlier_index]
+                    for x in new_arr:
+                        del new_arr[x][outlier_index]
+                else:
+                    is_outlier = False
+        
+            # 取得該User瀏覽區間
+            user_time_range = []
+            if new_arr['item_stay_time']:
+                user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
+
             # 某user喜歡物件的時間圓餅圖
             #if new_arr['item_stay_time']:
                 #self.plt_pie(new_arr)
@@ -241,9 +249,11 @@ class FUNC_CLASS(DB_CONN):
         return range_arr
     
     # 取得分位數
-    def quantile(data,percent):
-        p_index = int(percent * len(data))
-        return sorted(data)[p_index]
+    def quantile(self,data,percent):
+        # 排除重複
+        new_data    = set(data)
+        p_index     = int(percent * len(new_data))
+        return sorted(new_data)[p_index]
     
     # 某user喜歡物件的時間圓餅圖
     def plt_pie(self,data):
@@ -273,7 +283,7 @@ class FUNC_CLASS(DB_CONN):
         # std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
         df['1.96*std']  = 1.96*df[field].std()  
         df['Outlier']   = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
-        
+  
         # 刪除為True的資料
         if not df.empty:
                 for x in range(len(df)):
@@ -283,6 +293,16 @@ class FUNC_CLASS(DB_CONN):
         
         return del_index
     
+    # 取得該User瀏覽區間
+    def get_user_time_range(self,data):
+        time_range = {'low':0,'high':0}
+        
+        if data:
+           time_range['low'] = self.quantile(data,0.5)
+           time_range['high'] = self.quantile(data,0.99)
+        
+        return time_range
+        
     # 取得該User是否有加入最愛的習慣
     def get_is_favorite(self,user_id):
         return ''
