@@ -7,8 +7,8 @@ Created on Sun Jan 13 00:58:08 2019
 
 from db_connect import DB_CONN
 import setting
-import math
-import numpy as np
+#import math
+#import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -43,38 +43,40 @@ class FUNC_CLASS(DB_CONN):
                 WHERE `user_id` = %s 
                 ORDER BY `last_time` DESC LIMIT 1
                 """
-            # 取得user 經常搜尋的條件 (以價格跟坪數篩選)
+            # 取得user 經常搜尋的條件
             user_often_sql = """
                 SELECT `area`,`price`,`ping`,`style`,`type`
                 FROM `ex_record`
                 WHERE `user_id` = %s
                 ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 2
                 """ 
-            #try:
-            # 取得user [最後]搜尋的條件
-            self.execute(user_last_sql,[user_id])
-            user_last_arr = self.fetchone()
-            if(user_last_arr is not None):
-                user_record['last_record'] = []
-                user_record['last_record'].append([user_last_arr['area'],user_last_arr['price'],user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']])
-            #print(user_record['last_record'][0])
-            # 取得user [經常]搜尋的條件
-            self.execute(user_often_sql,[user_id])
-            user_often_arr = self.fetchall()
+            try:
+                # 取得user [最後]搜尋的條件
+                self.execute(user_last_sql,[user_id])
+                user_last_arr = self.fetchone()
+                if(user_last_arr is not None):
+                    user_record['last_record'] = []
+                    user_record['last_record'].append(
+                            [user_last_arr['area'],user_last_arr['price'],
+                            user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']])
             
-            if user_often_arr is not None:
-                user_record['often_record'] = []
-                #for x in range(len(user_often_arr)):
-                for x, often in enumerate(user_often_arr):
-                    user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
-                    if user_record['last_record']:
-                        diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
-                    
-                    # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
-                    if diff == set():
-                        user_record['last_record'] = []
-            #except:
-                #user_record = {}
+                # 取得user [經常]搜尋的條件
+                self.execute(user_often_sql,[user_id])
+                user_often_arr = self.fetchall()
+                
+                if user_often_arr is not None:
+                    user_record['often_record'] = []
+                 
+                    for x, often in enumerate(user_often_arr):
+                        user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
+                        if user_record['last_record']:
+                            diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
+                        
+                        # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
+                        if diff == set():
+                            user_record['last_record'] = []
+            except:
+                user_record = {}
 
         return user_record
 
@@ -113,8 +115,9 @@ class FUNC_CLASS(DB_CONN):
         return record_arr
 
     # 取得某位User瀏覽物件的資料
-    def get_times_range(self,user_id,record):
+    def get_times_range_items(self,user_id,record):
         record_arr = {}
+        
         new_arr = {
                     'user_id':[],
                     'record_times':[],
@@ -155,58 +158,58 @@ class FUNC_CLASS(DB_CONN):
                     for _,val in enumerate(record):
                         new_arr[val].append(record[val])
             
-            # 刪除離群值
+            # 刪除[物件停留時間]離群值
             is_outlier = True
+            outlier_index = self.get_outlier(new_arr,'item_stay_time')
+
             while is_outlier:
-                outlier_index = self.get_outlier(new_arr,'item_stay_time')
-                if outlier_index is not None :
-                    del record_arr[outlier_index]
+                if outlier_index[1] is not None:
+                    del record_arr[outlier_index[1]]
                     for x in new_arr:
-                        del new_arr[x][outlier_index]
+                        del new_arr[x][outlier_index[1]]
+                    is_outlier = False
                 else:
                     is_outlier = False
-        
-            
-            user_time_range = []
+  
+            is_favorite_items = []
             if new_arr['item_stay_time']:
                 # 取得該User瀏覽區間
                 user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
-                
+               
                 # 某user喜歡物件的時間圓餅圖
                 #if new_arr['item_stay_time']:
-                    #self.plt_pie(new_arr)
+                #    self.plt_pie(new_arr)
             
                 # 取得該範圍內，User有加入最愛的物件
                 is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range)
-                print(is_favorite_items)
+                
+
+                # 查看是否曾經看過地圖
+                '''
+                is_outlier = True
+                outlier_index = self.get_outlier(new_arr,'map_stay_time')
+             
+                while is_outlier:
+                    # 刪除[地圖停留時間]離群值
+                    if outlier_index[1] is not None:
+                        del record_arr[outlier_index[1]]
+                        for x in new_arr:
+                            del new_arr[x][outlier_index[1]]
+                        is_outlier = False
+                    else:
+                        is_outlier = False
+                print(new_arr)
+                # 是否有Nan值，若有Nan值將進入其他條件判斷
+                if len(outlier_index[0]) > 0:
+                    data = pd.DataFrame(new_arr)
+                    data = data.loc[[2,4]]
+                    print(data['main_id'])
+                '''
+              
         #except:
             #record_arr = {}
 
-        return record_arr
-
-    # 取得中位數的前後值
-    def get_median_range(self,times_arr):
-        range_arr = {}
-        times_arr_len = len(times_arr)
-        
-        if times_arr_len == 1:
-            range_arr['seconds_start'] = times_arr[0]
-            range_arr['seconds_end'] = times_arr[0]
-        elif times_arr_len == 2:
-            range_arr['seconds_start'] = times_arr[0]
-            range_arr['seconds_end'] = times_arr[1]
-        elif times_arr_len%2 == 0:
-            median_index = (times_arr_len / 2)
-            range_arr['seconds_start'] = times_arr[median_index - 1]
-            range_arr['seconds_end'] = times_arr[median_index + 1]
-        elif times_arr_len%2 != 0:
-            median_index = math.floor(times_arr_len / 2)
-            range_arr['seconds_start'] = times_arr[median_index - 1]
-            
-            median_index = math.ceil(times_arr_len / 2)
-            range_arr['seconds_end'] = times_arr[median_index]
-        
-        return range_arr
+        return is_favorite_items
     
     # 取得分位數
     def quantile(self,data,percent):
@@ -219,13 +222,14 @@ class FUNC_CLASS(DB_CONN):
     def plt_pie(self,data):
         explode = []
         df      = pd.DataFrame(data)
+        print(df['main_id'])
+        
         labels  = df['main_id']
         sizes   = df['item_stay_time']
         
         median_num = round(len(data['item_stay_time']))
         
-        #for zero in range(len(data['item_stay_time'])):
-        for zero in enumerate(data['item_stay_time']):
+        for zero,_ in enumerate(data['item_stay_time']):
             explode.append(0.1 if (zero + 1) == median_num else 0)
         
         fig1, ax1 = plt.subplots()
@@ -238,40 +242,47 @@ class FUNC_CLASS(DB_CONN):
     def get_outlier(self,data,field):
         del_index       = None
         df = pd.DataFrame(data, columns=[field])
-
-        # abs:絕對值;  abs(X - 平均值)
-        df['x-Mean']    = abs(df[field] - df[field].mean())
-        # std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
-        df['1.96*std']  = 1.96*df[field].std()  
-        df['Outlier']   = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
-  
-        # 刪除為True的資料
+        df_NaN = df[df.isnull().any(axis=1)].index.values
+        
+        # 刪除 NaN 值
+        df.dropna(inplace=True)
+        
         if not df.empty:
+            # abs:絕對值;  abs(X - 平均值)
+            df['x-Mean']    = abs(df[field] - df[field].mean())
+            # std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
+            df['1.96*std']  = 1.96*df[field].std()  
+            df['Outlier']   = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
+            
+            # 刪除為True的資料
             for x in range(len(df)):
                 this_bool = df.iloc[x]['Outlier']
                 if this_bool:
                     del_index = x
         
-        return del_index
+        return [df_NaN,del_index]
     
     # 取得該User瀏覽時間的中位數
     def get_user_time_range(self,data):
-        time_range = {'low':0,'high':0}
+        time_range = 0
         
         if data:
            time_range = self.quantile(data,0.5)
         
         return time_range
         
-    # 取得該範圍內，User有加入最愛的物件
+    # 取得該時間範圍，User有加入最愛的物件
     def get_is_favorite(self,data,columns_list,time_range):
         items_arr   = []
         df = pd.DataFrame(data, columns=columns_list)
         df = df[df['item_stay_time'] >= time_range]
         df_favorite = df[df.add_favorite == 1]
+      
         # 如果有加入最愛，則把該物件加入list
         if not df_favorite.empty:
             for x in df_favorite.index:
                 items_arr.append(df['main_id'][x])
-                 
+        else:
+            items_arr = df.main_id
         return list(set(items_arr))
+    

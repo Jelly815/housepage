@@ -29,7 +29,8 @@ for _,record in enumerate(record_data):
             if same_records_user_id:
                 for other_user_id in same_records_user_id:
                     # 取得某位User瀏覽物件的資料
-                    times_range = func.get_times_range(other_user_id['id'],record_val)
+                    times_range_items = func.get_times_range_items(other_user_id['id'],record_val)
+                    print(times_range_items)
 
     # 取得該User是否有加入最愛的習慣
             
