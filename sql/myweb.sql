@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019 年 01 月 12 日 18:03
--- 伺服器版本: 10.1.31-MariaDB
--- PHP 版本： 7.2.4
+-- 產生時間： 2019-01-21 10:52:05
+-- 伺服器版本: 10.1.36-MariaDB
+-- PHP 版本： 5.6.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -607,7 +607,7 @@ INSERT INTO `ex_record` (`id`, `user_id`, `area`, `price`, `ping`, `style`, `typ
 (29, 1, 304, 300, 30, 2, 3, 1),
 (30, 1, 304, 300, 30, 3, 3, 1),
 (31, 1, 304, 600, 30, 2, 3, 1),
-(32, 1, 304, 600, 30, 3, 3, 1),
+(32, 1, 304, 600, 30, 3, 3, 3),
 (33, 1, 304, 300, 40, 2, 3, 1),
 (34, 1, 304, 300, 40, 3, 3, 1),
 (35, 1, 304, 600, 40, 2, 3, 1),
@@ -913,9 +913,9 @@ INSERT INTO `ex_record_items` (`id`, `user_id`, `record_id`, `main_id`, `times`,
 (4, 1, 20, 6, 1, 1, 0, '2019-01-05 13:01:37'),
 (5, 1, 20, 12, 1, 0, 0, '2019-01-05 13:03:43'),
 (6, 1, 20, 14, 1, 0, 0, '2019-01-05 13:03:43'),
-(7, 1, 32, 8, 1, 1, 0, '2019-01-05 13:09:43'),
-(8, 1, 32, 10, 1, 0, 0, '2019-01-05 13:09:43'),
-(9, 1, 32, 19, 1, 0, 0, '2019-01-05 13:10:10'),
+(7, 1, 32, 8, 3, 1, 0, '2019-01-05 13:09:43'),
+(8, 1, 32, 10, 3, 0, 0, '2019-01-05 13:09:43'),
+(9, 1, 32, 19, 3, 0, 0, '2019-01-05 13:10:10'),
 (10, 1, 44, 9, 1, 1, 0, '2019-01-05 13:13:38'),
 (11, 1, 48, 7, 1, 1, 0, '2019-01-05 13:13:38'),
 (12, 1, 48, 18, 5, 1, 1, '2019-01-05 13:13:38'),
@@ -1057,9 +1057,9 @@ INSERT INTO `ex_record_items_stay` (`id`, `record_items_id`, `stay_time`) VALUES
 (4, 4, 15),
 (5, 5, 21),
 (6, 6, 30),
-(7, 7, 10),
-(8, 8, 43),
-(9, 9, 33),
+(7, 7, 60),
+(8, 8, 35),
+(9, 9, 50),
 (10, 10, 60),
 (11, 11, 111),
 (12, 12, 180),
@@ -1200,7 +1200,9 @@ INSERT INTO `ex_record_items_stay` (`id`, `record_items_id`, `stay_time`) VALUES
 (147, 59, 150),
 (148, 59, 100),
 (149, 59, 60),
-(150, 59, 30);
+(150, 59, 30),
+(151, 7, 45),
+(152, 7, 100);
 
 -- --------------------------------------------------------
 
@@ -1308,6 +1310,39 @@ INSERT INTO `ex_user` (`id`, `unid`, `name`, `email`, `pwd`, `age`, `sex`, `area
 (8, 'mdfef0a5faf8377eda852a592f32fc71b', '黃先生', 'jellyandjar@yahoo.com.tw', '9fab6755cd2e8817d3e73b0978ca54a6', 30, 'M', 251, '2019-01-05 23:26:05', '2019-01-05 23:26:05', '0000-00-00 00:00:00'),
 (9, 'mca3907edc888d46215b3a35c294e73fa', '蕭先生', 'jellyandjar@yahoo.com.tw', '9fab6755cd2e8817d3e73b0978ca54a6', 25, 'M', 304, '2019-01-05 23:26:05', '2019-01-05 23:26:05', '0000-00-00 00:00:00'),
 (10, 'm6bb771cd12d1658a7e26b3c63632d8f7', '辛先生', 'jellyandjar@yahoo.com.tw', '9fab6755cd2e8817d3e73b0978ca54a6', 30, 'M', 283, '2019-01-08 11:42:12', '2019-01-08 11:42:12', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- 替換檢視表以便查看 `ex_user_record_view`
+-- (請參考以下實際畫面)
+--
+CREATE TABLE `ex_user_record_view` (
+`record_id` bigint(20) unsigned
+,`user_id` bigint(20) unsigned
+,`area` int(11) unsigned
+,`price` int(11) unsigned
+,`ping` int(11) unsigned
+,`style` int(11) unsigned
+,`type` int(11) unsigned
+,`record_times` int(11) unsigned
+,`main_id` bigint(20) unsigned
+,`items_times` int(10) unsigned
+,`click_map` tinyint(1) unsigned
+,`add_favorite` tinyint(1) unsigned
+,`last_time` timestamp
+,`item_stay_time` int(11) unsigned
+,`map_stay_time` int(10) unsigned
+);
+
+-- --------------------------------------------------------
+
+--
+-- 檢視表結構 `ex_user_record_view`
+--
+DROP TABLE IF EXISTS `ex_user_record_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ex_user_record_view`  AS  select `record`.`id` AS `record_id`,`record`.`user_id` AS `user_id`,`record`.`area` AS `area`,`record`.`price` AS `price`,`record`.`ping` AS `ping`,`record`.`style` AS `style`,`record`.`type` AS `type`,`record`.`times` AS `record_times`,`items`.`main_id` AS `main_id`,`items`.`times` AS `items_times`,`items`.`click_map` AS `click_map`,`items`.`add_favorite` AS `add_favorite`,`items`.`last_time` AS `last_time`,`items_stay`.`stay_time` AS `item_stay_time`,`items_map`.`stay_time` AS `map_stay_time` from (`ex_record` `record` join ((`ex_record_items` `items` left join `ex_record_items_stay` `items_stay` on((`items_stay`.`record_items_id` = `items`.`id`))) left join `ex_record_items_map` `items_map` on((`items_map`.`record_items_id` = `items`.`id`)))) where ((`record`.`id` = `items`.`record_id`) and (`items`.`times` > 1) and (`items_stay`.`stay_time` > 5) and (`items`.`last_time` >= (now() - interval 180 day)) and ((select count(`ex_main`.`id`) from `ex_main` where ((`ex_main`.`is_closed` = 0) and (`ex_main`.`id` = `items`.`main_id`))) > 0)) ;
 
 --
 -- 已匯出資料表的索引
@@ -1433,7 +1468,7 @@ ALTER TABLE `ex_record_items_map`
 -- 使用資料表 AUTO_INCREMENT `ex_record_items_stay`
 --
 ALTER TABLE `ex_record_items_stay`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- 使用資料表 AUTO_INCREMENT `ex_source`

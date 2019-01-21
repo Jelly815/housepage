@@ -42,6 +42,7 @@ def cosine_similarity(v, w):
 
 def most_similar_interests_to(interest_id):
     similarities = interest_similarities[interest_id]
+    print(similarities)
     pairs = [(unique_interests[other_interest_id], similarity)
              for other_interest_id, similarity in enumerate(similarities)
              if interest_id != other_interest_id and similarity > 0]
@@ -72,6 +73,7 @@ def item_based_suggestions(user_id, include_current_interests=False):
 unique_interests = sorted(list({ interest
                                  for user_interests in users_interests
                                  for interest in user_interests }))
+#print(unique_interests)
 # user_interest_matrix[0]:使用者對36項是否有興趣，是:1,否:0
 user_interest_matrix = list(map(make_user_interest_vector, users_interests))
 
@@ -79,9 +81,10 @@ user_interest_matrix = list(map(make_user_interest_vector, users_interests))
 interest_user_matrix = [[user_interest_vector[j]
                          for user_interest_vector in user_interest_matrix]
                         for j, _ in enumerate(unique_interests)]
+
 # 使用餘弦相似度
 interest_similarities = [[cosine_similarity(user_vector_i, user_vector_j)
                           for user_vector_j in interest_user_matrix]
                          for user_vector_i in interest_user_matrix]
-    
-print(most_similar_interests_to(1))
+print(interest_similarities)
+#print(most_similar_interests_to(0))

@@ -7,7 +7,7 @@ Created on Sun Jan 13 00:58:08 2019
 
 from db_connect import DB_CONN
 import setting
-#import math
+import math
 #import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -149,14 +149,14 @@ class FUNC_CLASS(DB_CONN):
                 record[4]]
 
         #try:
-        if(record):
+        if record:
             self.execute(record_sql,record_vals)
             record_arr = self.fetchall()
    
             if record_arr:
                 for _, record in enumerate(record_arr):
-                    for _,val in enumerate(record):
-                        new_arr[val].append(record[val])
+                    for key,val in record.items():
+                        new_arr[key].append(val)
             
             # 刪除[物件停留時間]離群值
             is_outlier = True
@@ -208,7 +208,7 @@ class FUNC_CLASS(DB_CONN):
               
         #except:
             #record_arr = {}
-
+  
         return is_favorite_items
     
     # 取得分位數
@@ -257,17 +257,13 @@ class FUNC_CLASS(DB_CONN):
             # 刪除為True的資料
             for x in range(len(df)):
                 this_bool = df.iloc[x]['Outlier']
-                if this_bool:
-                    del_index = x
+                del_index = x if this_bool else None
         
         return [df_NaN,del_index]
     
     # 取得該User瀏覽時間的中位數
     def get_user_time_range(self,data):
-        time_range = 0
-        
-        if data:
-           time_range = self.quantile(data,0.5)
+        time_range = self.quantile(data,0.5) if data else 0
         
         return time_range
         
@@ -286,3 +282,9 @@ class FUNC_CLASS(DB_CONN):
             items_arr = df.main_id
         return list(set(items_arr))
     
+    def cosine_similarity(self,v, w):
+        return self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w))
+
+    def dot(self,v, w):
+        """v_1 * w_1 + ... + v_n * w_n"""
+        return sum(v_i * w_i for v_i, w_i in zip(v, w))
