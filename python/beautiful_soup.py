@@ -13,6 +13,7 @@ json_text = json_text.encode("utf8").decode("cp950", "ignore")
 data = json.loads(json_text)
 
 house_list = data['data']['house_list']
+imgs = {}
 
 for house in house_list:
     houseid = house['houseid']
@@ -23,23 +24,44 @@ for house in house_list:
     
     content_text = content_res.text
     
-    soup = BeautifulSoup(content_text, 'html.parser')
+    soup = BeautifulSoup(content_text, 'html5lib')
     soup.prettify()
     
     # 圖片
+    imgs[houseid] = {}
+    imgs[houseid]['img'] = []
     photo_tag = soup.find_all('div', id='img_list')
+    
     for tag in photo_tag:
         tdTags = tag.find_all("img")
+        
         for tag in tdTags:
-            print(tag.get('src'))  
+            imgs[houseid]['img'].append(tag.get('src').replace('_118x88.crop','_730x460.water3'))
+                    
         
     # 朝向
-    '''
     addr_tag = soup.find_all('div', class_='info-addr-content')
     for one in addr_tag:      
         key_vals = one.find_all('span',class_='info-addr-key')              
         for key in key_vals:
             if key.get_text() == '朝向':
                 this_vals = key.find_next_siblings('span')
-                print(this_vals[0].text)
-    '''
+                imgs[houseid]['direct'] = this_vals[0].text
+                break
+
+    # 管理費
+    fee_tag = soup.find_all('div','detail-house-key')
+    for fee in fee_tag: 
+         if fee.text == '管理費':
+             this_fee = fee.find_next_siblings('div')
+             imgs[houseid]['fee'] = this_fee[0].text.replace('元','') if this_fee[0].text != '無' else ''
+        
+    # 坪數說明
+    imgs[houseid]['disc'] = []
+    disc_tag = soup.find_all('div','detail-house-box')
+    for disc in disc_tag: 
+         imgs[houseid]['disc'].append(disc)
+             
+    
+    
+print(imgs)
