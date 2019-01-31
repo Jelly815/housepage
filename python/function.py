@@ -59,7 +59,7 @@ class FUNC_CLASS(DB_CONN):
                     user_record['last_record'].append(
                             [user_last_arr['area'],user_last_arr['price'],
                             user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']])
-            
+              
                 # 取得user [經常]搜尋的條件
                 self.execute(user_often_sql,[user_id])
                 user_often_arr = self.fetchall()
@@ -86,9 +86,9 @@ class FUNC_CLASS(DB_CONN):
 
         # 取得user record
         record_sql = """
-            SELECT  user.`id`
+            SELECT  user.`unid`
             FROM    `ex_user` user,`ex_record` record
-            WHERE   user.`id` = record.`user_id` AND
+            WHERE   user.`unid` = record.`user_id` AND
                     record.`user_id` != %s AND
                     record.`area`    = %s AND
                     record.`price`   = %s AND
@@ -152,12 +152,12 @@ class FUNC_CLASS(DB_CONN):
         if record:
             self.execute(record_sql,record_vals)
             record_arr = self.fetchall()
-   
+            
             if record_arr:
                 for _, record in enumerate(record_arr):
                     for key,val in record.items():
                         new_arr[key].append(val)
-            
+           
             # 刪除[物件停留時間]離群值
             is_outlier = True
             outlier_index = self.get_outlier(new_arr,'item_stay_time')
@@ -185,26 +185,6 @@ class FUNC_CLASS(DB_CONN):
                 
 
                 # 查看是否曾經看過地圖
-                '''
-                is_outlier = True
-                outlier_index = self.get_outlier(new_arr,'map_stay_time')
-             
-                while is_outlier:
-                    # 刪除[地圖停留時間]離群值
-                    if outlier_index[1] is not None:
-                        del record_arr[outlier_index[1]]
-                        for x in new_arr:
-                            del new_arr[x][outlier_index[1]]
-                        is_outlier = False
-                    else:
-                        is_outlier = False
-                print(new_arr)
-                # 是否有Nan值，若有Nan值將進入其他條件判斷
-                if len(outlier_index[0]) > 0:
-                    data = pd.DataFrame(new_arr)
-                    data = data.loc[[2,4]]
-                    print(data['main_id'])
-                '''
               
         #except:
             #record_arr = {}
@@ -222,7 +202,6 @@ class FUNC_CLASS(DB_CONN):
     def plt_pie(self,data):
         explode = []
         df      = pd.DataFrame(data)
-        print(df['main_id'])
         
         labels  = df['main_id']
         sizes   = df['item_stay_time']

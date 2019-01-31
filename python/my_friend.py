@@ -31,11 +31,7 @@ def quantile(x,p):
 #print(abc2)
 
 
-a = '近公園綠地'
-b = '近公園'
-
-tag1    = set([a[x] for x in range(len(a))])
-tag2    = set([b[x] for x in range(len(b))])
-tag2_len= math.ceil(len(tag2)/2)
-print(tag2_len)
-print(len(tag2.difference(tag1)))
+c = Counter("dengjingdong") 
+#c = Counter({'n': 3, 'g': 3, 'd': 2, 'i': 1, 'o': 1, 'e': 1, 'j': 1}) 
+print("原始數據：",c) 
+print("最多的兩個元素：",c.most_common())#輸出數量最多的元素 

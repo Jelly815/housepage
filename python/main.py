@@ -13,36 +13,33 @@ user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
 func = FUNC_CLASS()
 
 user_items_dict = []
-#others_user_items_dict = {}
 others_user_items_dict = []
 times_range_items = []
-# 取得user的id
-user_id = func.get_user_id(user_unid)
 
 # 取得user的搜尋紀錄
-record_data = func.get_this_user_search(user_id)
+record_data = func.get_this_user_search(user_unid)
 
 for key,record in record_data.items():
-    if record:
+    if record:  
         for record_val in record:
             # 取得usre喜愛的物件
-            times_range_items = func.get_times_range_items(user_id,record_val)
+            times_range_items = func.get_times_range_items(user_unid,record_val)
+            
             if times_range_items:
                 user_items_dict.append(times_range_items)
             
             # 取得非user的相同紀錄
-            same_records_user_id = func.get_same_record(user_id,record_val)
+            same_records_user_id = func.get_same_record(user_unid,record_val)
+            
             if same_records_user_id:
-                
                 times_range_items = {}
                 for other_user_id in same_records_user_id:
                     # 取得某位User瀏覽物件的資料
-                    times_range_items = func.get_times_range_items(other_user_id['id'],record_val)            
-               
+                    times_range_items = func.get_times_range_items(other_user_id['unid'],record_val)            
+                   
                     if times_range_items:
                         others_user_items_dict.append(times_range_items) 
-        
-
+                  
 
 
 def most_similar_interests_to(interest_id):
