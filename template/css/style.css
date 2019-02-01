@@ -176,9 +176,9 @@ form {
 	color: #191C21;
 }
 .header div#featured div ul li.selected div{
-	width: 960px;
+	/*width: 960px;
 	height: 425px;
-	position: absolute;
+	position: absolute;*/
 	border-radius: 5px;
 	left: 0;
 	padding: 10px 0 0;
