@@ -148,46 +148,46 @@ class FUNC_CLASS(DB_CONN):
                 record[1],record[2],record[3],
                 record[4]]
 
-        #try:
-        if record:
-            self.execute(record_sql,record_vals)
-            record_arr = self.fetchall()
-            
-            if record_arr:
-                for _, record in enumerate(record_arr):
-                    for key,val in record.items():
-                        new_arr[key].append(val)
-           
-            # 刪除[物件停留時間]離群值
-            is_outlier = True
-            outlier_index = self.get_outlier(new_arr,'item_stay_time')
-
-            while is_outlier:
-                if outlier_index[1] is not None:
-                    del record_arr[outlier_index[1]]
-                    for x in new_arr:
-                        del new_arr[x][outlier_index[1]]
-                    is_outlier = False
-                else:
-                    is_outlier = False
-  
-            is_favorite_items = []
-            if new_arr['item_stay_time']:
-                # 取得該User瀏覽區間
-                user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
-               
-                # 某user喜歡物件的時間圓餅圖
-                #if new_arr['item_stay_time']:
-                #    self.plt_pie(new_arr)
-            
-                # 取得該範圍內，User有加入最愛的物件
-                is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range)
+        try:
+            if record:
+                self.execute(record_sql,record_vals)
+                record_arr = self.fetchall()
                 
-
-                # 查看是否曾經看過地圖
+                if record_arr:
+                    for _, record in enumerate(record_arr):
+                        for key,val in record.items():
+                            new_arr[key].append(val)
+               
+                # 刪除[物件停留時間]離群值
+                is_outlier = True
+                outlier_index = self.get_outlier(new_arr,'item_stay_time')
+    
+                while is_outlier:
+                    if outlier_index[1] is not None:
+                        del record_arr[outlier_index[1]]
+                        for x in new_arr:
+                            del new_arr[x][outlier_index[1]]
+                        is_outlier = False
+                    else:
+                        is_outlier = False
+      
+                is_favorite_items = []
+                if new_arr['item_stay_time']:
+                    # 取得該User瀏覽區間
+                    user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
+                   
+                    # 某user喜歡物件的時間圓餅圖
+                    #if new_arr['item_stay_time']:
+                    #    self.plt_pie(new_arr)
+                
+                    # 取得該範圍內，User有加入最愛的物件
+                    is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range)
+                    
+    
+                    # 查看是否曾經看過地圖
               
-        #except:
-            #record_arr = {}
+        except:
+            is_favorite_items = []
   
         return is_favorite_items
     
@@ -261,9 +261,12 @@ class FUNC_CLASS(DB_CONN):
             items_arr = df.main_id
         return list(set(items_arr))
     
+    # 餘弦相似
     def cosine_similarity(self,v, w):
+        # math.sqrt:平方根
         return self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w))
-
-    def dot(self,v, w):
+    
+    # 點乘積(內積)
+    def dot(self,v, w): 
         """v_1 * w_1 + ... + v_n * w_n"""
         return sum(v_i * w_i for v_i, w_i in zip(v, w))

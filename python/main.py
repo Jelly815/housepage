@@ -64,10 +64,10 @@ unique_items = sorted(list({ interest
                          for interest in user_interests }))
 
 if unique_items:  
-    # user_interest_matrix[0]:使用者對36項是否有興趣，是:1,否:0
+    # 使用者>興趣，是:1,否:0
     user_interest_matrix = list(map(make_user_items_matrix, users_interests))
     
-    # interest_user_matrix[0]:15個使用者，對於該項是否有興趣，是:1,否:0
+    # 興趣>使用者，是:1,否:0
     interest_user_matrix = [[user_interest_vector[j]
                          for user_interest_vector in user_interest_matrix]
                         for j, _ in enumerate(unique_items)]

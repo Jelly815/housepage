@@ -9,8 +9,8 @@ import math
 
 db_conn = DB_CONN() 
 
-url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&firstRow=30&totalRows=14679&timestamp=1548122419382'
-#url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&price=100$_2000$&firstRow=30&totalRows=12723&timestamp=1548940930139'
+url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&firstRow=60&totalRows=14679&timestamp=1548122419382'
+
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 }
