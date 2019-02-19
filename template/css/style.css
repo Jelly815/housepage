@@ -68,7 +68,7 @@ form {
     display: inline-block;
     float: left;
     height: 70px;
-    margin: 55px 0 0 25px;
+    margin: 15px 0 0 25px;
     width: 273px;
 
     text-decoration: none;
@@ -153,6 +153,7 @@ form {
 .header div#featured div.first ul li.selected a{
 	background: url(../images/bg-feat-menu-selected-right.gif) no-repeat left top;
 	color: #191C21;
+	width:170px;
 	/*padding: 0 32px;*/
 }
 .header div#featured div ul li.selected a:hover{
@@ -176,8 +177,8 @@ form {
 	color: #191C21;
 }
 .header div#featured div ul li.selected div{
-	/*width: 960px;
-	height: 425px;
+	width: 960px;
+	/*height: 425px;
 	position: absolute;*/
 	border-radius: 5px;
 	left: 0;
