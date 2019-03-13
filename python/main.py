@@ -22,8 +22,11 @@ record_data = func.get_this_user_search(user_unid)
 for key,record in record_data.items():
     if record:  
         for record_val in record:
-            # 取得usre喜愛的物件
+            # 取得usre(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1)
             times_range_items = func.get_times_range_items(user_unid,record_val)
+            
+            # 取得usre項目
+            #times_range_items = func.get_times_range_items(user_unid,record_val)
             
             if times_range_items:
                 user_items_dict.append(times_range_items)
