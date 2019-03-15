@@ -1,9 +1,9 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
-include_once('./include/adodb/adodb.inc.php');
-include_once('./include/TemplatePower/class.TemplatePower.inc.php');
-include_once('./lib/main.php');
-include_once('./lib/function.php');
+include_once(__DIR__.'/../include/adodb/adodb.inc.php');
+include_once(__DIR__.'/../include/TemplatePower/class.TemplatePower.inc.php');
+include_once(__DIR__.'/../lib/main.php');
+include_once(__DIR__.'/../lib/function.php');
 
 class db_function extends db_connect{
 	public function __construct()
@@ -99,109 +99,7 @@ class db_function extends db_connect{
 		return $re_chk;
 	}
 
-	//新增作品
-	function addPic(){
-		global $uid;
-		$userId=$this->db->qstr($uid);
-		$title = (isset($_POST['title'])&&$_POST['title']<>'')?$this->db->qstr($_POST['title']):$this->db->qstr('');
-		$caption = (isset($_POST['caption'])&&$_POST['caption']<>'')?$this->db->qstr($_POST['caption']):$this->db->qstr('');
 
-		$sqlUser = sprintf("select ex_uid from `ex_pic` where ex_uid=%s",$uid);
-		$arrayUser = $this->db->getAll($sqlUser);
-		$countUser=count($arrayUser);
-
-		if($countUser<3){
-			$sql = sprintf("insert into `ex_data` (ex_user_id,ex_title,ex_txt,ex_date) values (%s,%s,%s,'%s')",$userId,$title,$caption,date("Y-m-d H:i:s"));
-
-			if ($this->db->Execute($sql) === false) {
-				echo ALERTXT06;exit;
-			}else{
-				$picId=$this->db->Insert_ID();	//取得作品序號
-				$fileFolder='../';
-				$folder=PICFOLDER;
-				$name=mb_convert_encoding($_FILES["picFile1"]["name"],"big5","utf8");
-				$tmp=$_FILES["picFile1"]["tmp_name"];
-				if(!empty($name)){ 			//上傳檔案
-					$fileName=getImg($name,$tmp,$fileFolder,$folder);
-
-					if($fileName<>''){
-						$sql = "insert into `ex_pic` (ex_uid,ex_did,ex_pic) ";
-						$sql .= " values ($userId,$picId,'$fileName')";
-
-						if ($this->db->Execute($sql) === false) {
-							if(is_file(UPLOADPICPATH.$fileName)) unlink(UPLOADPICPATH.$fileName);
-							$delSql=sprintf("delete from `ex_data` where ex_id=%s",$picId);
-							if ($this->db->Execute($delSql) === false) {
-								echo ALERTXT06;exit;
-							}
-							echo ALERTXT06;exit;
-						}else{
-							echo "<script charset='UTF-8'>alert('".INSERTSUCC."');location.href = '".LOGINTOPATH."';</script>";
-						}
-					}
-				}
-			}
-		}else echo "<script charset='UTF-8'>alert('".ALERTXT07."');location.href = '".LOGINTOPATH."';</script>";
-	}
-	//編輯
-	function editPic($id){
-		global $uid;
-		$userId=$db->qstr($uid);
-		$title = (isset($_POST['title'])&&$_POST['title']<>'')?$this->db->qstr($_POST['title']):$this->db->qstr('');
-		$caption = (isset($_POST['caption'])&&$_POST['caption']<>'')?$this->db->qstr($_POST['caption']):$this->db->qstr('');
-
-		$sql = sprintf("update `ex_data` set ex_title=%s,ex_txt=%s,ex_date='%s' where ex_user_id=%s and ex_id=%s",$title,$caption,date("Y-m-d H:i:s"),$userId,$id);
-
-		if ($this->db->Execute($sql) === false) {
-			echo ALERTXT06;exit;
-		}else{
-			$fileFolder='../';
-			$folder=PICFOLDER;
-			$name=mb_convert_encoding($_FILES["picFile1"]["name"],"big5","utf8");
-			$tmp=$_FILES["picFile1"]["tmp_name"];
-
-			$sqlPic = sprintf("select ex_pic from `ex_pic` where ex_uid=%s and ex_did=%s",$uid,$id);
-
-			if(!empty($name)){ 				//上傳檔案
-				$fileName=getImg($name,$tmp,$fileFolder,$folder);
-
-				if($fileName<>''){
-					if(is_file(UPLOADPICPATH.$this->db->getOne($sqlPic))) unlink(UPLOADPICPATH.$this->db->getOne($sqlPic));
-					$sql = sprintf("update `ex_pic` set ex_pic='%s' where ex_uid=%s and ex_did=%s",$fileName,$userId,$id);
-
-					if ($this->db->Execute($sql) === false) {
-						echo ALERTXT06;exit;
-					}
-				}
-			}
-			echo "<script charset='UTF-8'>alert('".EDITSUCC."');location.href = '".LOGINTOPATH."';</script>";
-		}
-	}
-	//刪除作品
-	function delPic($id){
-		global $uid;
-		$sql = sprintf("select ex_id from `ex_data` where ex_user_id=%s and ex_id=%s",$uid,$id);
-
-		if($this->db->getOne($sql)>0){
-			$delSql=sprintf("delete from ex_data where  ex_user_id=%s and ex_id=%s",$uid,$id);
-			if ($this->db->Execute($delSql) === false) {
-				echo ALERTXT06;exit;
-			}else{
-				$sqlPic = sprintf("select ex_pic from `ex_pic` where ex_uid=%s and ex_did=%s",$uid,$id);
-				if(is_file(UPLOADPICPATH.$this->db->getOne($sqlPic))) unlink(UPLOADPICPATH.$this->db->getOne($sqlPic));
-				$delSql2=sprintf("delete from ex_pic where ex_uid=%s and ex_did=%s",$uid,$id);
-				if ($this->db->Execute($delSql2) === false) {
-					echo ALERTXT06;exit;
-				}else header("location: ".LOGINTOPATH);
-			}
-		}else header("location: ".LOGINTOPATH);
-	}
-	//部門
-	function getDepatm(){
-		$sql = "select * from `ex_department` order by ex_sort";
-	    $array = $this->db->getAll($sql);
-		return $array;
-	}
 	// 取得table資料
 	function get_table_value($table,$select_field='',$where_str='',$order_by=''){
         $rs     = array();
@@ -222,5 +120,426 @@ class db_function extends db_connect{
 			return  array();
 		}
 	}
+
+	/**
+	 *	取得資料
+	 *	@param select: 	is_array	=> array('field1','field2');
+	 * 	                is_string 	=> 'field1,field2'
+	 *	@param where : 	'type'：0:field;1:手key值;2:沒有值
+	 *				array(
+	 *					array(0,'field','=','value'),
+	 *					array(1,'concat(field1,field2)','LIKE','%value%'),
+	 *					array(2,'field','IN (1,2,3,4)',''),
+	 *                  array(3,'string')
+	 *				);
+	 *	@param orderby:	array(
+	 *					'field' => 'ASC'
+	 *				);
+	 *  @param type :   0:getArray();
+	 *              1:SelectLimit();
+	 *              2:getOne();
+	 *  @return array
+	*/
+	function select_table_data($table,$select,$where = array(),$orderby = array(),
+								$type = 0,$page_limit = 0,$page_num = 0)
+	{
+        $table 			= trim($table);
+		$arr 			= $return_data 	= array();
+		$chk    		= 'false';
+		$select_str 	= $where_str 	= $orderby_str 	= '';
+		$where_symbol 	= '=';
+
+		if(!empty($select)){
+			// SELECT
+			if(is_array($select)){
+				$data_count 			= count($select);
+				$i = 1;
+				foreach($select as $val){
+					$field 				= $this->tableField($val);
+					$select_str    	   .= ($data_count != $i)?"$field,":"$field";
+
+					$i++;
+				}
+			}else{
+				$select_str 			= $select;
+			}
+
+			$sql 		= "SELECT $select_str FROM $table ";
+
+			// WHERE
+			$where_count 				= count($where);
+			$j = 1;
+			if(!empty($where) && $where_count > 0){
+				foreach($where as $key 	=> $val){
+					$where_type 			= isset($val[0])?intval($val[0]):0;
+					$where_field 			= isset($val[1])?$val[1]:'';
+					if($where_type == 3){
+						$where_symbol       = '';
+					}else{
+						$where_symbol 		= isset($val[2])?$val[2]:'';
+						$where_val 			= isset($val[3])?$val[3]:'';
+						if($where_type != 2){
+							$arr[] 			= $where_val;
+						}
+
+						$where_field 		= ($where_type != 1)?$where_field:
+												$this->mssql_real_escape_str($where_field);
+					}
+					if($where_count != $j){
+						$where_str     .= ($where_type == 2 || $where_type == 3)?
+											" $where_field $where_symbol AND ":
+											" [$where_field] $where_symbol ? AND ";
+					}else{
+						$where_str     .= ($where_type == 2 || $where_type == 3)?
+											" $where_field $where_symbol ":
+											" [$where_field] $where_symbol ? ";
+					}
+					$j++;
+				}
+				$sql   .= " WHERE $where_str ";
+			}
+
+			// ORDER BY
+			$orderby_count 				= count($orderby);
+			$k = 1;
+			if(!empty($orderby) && $orderby_count > 0){
+				foreach($orderby as $key => $val){
+					$orderby_field 		= $key;
+					$orderby_order 		= !empty($val)?strtoupper($val):'ASC';
+					$orderby_order  	= ($orderby_order == 'DESC')?$orderby_order:'ASC';
+					$orderby_str       .= ($orderby_count != $k)?
+											"{$orderby_field} {$orderby_order},":
+											"{$orderby_field} {$orderby_order}";
+
+					$k++;
+				}
+				$sql   .= " ORDER BY $orderby_str ";
+			}
+			$sql        = $this->db->Prepare($sql);
+
+			if($type == 1){
+
+				$rs     = $this->db->SelectLimit($sql,$page_limit,$page_num,$arr);
+	            if(!empty($rs)){
+	                $return_data  		= $rs->getArray();
+	            }
+	        }elseif($type == 2){
+
+	            $return_data      		= $this->db->getOne($sql,$arr);
+
+	        }else{
+	        	$rs 	= $this->db->Execute($sql,$arr);
+
+	            if($rs && $rs->RecordCount() > 0){
+					$return_data 		= $rs->getAll();
+				}
+	        }
+		}
+		return $return_data;
+    }
+
+    /**
+	 *	取得資料
+	 *	@param select: 	is_array	=> array(
+	 *			            'table1'    => array(field1,field2...),
+	 *			            'table2'    => array(field1,field2...)
+	 *			        );
+	 * 	                is_string 	=> 'field1,field2'
+	 *	@param where : 	0:field;1:手key值;2:沒有值
+	 *				array(
+	 *					array(0,'field','=','value','table'),
+	 *					array(1,'concat(field1,field2)','LIKE','%value%'),
+	 *					array(2,'field','IN (1,2,3,4)','','table'),
+	 *                  array(3,'string')
+	 *				);
+	 *	@param orderby:
+	 *				array(
+	 *					array('table1','field','ASC'),
+	 *					array('table2','field','DESC')
+	 *				);
+	 *  @param type :
+	 *				0:getArray();
+	 *              1:SelectLimit();
+	 *              2:getOne();
+	 *  @return array
+	*/
+	function select_table_data_join($table,$select,$where = array(),$orderby = array(),
+								$type = 0,$page_limit = 0,$page_num = 0)
+	{
+
+		$arr 			= $return_data 	= array();
+		$chk    		= 'false';
+		$table_str 		= $select_str 	= $where_str 	= $orderby_str 	= '';
+		$where_symbol 	= '=';
+
+		if(!empty($select)){
+			// TABLE
+			if(is_array($table)){
+				foreach ($table as $tb_key => $tb_val) {
+					$table_str		   .= "[$tb_val] {$tb_val},";
+				}
+				$table_str 				= rtrim($table_str,',');
+			}else{
+				$table_str 				= $table;
+			}
+
+			// SELECT
+			if(is_array($select)){
+				foreach($select as $sel_key => $sel_val){
+					foreach ($sel_val as $son_val) {
+						$select_str    .= "{$sel_key}.".$this->tableField($son_val).',';
+					}
+				}
+				$select_str 			= rtrim($select_str,',');
+			}else{
+				$select_str 			= $select;
+			}
+
+			$sql 		= "SELECT $select_str FROM $table_str ";
+
+			// WHERE
+			$where_count 				= count($where);
+			$j = 1;
+			if(!empty($where) && $where_count > 0){
+				foreach($where as $key 	=> $val){
+					$where_tb 			= '';
+					$where_type 		= isset($val[0])?intval($val[0]):0;
+					$where_field 		= isset($val[1])?$val[1]:'';
+					$where_symbol 		= isset($val[2])?$val[2]:'';
+					$where_val 			= isset($val[3])?$val[3]:'';
+					if($where_type != 2 && $where_type != 3){
+						$arr[] 			= $where_val;
+					}
+
+					if($where_type != 1 && $where_type != 3){
+						$where_tb 		= $val[4].'.';
+					}
+
+					$where_field 		= $where_field;
+					if($where_count != $j){
+						$where_str     .= ($where_type == 2 || $where_type == 3)?
+											" {$where_tb}{$where_field} {$where_symbol} AND ":
+											" {$where_tb}[{$where_field}] {$where_symbol} ? AND ";
+					}else{
+						$where_str     .= ($where_type == 2 || $where_type == 3)?
+											" {$where_tb}{$where_field} {$where_symbol} ":
+											" {$where_tb}[{$where_field}] {$where_symbol} ? ";
+					}
+
+					$j++;
+				}
+				$sql   .= " WHERE $where_str ";
+			}
+
+			// ORDER BY
+			$orderby_count 				= count($orderby);
+			$k = 1;
+			if(!empty($orderby) && $orderby_count > 0){
+				foreach($orderby as $or_val){
+					$orderby_tb 		= $this->mssql_real_escape_str($or_val[0]);
+					$orderby_field 		= $this->tableField($or_val[1]);
+					$orderby_val 		= $or_val[2];
+
+					$orderby_order 		= !empty($orderby_val)?strtoupper($orderby_val):'ASC';
+					$orderby_order  	= ($orderby_order == 'DESC')?$orderby_order:'ASC';
+					$orderby_str    	.= ($orderby_count != $k)?
+											"{$orderby_tb}.{$orderby_field} {$orderby_order},":
+											"{$orderby_tb}.{$orderby_field} {$orderby_order}";
+					$k++;
+				}
+				$sql   .= " ORDER BY $orderby_str ";
+			}
+			$sql        = $this->db->Prepare($sql);
+			if($type == 1){
+				$rs     = $this->db->SelectLimit($sql,$page_limit,$page_num,$arr);
+	            if(!empty($rs)){
+	                $return_data  		= $rs->getArray();
+	            }
+	        }elseif($type == 2){
+	            $return_data      		= $this->db->getOne($sql,$arr);
+	        }else{
+	        	$rs 	= $this->db->Execute($sql,$arr);
+	            if($rs && $rs->RecordCount() > 0){
+					$return_data 		= $rs->getArray();
+				}
+	        }
+		}
+		return $return_data;
+    }
+
+	/**
+	 *	新增資料
+	 *	@param data  : 	array(
+	 *					'field' => value
+	 *				);
+	 * 	@return true|false
+	*/
+	function insert_table_data($table,$data){
+		$arr 		= array();
+		$chk    	= false;
+		$field_str  = $value_str 	= '';
+
+		if(is_array($data) && !empty($data)){
+			$data_count 	= count($data);
+			$i = 1;
+			foreach($data as $key => $val){
+				$arr[] 				= trim($val);
+
+				$field 		= trim($key);
+				$field 		= $this->tableField($key);
+				if($data_count != $i){
+					$field_str     .= "$field,";
+					$value_str     .= "?,";
+				}else{
+					$field_str     .= "$field";
+					$value_str     .= "?";
+				}
+				$i++;
+			}
+
+			$sql 	 = "INSERT INTO $table ($field_str) VALUES ($value_str)";
+			$sql     = $this->db->Prepare($sql);
+            if($this->db->Execute($sql,$arr)){
+				$chk = true;
+			}
+		}
+		return $chk;
+    }
+
+	/**
+	 *	更新資料
+	 *	@param data  : 	array(
+	 *					'field' => array('=','value')
+	 *				);
+	 *	@param where : 	array(
+	 *					'field' => array('=','value')
+	 *				);
+	 * 	@return true|false
+	*/
+	function update_table_data($table,$data,$where){
+		$arr 		= array();
+		$chk    	= false;
+		$update_str = $where_str 		= '';
+		$update_symbol 	= $where_symbol = '=';
+
+		if(is_array($data) && !empty($data)){
+			$data_count = count($data);
+			$i 		= 1;
+			foreach($data as $key => $val){
+				if(is_array($val)){
+					$update_symbol 		= $val[0];
+					$data_val 	   		= $val[1];
+					$arr[] 				= $data_val;
+				}else{
+					$arr[] 				= $val;
+				}
+
+				$field 	= $this->tableField($key);
+				if($data_count != $i){
+					$update_str    	   .= " $field $update_symbol ?, ";
+				}else{
+					$update_str        .= " $field $update_symbol ? ";
+				}
+				$i++;
+			}
+
+			$where_count = count($where);
+			$j = 1;
+			foreach($where as $key => $val){
+				if(is_array($val)){
+					$where_symbol 		= $val[0];
+					$where_val 			= $val[1];
+					$arr[] 				= $where_val;
+				}else{
+					$arr[] 				= $val;
+				}
+
+				$w_field = $key;
+				if($where_count != $j){
+					$where_str         .= " [$w_field] $where_symbol ? AND ";
+				}else{
+					$where_str         .= " [$w_field] $where_symbol ? ";
+				}
+				$j++;
+			}
+
+			$sql 		= "UPDATE $table SET $update_str WHERE $where_str";
+			$sql        = $this->db->Prepare($sql);
+            if($this->db->Execute($sql,$arr)){
+				$chk 	= true;
+			}
+		}
+		return $chk;
+	}
+
+	/**
+     *  刪除資料
+     *  @param where :  0:field;1:手key值;2:沒有值
+     *              array(
+     *                  array(0,'field','=','value'),
+     *                  array(1,'concat(field1,field2)','LIKE','%value%'),
+     *                  array(2,'field','IN (1,2,3,4)','')
+     *              );
+     *  @return true|false
+    */
+    function delete_table($table,$where){
+        $arr        = array();
+        $where_str  = '';
+
+        $sql    = "DELETE FROM $table ";
+
+        if(is_array($where) && !empty($where)){
+            // WHERE
+            $where_count                = count($where);
+            $j = 1;
+            if(!empty($where) && $where_count > 0){
+                foreach($where as $key  => $val){
+                    $where_type         = intval($val[0]);
+                    $where_field        = $val[1];
+                    $where_symbol       = $this->mssql_real_escape_str($val[2]);
+                    $where_val          = $val[3];
+                    if($where_type != 2){
+                        $arr[]          = $where_val;
+                    }
+
+                    $where_field        = ($where_type != 1)?$this->tableField($where_field):
+                    						$this->mssql_real_escape_str($where_field);
+                    if($where_count != $j){
+                        $where_str     .= ($where_type == 2)?
+                                            " $where_field $where_symbol AND ":
+                                            " $where_field $where_symbol ? AND ";
+                    }else{
+                        $where_str     .= ($where_type == 2)?
+                                            " $where_field $where_symbol ":
+                                            " $where_field $where_symbol ? ";
+                    }
+
+                    $j++;
+                }
+                $sql   .= " WHERE $where_str ";
+            }
+            $sql        = $this->db->Prepare($sql);
+            if($this->db->Execute($sql,$arr)){
+                return  true;
+            }else{
+                return  false;
+            }
+        }else{
+            return  false;
+        }
+    }
+
+    // escape_str
+    function mssql_real_escape_str($value){
+    	$character	= array('\x00','\n','\r',"\\","'",'"','\x1a');
+    	foreach ($character as $character_val) {
+    		$value 	= str_replace($character_val, '', $value);
+    	}
+		return $value;
+    }
+
+    function tableField($field,$left = '`',$right = '`'){
+    	return ($left.$field.$right);
+    }
 }
 ?>
