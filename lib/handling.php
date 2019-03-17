@@ -188,11 +188,11 @@ class db_function extends db_connect{
 					if($where_count != $j){
 						$where_str     .= ($where_type == 2 || $where_type == 3)?
 											" $where_field $where_symbol AND ":
-											" [$where_field] $where_symbol ? AND ";
+											" `$where_field` $where_symbol ? AND ";
 					}else{
 						$where_str     .= ($where_type == 2 || $where_type == 3)?
 											" $where_field $where_symbol ":
-											" [$where_field] $where_symbol ? ";
+											" `$where_field` $where_symbol ? ";
 					}
 					$j++;
 				}
@@ -319,11 +319,11 @@ class db_function extends db_connect{
 					if($where_count != $j){
 						$where_str     .= ($where_type == 2 || $where_type == 3)?
 											" {$where_tb}{$where_field} {$where_symbol} AND ":
-											" {$where_tb}[{$where_field}] {$where_symbol} ? AND ";
+											" {$where_tb}`{$where_field}` {$where_symbol} ? AND ";
 					}else{
 						$where_str     .= ($where_type == 2 || $where_type == 3)?
 											" {$where_tb}{$where_field} {$where_symbol} ":
-											" {$where_tb}[{$where_field}] {$where_symbol} ? ";
+											" {$where_tb}`{$where_field}` {$where_symbol} ? ";
 					}
 
 					$j++;
@@ -397,7 +397,7 @@ class db_function extends db_connect{
 				$i++;
 			}
 
-			$sql 	 = "INSERT INTO $table ($field_str) VALUES ($value_str)";
+			$sql 	 = "REPLACE INTO $table ($field_str) VALUES ($value_str)";
 			$sql     = $this->db->Prepare($sql);
             if($this->db->Execute($sql,$arr)){
 				$chk = true;
