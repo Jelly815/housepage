@@ -59,7 +59,7 @@ def most_similar_interests_to(interest_id):
 def make_user_items_matrix(others_user_items_dict):
     return [1 if interest in others_user_items_dict else 0
             for interest in unique_items]
-    
+
 # 全部可能喜歡的物件
 users_interests = user_items_dict + others_user_items_dict
 unique_items = sorted(list({ interest
@@ -69,7 +69,7 @@ unique_items = sorted(list({ interest
 if unique_items:  
     # 使用者>興趣，是:1,否:0
     user_interest_matrix = list(map(make_user_items_matrix, users_interests))
-    
+    print(user_interest_matrix)
     # 興趣>使用者，是:1,否:0
     interest_user_matrix = [[user_interest_vector[j]
                          for user_interest_vector in user_interest_matrix]

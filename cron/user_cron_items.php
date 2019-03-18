@@ -121,7 +121,7 @@ foreach ($get_user as $key => $get_user_value) {
     $db->insert_table_data('ex_record_items_obj',$no_like_data);
 }
 
-$get_user   = $db->select_table_data('ex_record_items_obj','*',array(array(0,'user_id','=','m185ccab81019a39cba16f666f070bb83')));
+$get_user   = $db->select_table_data('ex_record_items_obj','*',array(array(0,'user_id','=','m1b414f0be20777c30e0423f441b09db8')));
 
 foreach ($get_user as $key => $value) {
     if($value['is_like'] == 1){
@@ -131,10 +131,25 @@ foreach ($get_user as $key => $value) {
     }
     $user_items = json_decode($value['items']);
 
-    #$aaa = $user_items->description[0];
-
-    #echo "<pre>";print_r(rtrim(mb_substr($aaa,4,5,'utf-8'),'坪'));echo "</pre>";
-
     echo "<pre>";print_r($user_items);echo "</pre>";
+
+    // 檢查community
+
+    // 檢查status
+    // 檢查around
+    // 檢查description
+    // 檢查price
+    // 檢查unit
+    // 檢查builder
+    // 檢查fee
+    // 檢查direction
+    // 檢查type
+    // 檢查floor
+    // 檢查age
+    // 檢查parking
+    // 檢查ping
+    // 檢查room
+    // 檢查road
+    // 檢查area
 }
 ?>
