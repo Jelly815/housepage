@@ -124,6 +124,8 @@ foreach ($get_user as $key => $get_user_value) {
 $get_user   = $db->select_table_data('ex_record_items_obj','*',array(array(0,'user_id','=','m1b414f0be20777c30e0423f441b09db8')));
 
 foreach ($get_user as $key => $value) {
+    $item_matrix = array();
+
     if($value['is_like'] == 1){
         echo "<pre>";print_r('=====喜歡=====');echo "</pre>";
     }else{
@@ -134,22 +136,95 @@ foreach ($get_user as $key => $value) {
     echo "<pre>";print_r($user_items);echo "</pre>";
 
     // 檢查community
+    array_push($item_matrix, similar_matrix_value($user_items->community));
 
     // 檢查status
+    array_push($item_matrix, similar_matrix_value($user_items->status));
+
     // 檢查around
+
     // 檢查description
+
     // 檢查price
+
     // 檢查unit
+
     // 檢查builder
+    array_push($item_matrix, similar_matrix_value($user_items->builder));
+
     // 檢查fee
+
     // 檢查direction
+    array_push($item_matrix, similar_matrix_value($user_items->direction));
+
     // 檢查type
+    array_push($item_matrix, similar_matrix_value($user_items->type));
+
     // 檢查floor
+    array_push($item_matrix, similar_matrix_value($user_items->floor));
+
     // 檢查age
+
     // 檢查parking
+    array_push($item_matrix, similar_matrix_value($user_items->parking));
+
     // 檢查ping
+
     // 檢查room
+    array_push($item_matrix, similar_matrix_value($user_items->room));
+
     // 檢查road
+
     // 檢查area
+    array_push($item_matrix, similar_matrix_value($user_items->area));
+echo "<pre>";print_r($item_matrix);echo "</pre>";
 }
+
+// 若大於一半有相似的，回傳1，否則回傳0
+function similar_matrix_value($val_arr){
+    $org_count = round(count($val_arr) / 2);
+    $chk_count = count(array_unique($val_arr));
+
+    return ($org_count > $chk_count)?1:0;
+}
+
+// 計算標準差
+if (!function_exists('stats_standard_deviation')) {
+    function stats_standard_deviation(array $a, $sample = false) {
+        $n = count($val_arr);
+        if ($n === 0) {
+            #trigger_error("The array has zero elements", E_USER_WARNING);
+            return false;
+        }
+        if ($sample && $n === 1) {
+            #trigger_error("The array has only 1 element", E_USER_WARNING);
+            return false;
+        }
+        $mean = array_sum($val_arr) / $n;
+        $carry = 0.0;
+        foreach ($val_arr as $val) {
+            $d = ((double) $val) - $mean;
+            $carry += $d * $d;
+        };
+        if ($sample) {
+           --$n;
+        }
+        return sqrt($carry / $n);
+    }
+}
+
+function range_matrix_value($val_arr){
+    $avg    = array_sum($val_arr) / count($val_arr);
+    $avg    = round($avg, 3);
+
+    $dev    = stats_standard_deviation($val_arr);
+
+    $start_avg  = (double)($avg - $dev);
+    $end_avg    = (double)($avg + $dev);
+
+    echo "<pre>";print_r($ab);echo "</pre>";
+    echo "<pre>";print_r($avg2);echo "</pre>";
+}
+
+
 ?>
