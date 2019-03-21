@@ -86,11 +86,10 @@ foreach ($get_user as $key => $get_user_value) {
     	if($main_value['community'] != '')array_push($items_arr['community'], $main_value['community']);
     }
 
-    $like_json  = json_encode($items_arr);
     // 儲存至資料庫
     $like_data      = array(
         'user_id'   => $user_id,
-        'items'     => $like_json,
+        'items'     => json_encode($items_arr),
         'is_like'   => 1,
     );
 
@@ -134,19 +133,18 @@ foreach ($get_user as $key => $get_user_value) {
         if($main_value['community'] != '')array_push($items_arr['community'], $main_value['community']);
     }
 
-    $no_like_json  = json_encode($items_arr);
-
     // 儲存至資料庫
     $no_like_data   = array(
         'user_id'   => $user_id,
-        'items'     => $no_like_json,
+        'items'     => json_encode($items_arr),
         'is_like'   => 0,
     );
 
     $db->insert_table_data('ex_record_items_obj',$no_like_data);
 }
 
-$get_user   = $db->select_table_data('ex_record_items_obj','*',array(array(0,'user_id','=','m1b414f0be20777c30e0423f441b09db8')));
+$get_user   = $db->select_table_data('ex_record_items_obj','*',
+    array(array(0,'user_id','=','m1b414f0be20777c30e0423f441b09db8'),array(0,'is_like','=',1)));
 
 foreach ($get_user as $key => $value) {
     $item_matrix = array();
@@ -157,9 +155,7 @@ foreach ($get_user as $key => $value) {
         echo "<pre>";print_r('=====不喜歡=====');echo "</pre>";
     }
     $user_items = json_decode($value['items']);
-
-    echo "<pre>";print_r($user_items);echo "</pre>";
-
+echo '<pre>';print_r($user_items);echo '</pre>';
     // 檢查community
     array_push($item_matrix, similar_matrix_value($user_items->community));
 
@@ -208,6 +204,13 @@ foreach ($get_user as $key => $value) {
     array_push($item_matrix, similar_matrix_value($user_items->area));
 
     // 寫入喜歡物件(在意的項目)
+    $like_matrix_data   = array(
+        'user_id'   => $user_id,
+        'items'     => json_encode($item_matrix),
+        'is_like'   => 3,
+    );
+echo '<pre>';print_r($like_matrix_data);echo '</pre>';
+    //$db->insert_table_data('ex_record_items_obj',$like_matrix_data);
 }
 
 // 若大於一半有相似的，回傳1，否則回傳0
@@ -215,7 +218,7 @@ function similar_matrix_value($val_arr){
     $org_count = round(count($val_arr) / 2);
     $chk_count = count(array_unique($val_arr));
 
-    return ($org_count > $chk_count)?1:0;
+    return ($org_count >= $chk_count)?1:0;
 }
 
 function range_matrix_value($val_arr){
