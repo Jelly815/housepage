@@ -6,6 +6,31 @@ session_start();
 include_once(__DIR__.'/../lib/handling.php');
 include_once(__DIR__.'/../lib/lang.php');
 
+// 計算標準差
+if (!function_exists('stats_standard_deviation')) {
+    function stats_standard_deviation(array $val_arr, $sample = false) {
+        $n = count($val_arr);
+        if ($n === 0) {
+            #trigger_error("The array has zero elements", E_USER_WARNING);
+            return false;
+        }
+        if ($sample && $n === 1) {
+            #trigger_error("The array has only 1 element", E_USER_WARNING);
+            return false;
+        }
+        $mean = array_sum($val_arr) / $n;
+        $carry = 0.0;
+        foreach ($val_arr as $val) {
+            $d = ((double) $val) - $mean;
+            $carry += $d * $d;
+        };
+        if ($sample) {
+           --$n;
+        }
+        return sqrt($carry / $n);
+    }
+}
+
 $db 	= new db_function();
 
 $sql    =   "SELECT main.`area`,main.`road`,main.`room`,main.`ping`,".
@@ -144,15 +169,19 @@ foreach ($get_user as $key => $value) {
     // 檢查around
 
     // 檢查description
+    array_push($item_matrix, range_matrix_value($user_items->description));
 
     // 檢查price
+    array_push($item_matrix, range_matrix_value($user_items->price));
 
     // 檢查unit
+    array_push($item_matrix, range_matrix_value($user_items->unit));
 
     // 檢查builder
     array_push($item_matrix, similar_matrix_value($user_items->builder));
 
     // 檢查fee
+    array_push($item_matrix, range_matrix_value($user_items->fee));
 
     // 檢查direction
     array_push($item_matrix, similar_matrix_value($user_items->direction));
@@ -164,20 +193,21 @@ foreach ($get_user as $key => $value) {
     array_push($item_matrix, similar_matrix_value($user_items->floor));
 
     // 檢查age
+    array_push($item_matrix, range_matrix_value($user_items->age));
 
     // 檢查parking
     array_push($item_matrix, similar_matrix_value($user_items->parking));
 
     // 檢查ping
+    array_push($item_matrix, range_matrix_value($user_items->ping));
 
     // 檢查room
     array_push($item_matrix, similar_matrix_value($user_items->room));
 
-    // 檢查road
-
     // 檢查area
     array_push($item_matrix, similar_matrix_value($user_items->area));
-echo "<pre>";print_r($item_matrix);echo "</pre>";
+
+    // 寫入喜歡物件(在意的項目)
 }
 
 // 若大於一半有相似的，回傳1，否則回傳0
@@ -186,31 +216,6 @@ function similar_matrix_value($val_arr){
     $chk_count = count(array_unique($val_arr));
 
     return ($org_count > $chk_count)?1:0;
-}
-
-// 計算標準差
-if (!function_exists('stats_standard_deviation')) {
-    function stats_standard_deviation(array $a, $sample = false) {
-        $n = count($val_arr);
-        if ($n === 0) {
-            #trigger_error("The array has zero elements", E_USER_WARNING);
-            return false;
-        }
-        if ($sample && $n === 1) {
-            #trigger_error("The array has only 1 element", E_USER_WARNING);
-            return false;
-        }
-        $mean = array_sum($val_arr) / $n;
-        $carry = 0.0;
-        foreach ($val_arr as $val) {
-            $d = ((double) $val) - $mean;
-            $carry += $d * $d;
-        };
-        if ($sample) {
-           --$n;
-        }
-        return sqrt($carry / $n);
-    }
 }
 
 function range_matrix_value($val_arr){
@@ -222,9 +227,11 @@ function range_matrix_value($val_arr){
     $start_avg  = (double)($avg - $dev);
     $end_avg    = (double)($avg + $dev);
 
-    echo "<pre>";print_r($ab);echo "</pre>";
-    echo "<pre>";print_r($avg2);echo "</pre>";
+    $value_sum  = 0;
+    foreach ($val_arr as $value) {
+        $value_sum += ($start_avg <= $value && $value <= $end_avg)?1:0;
+    }
+
+    return (round(count($val_arr) / 2) <= $value_sum)?1:0;
 }
-
-
 ?>
