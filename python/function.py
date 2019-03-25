@@ -64,8 +64,10 @@ class FUNC_CLASS(DB_CONN):
         return login_day
 
     # 取得user的搜尋紀錄
-    def get_this_user_search(self,user_id):
+    def get_this_user_search(self,user_id,get_all=0):
         user_record = {}
+        user_record['last_record']  = []
+        user_record['often_record'] = []
 
         if user_id != '':
             # 取得user 最後搜尋的條件
@@ -73,40 +75,42 @@ class FUNC_CLASS(DB_CONN):
                 SELECT `area`,`price`,`ping`,`style`,`type`
                 FROM `ex_user_record_view`
                 WHERE `user_id` = %s
-                ORDER BY `last_time` DESC LIMIT 1
                 """
+            if get_all == 1:
+                user_last_sql += "GROUP BY `user_id`,`area`,`price`,`ping`,`style`,`ping` ORDER BY `last_time` DESC LIMIT 3"
+            else:
+                user_last_sql += "ORDER BY `last_time` DESC LIMIT 1"
+
             # 取得user 經常搜尋的條件
             user_often_sql = """
                 SELECT `area`,`price`,`ping`,`style`,`type`
                 FROM `ex_record`
                 WHERE `user_id` = %s
-                ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 2
+                ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 3
                 """
             try:
                 # 取得user [最後]搜尋的條件
                 self.execute(user_last_sql,[user_id])
-                user_last_arr = self.fetchone()
+                user_last_arr = self.fetchall()
+
                 if(user_last_arr is not None):
-                    user_record['last_record'] = []
-                    user_record['last_record'].append(
-                            [user_last_arr['area'],user_last_arr['price'],
-                            user_last_arr['ping'],user_last_arr['style'],user_last_arr['type']])
+                    for x, last in enumerate(user_last_arr):
+                        user_record['last_record'].append([last['area'],last['price'],last['ping'],last['style'],last['type']])
 
                 # 取得user [經常]搜尋的條件
-                self.execute(user_often_sql,[user_id])
-                user_often_arr = self.fetchall()
+                if get_all == 0:
+                    self.execute(user_often_sql,[user_id])
+                    user_often_arr = self.fetchall()
 
-                if user_often_arr is not None:
-                    user_record['often_record'] = []
+                    if user_often_arr is not None:
+                        for x, often in enumerate(user_often_arr):
+                            user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
+                            if user_record['last_record']:
+                                diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
 
-                    for x, often in enumerate(user_often_arr):
-                        user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
-                        if user_record['last_record']:
-                            diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
-
-                        # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
-                        if diff == set():
-                            user_record['last_record'] = []
+                            # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
+                            if diff == set():
+                                user_record['last_record'] = []
             except:
                 user_record = {}
 
@@ -189,7 +193,7 @@ class FUNC_CLASS(DB_CONN):
                 user_id,record[0],
                 record[1],record[2],record[3],
                 record[4]]
-        
+
         try:
             if record:
                 self.execute(record_sql,record_vals)
@@ -233,6 +237,46 @@ class FUNC_CLASS(DB_CONN):
             is_favorite_items = []
 
         return is_favorite_items
+
+    # 取得分類最熱門的房子
+    def get_hot_house(self,record,no_data=0):
+        hot_house = []
+        if no_data == 1:
+            hot_house_sql      = """
+                SELECT  `id`
+                FROM    `ex_main`
+                WHERE   `area` = %s AND
+                        `style`= %s AND 
+                        `is_closed` = 0
+                ORDER BY `view_num`,`update_time`
+                """
+            hot_house_vals = [record[0],record[3]]
+        else:
+            hot_house_sql      = """
+                SELECT  `id`
+                FROM    `ex_main`
+                WHERE   `area` = %s AND
+                        `price`= %s AND
+                        `ping` = %s AND
+                        `style`= %s AND
+                        `type` = %s AND
+                        `is_closed` = 0
+                ORDER BY `view_num`,`update_time`
+                """
+            hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
+
+        try:
+            self.execute(hot_house_sql,hot_house_vals)
+            record_arr      = self.fetchall()
+            
+            if len(record_arr) == 0:
+                self.get_hot_house(record,1)
+            
+            print(record_arr)
+        except:
+            hot_house = []
+
+        return hot_house
 
     # 取得分位數
     def quantile(self,data,percent):
