@@ -10,22 +10,20 @@ import os
 import setting
 #user_unid = sys.argv[1]
 #user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
-user_unid = 'm8456fba48ba8c14bdd683e92c7414dc8'
+user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
 func = FUNC_CLASS()
 
 user_items_dict = []
 others_user_items_dict = []
 times_range_items = []
-
+re_val = []
 # 取得A的搜尋紀錄
 record_data = func.get_this_user_search(user_unid)
-record_data2 = func.get_this_user_search(user_unid,1)
 
-if len(record_data2['last_record']) > 1:
+if len(record_data['often_record']) > 1:
     for key,record in record_data.items():
         if record:
             for record_val in record:
-
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items = func.get_times_range_items(user_unid,record_val)
 
@@ -44,11 +42,13 @@ if len(record_data2['last_record']) > 1:
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
                             #print(others_user_items_dict)
-                # 完全找不到有相同搜尋紀錄的時候，推薦熱門物件
-                #else:
+
 # 如果比數等於1，則推薦熱門的
-elif len(record_data2['last_record']) == 1:
-    re_val  = func.get_hot_house(record_data2['last_record'][0])
+elif len(record_data['often_record']) == 1:
+    hot_house  = func.get_hot_house(record_data2['last_record'][0])
+    if len(hot_house) == 0:
+        hot_house   = func.get_hot_house(record_data2['last_record'][0],1)
+    hot_house_id = [(val['id']) for key, val in enumerate(hot_house)]
 
 def most_similar_interests_to(interest_id):
     similarities = interest_similarities[interest_id]
@@ -86,7 +86,7 @@ if unique_items:
                      for user_vector_i in interest_user_matrix]
 
     # 第一個即是A
-    #print(most_similar_interests_to(0))
-    most_similar_interests_to(0)
+    print(most_similar_interests_to(0))
+    #most_similar_interests_to(0)
 
 
