@@ -1,5 +1,5 @@
 <?php
-//echo "<pre>";print_r(md5(uniqid(rand())));echo "</pre>";exit;
+echo "<pre>";print_r(md5(uniqid(rand())));echo "</pre>";exit;
 include_once('./lib/handling.php');
 
 $db 	= new db_function();

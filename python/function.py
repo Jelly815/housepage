@@ -234,25 +234,39 @@ class FUNC_CLASS(DB_CONN):
 
         return is_favorite_items
 
-    # 取得分類最熱門的房子
-    def get_hot_house(self,record,no_data=0):
+    # 取得分類最熱門的房子(no_data=0，有1筆記錄；no_data=1:有1筆記錄，但資料不足；no_data=:完全沒資料)
+    def get_hot_house(self,record,no_data=0,user_id=''):
         hot_house_vals = []
-        if no_data == 1:
-            hot_house_sql      = """
+        hot_house_sql      = """
                 SELECT  `id`
                 FROM    `ex_main`
-                WHERE   `area` = %s AND
+                WHERE   `area` = %s
+                """
+                
+        if no_data == 1:
+            hot_house_sql      += """
+                        AND
                         `style`= %s AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
                 """
-            hot_house_vals = [record[0],record[3]]
+            hot_house_vals = [record[0]]
+        elif no_data == 2:
+            user_area_sql = "SELECT `area_id` FROM `ex_user` WHERE unid = %s"
+            self.execute(user_area_sql,[user_id])
+            user_area      = self.fetchall()
+         
+            hot_house_sql      += """
+                        AND
+                        `is_closed` = 0
+                ORDER BY `view_num`,`update_time`
+                LIMIT 5
+                """
+            hot_house_vals = [user_area[0]['area_id']]
         else:
-            hot_house_sql      = """
-                SELECT  `id`
-                FROM    `ex_main`
-                WHERE   `area` = %s AND
+            hot_house_sql      += """
+                        AND
                         `price`= %s AND
                         `ping` = %s AND
                         `style`= %s AND
@@ -266,7 +280,7 @@ class FUNC_CLASS(DB_CONN):
             self.execute(hot_house_sql,hot_house_vals)
             hot_house      = self.fetchall()
         except:
-            print(hot_house_sql)
+            hot_house = []
 
         return hot_house
 
