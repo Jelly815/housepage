@@ -63,7 +63,7 @@ class FUNC_CLASS(DB_CONN):
 
         return login_day
 
-    # 取得user的搜尋紀錄
+    # 取得user的搜尋紀錄(喜歡)
     def get_this_user_search(self,user_id):
         user_record = {}
         user_record['last_record']  = []
@@ -72,17 +72,17 @@ class FUNC_CLASS(DB_CONN):
         if user_id != '':
             # 取得user 最後搜尋的條件
             user_last_sql = """
-                SELECT `area`,`price`,`ping`,`style`,`type`
-                FROM `ex_user_record_view`
-                WHERE `user_id` = %s
+                SELECT  `area`,`price`,`ping`,`style`,`type`
+                FROM    `ex_user_record_view`
+                WHERE   `user_id` = %s
                 ORDER BY `last_time` DESC LIMIT 1
                 """
 
             # 取得user 經常搜尋的條件
             user_often_sql = """
-                SELECT `area`,`price`,`ping`,`style`,`type`
-                FROM `ex_record`
-                WHERE `user_id` = %s
+                SELECT  `area`,`price`,`ping`,`style`,`type`
+                FROM    `ex_record`
+                WHERE   `user_id` = %s
                 ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 3
                 """
             try:
@@ -111,7 +111,34 @@ class FUNC_CLASS(DB_CONN):
                 user_record = {}
 
         return user_record
+    
+    # 取得user的搜尋紀錄(不喜歡)
+    def get_this_user_no_search(self,user_id):
+        user_record = {}
+        user_record['not_record']  = []
 
+        if user_id != '':
+            # 取得user 24hr內的搜尋紀錄
+            user_today_sql = """
+                SELECT  `area`,`price`,`ping`,`style`,`type`
+                FROM    `ex_user_record_view_not`
+                WHERE   `user_id` = %s AND 
+                        `last_time` BETWEEN (NOW() - INTERVAL 24 HOUR) AND NOW()
+                ORDER BY `last_time` DESC
+                """
+
+            try:
+                self.execute(user_today_sql,[user_id])
+                user_today_arr = self.fetchall()
+                
+                if user_today_arr is not None:
+                    for x, user_today in enumerate(user_today_arr):
+                        user_record['not_record'].append([user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']])
+            except:
+                user_record = {}
+
+        return user_record
+    
     # 取得非user的相同的紀錄
     def get_same_record(self,user_id,record,limit=1):
         record_arr = {}
@@ -251,7 +278,7 @@ class FUNC_CLASS(DB_CONN):
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
                 """
-            hot_house_vals = [record[0]]
+            hot_house_vals = [record[0],record[3]]
         elif no_data == 2:
             user_area_sql = "SELECT `area_id` FROM `ex_user` WHERE unid = %s"
             self.execute(user_area_sql,[user_id])
@@ -268,7 +295,7 @@ class FUNC_CLASS(DB_CONN):
             hot_house_sql      += """
                         AND
                         `price`= %s AND
-                        `ping` = %s AND
+                        `ping` <= %s AND
                         `style`= %s AND
                         `type` = %s AND
                         `is_closed` = 0
@@ -277,6 +304,7 @@ class FUNC_CLASS(DB_CONN):
             hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
 
         try:
+            print(hot_house_sql,hot_house_vals)
             self.execute(hot_house_sql,hot_house_vals)
             hot_house      = self.fetchall()
         except:
