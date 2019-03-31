@@ -111,26 +111,28 @@ class FUNC_CLASS(DB_CONN):
                 user_record = {}
 
         return user_record
-    
+
     # 取得user的搜尋紀錄(不喜歡)
     def get_this_user_no_search(self,user_id):
         user_record = {}
         user_record['not_record']  = []
+        user_record['add_like_record']  = []
 
         if user_id != '':
-            # 取得user 24hr內的搜尋紀錄
+
+            # 取得user 半年內的搜尋紀錄
             user_today_sql = """
                 SELECT  `area`,`price`,`ping`,`style`,`type`
                 FROM    `ex_user_record_view_not`
-                WHERE   `user_id` = %s AND 
-                        `last_time` BETWEEN (NOW() - INTERVAL 24 HOUR) AND NOW()
+                WHERE   `user_id` = %s AND
+                        `last_time` BETWEEN (NOW() - INTERVAL 180 DAY) AND NOW()
                 ORDER BY `last_time` DESC
                 """
 
             try:
                 self.execute(user_today_sql,[user_id])
                 user_today_arr = self.fetchall()
-                
+
                 if user_today_arr is not None:
                     for x, user_today in enumerate(user_today_arr):
                         user_record['not_record'].append([user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']])
@@ -138,7 +140,7 @@ class FUNC_CLASS(DB_CONN):
                 user_record = {}
 
         return user_record
-    
+
     # 取得非user的相同的紀錄
     def get_same_record(self,user_id,record,limit=1):
         record_arr = {}
@@ -269,7 +271,7 @@ class FUNC_CLASS(DB_CONN):
                 FROM    `ex_main`
                 WHERE   `area` = %s
                 """
-                
+
         if no_data == 1:
             hot_house_sql      += """
                         AND
@@ -283,7 +285,7 @@ class FUNC_CLASS(DB_CONN):
             user_area_sql = "SELECT `area_id` FROM `ex_user` WHERE unid = %s"
             self.execute(user_area_sql,[user_id])
             user_area      = self.fetchall()
-         
+
             hot_house_sql      += """
                         AND
                         `is_closed` = 0

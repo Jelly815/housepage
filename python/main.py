@@ -22,20 +22,20 @@ record_data = func.get_this_user_search(user_unid)
 
 # 取得A(不喜愛)的物件
 times_range_items_not = func.get_this_user_no_search(user_unid)
-print(times_range_items_not)
+
 if len(record_data['often_record']) > 1:
     for key,record in record_data.items():
         if record:
             for record_val in record:
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items = func.get_times_range_items(user_unid,record_val)
-                print(times_range_items)
+
                 if times_range_items:
                     user_items_dict.append(times_range_items)
 
                 # 取得非user的相同紀錄
                 same_records_user_id = func.get_same_record(user_unid,record_val)
-    
+
                 if same_records_user_id:
                     times_range_items = {}
                     for other_user_id in same_records_user_id:
@@ -44,19 +44,24 @@ if len(record_data['often_record']) > 1:
 
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
-    
+    #將所有User都加起來
+    users_interests = user_items_dict + others_user_items_dict
+
+    if len(users_interests) == 0:
+        times_range_items_not
+
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
     hot_house  = func.get_hot_house(record_data['often_record'][0])
     if len(hot_house) == 0:
         hot_house   = func.get_hot_house(record_data['often_record'][0],1)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
-    
+
 # 如果筆數等於0，則推薦(User所在區域)熱門的
 else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
-    
+
 def most_similar_interests_to(interest_id):
     similarities = interest_similarities[interest_id]
 
@@ -74,8 +79,6 @@ def make_user_items_matrix(others_user_items_dict):
             for interest in unique_items]
 
 # 全部可能喜歡的物件
-users_interests = user_items_dict + others_user_items_dict
-print(users_interests)
 unique_items = sorted(list({ interest
                          for user_interests in users_interests
                          for interest in user_interests }))
@@ -91,7 +94,7 @@ if unique_items:
     interest_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
                       for user_vector_j in interest_user_matrix]
                      for user_vector_i in interest_user_matrix]
-        
+
     # 第一個即是A
     print(most_similar_interests_to(0))
     #most_similar_interests_to(0)

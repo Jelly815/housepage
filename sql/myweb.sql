@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019-03-27 02:45:54
--- 伺服器版本: 10.1.36-MariaDB
--- PHP 版本： 5.6.38
+-- 產生時間： 2019 年 03 月 31 日 17:32
+-- 伺服器版本: 10.1.31-MariaDB
+-- PHP 版本： 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -5790,7 +5790,9 @@ INSERT INTO `ex_record` (`id`, `user_id`, `area`, `price`, `ping`, `style`, `typ
 (305, 'm6bb771cd12d1658a7e26b3c63632d8f7', 279, 600, 30, 2, 3, 1),
 (306, 'm6bb771cd12d1658a7e26b3c63632d8f7', 279, 1000, 30, 2, 3, 1),
 (307, 'm6bb771cd12d1658a7e26b3c63632d8f7', 279, 600, 40, 2, 3, 1),
-(308, 'm6bb771cd12d1658a7e26b3c63632d8f7', 279, 1000, 40, 2, 3, 1);
+(308, 'm6bb771cd12d1658a7e26b3c63632d8f7', 279, 1000, 40, 2, 3, 1),
+(309, '7f16a3540e74b904ed3ee626c79af314', 282, 1000, 40, 4, 3, 1),
+(310, '7f16a3540e74b904ed3ee626c79af314', 282, 600, 24, 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -5872,7 +5874,9 @@ INSERT INTO `ex_record_items` (`id`, `user_id`, `record_id`, `main_id`, `times`,
 (56, 'mca3907edc888d46215b3a35c294e73fa', 291, 43, 5, 1, 0, '2019-01-08 12:05:38'),
 (57, 'mca3907edc888d46215b3a35c294e73fa', 291, 42, 1, 1, 0, '2019-01-08 12:05:38'),
 (58, 'mca3907edc888d46215b3a35c294e73fa', 292, 41, 1, 1, 0, '2019-01-08 12:05:38'),
-(59, 'mca3907edc888d46215b3a35c294e73fa', 292, 38, 5, 1, 0, '2019-01-08 12:05:38');
+(59, 'mca3907edc888d46215b3a35c294e73fa', 292, 38, 5, 1, 0, '2019-01-08 12:05:38'),
+(60, '7f16a3540e74b904ed3ee626c79af314', 309, 34, 1, 1, 0, '2019-03-28 15:26:20'),
+(61, '7f16a3540e74b904ed3ee626c79af314', 310, 32, 1, 1, 0, '2019-03-28 15:26:20');
 
 -- --------------------------------------------------------
 
@@ -5949,7 +5953,7 @@ INSERT INTO `ex_record_items_map` (`id`, `record_items_id`, `stay_time`) VALUES
 
 CREATE TABLE `ex_record_items_obj` (
   `user_id` char(33) NOT NULL COMMENT 'ex_user.unid',
-  `items` text NOT NULL COMMENT '物件',
+  `items` text NOT NULL COMMENT '物件JSON',
   `is_like` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0:不喜歡;1:喜歡'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -6168,7 +6172,20 @@ INSERT INTO `ex_record_items_stay` (`id`, `record_items_id`, `type_key`, `type_v
 (149, 59, 'stay_time', 60),
 (150, 59, 'stay_time', 30),
 (151, 7, 'stay_time', 45),
-(152, 7, 'stay_time', 100);
+(152, 7, 'stay_time', 100),
+(153, 60, 'stay_time', 60),
+(154, 61, 'stay_time', 60),
+(155, 60, 'price', 1),
+(156, 60, 'map', 1),
+(157, 60, 'parking', 1),
+(158, 60, 'description', 1),
+(159, 60, 'unit', 1),
+(160, 61, 'price', 1),
+(161, 61, 'description', 1),
+(162, 61, 'style', 1),
+(163, 61, 'map', 1),
+(164, 61, 'direction', 1),
+(165, 61, 'parking', 1);
 
 -- --------------------------------------------------------
 
@@ -6482,13 +6499,13 @@ ALTER TABLE `ex_main`
 -- 使用資料表 AUTO_INCREMENT `ex_record`
 --
 ALTER TABLE `ex_record`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
 
 --
 -- 使用資料表 AUTO_INCREMENT `ex_record_items`
 --
 ALTER TABLE `ex_record_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- 使用資料表 AUTO_INCREMENT `ex_record_items_map`
@@ -6500,7 +6517,7 @@ ALTER TABLE `ex_record_items_map`
 -- 使用資料表 AUTO_INCREMENT `ex_record_items_stay`
 --
 ALTER TABLE `ex_record_items_stay`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- 使用資料表 AUTO_INCREMENT `ex_source`
