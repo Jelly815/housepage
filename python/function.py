@@ -116,21 +116,19 @@ class FUNC_CLASS(DB_CONN):
     def get_this_user_no_search(self,user_id):
         user_record = {}
         user_record['not_record']  = []
-        user_record['add_like_record']  = []
 
         if user_id != '':
-
             # 取得user 半年內的搜尋紀錄
             user_today_sql = """
                 SELECT  `area`,`price`,`ping`,`style`,`type`
                 FROM    `ex_user_record_view_not`
                 WHERE   `user_id` = %s AND
-                        `last_time` BETWEEN (NOW() - INTERVAL 180 DAY) AND NOW()
+                        `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                 ORDER BY `last_time` DESC
                 """
 
             try:
-                self.execute(user_today_sql,[user_id])
+                self.execute(user_today_sql,[user_id,setting.search_house_seconds])
                 user_today_arr = self.fetchall()
 
                 if user_today_arr is not None:

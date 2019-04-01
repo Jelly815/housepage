@@ -48,7 +48,7 @@ if len(record_data['often_record']) > 1:
     users_interests = user_items_dict + others_user_items_dict
 
     if len(users_interests) == 0:
-        times_range_items_not
+        print(times_range_items_not)
 
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
