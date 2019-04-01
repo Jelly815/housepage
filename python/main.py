@@ -35,7 +35,7 @@ if len(record_data['often_record']) > 1:
 
                 # 取得非user的相同紀錄
                 same_records_user_id = func.get_same_record(user_unid,record_val)
-
+                print(same_records_user_id)
                 if same_records_user_id:
                     times_range_items = {}
                     for other_user_id in same_records_user_id:
@@ -48,7 +48,12 @@ if len(record_data['often_record']) > 1:
     users_interests = user_items_dict + others_user_items_dict
 
     if len(users_interests) == 0:
+        #找到相同記錄、相同在意項目的人
         print(times_range_items_not)
+        #找到其他User後，取出不喜歡的項目
+        #尋找這些不喜歡的項目內，是否有相似的使用者
+        #取得相似的使用者，獲得該使用者喜歡的物件
+
 
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
