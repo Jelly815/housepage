@@ -134,6 +134,7 @@ class FUNC_CLASS(DB_CONN):
                 if user_today_arr is not None:
                     for x, user_today in enumerate(user_today_arr):
                         record = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
+
                         user_record['not_record'].append(self.get_same_record(user_id,record))
 
             except:
