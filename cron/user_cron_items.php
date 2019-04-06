@@ -45,15 +45,14 @@ $sql    =   "SELECT main.`area`,main.`road`,main.`room`,main.`ping`,".
 
 $get_user   = $db->select_table_data('ex_record','DISTINCT `user_id`');
 foreach ($get_user as $key => $get_user_value) {
-	$items_arr['area']		= $items_arr['road']		=
-	$items_arr['room']		= $items_arr['ping']		=
-	$items_arr['parking']	= $items_arr['age']			=
-	$items_arr['floor']		= $items_arr['type']		=
-	$items_arr['direction']	= $items_arr['fee']			=
-	$items_arr['builder']	= $items_arr['unit']		=
-	$items_arr['price']		= $items_arr['description'] =
-	$items_arr['around']	= $items_arr['status']		=
-	$items_arr['community']	= array();
+    $items  = array(
+        'area' => array(),'room' => array(),'parking' => array(),
+        'floor' => array(),'direction' => array(),'builder' => array(),
+        'price' => array(),'around' => array(),'community' => array(),
+        'road' => array(),'ping' => array(),'age' => array(),
+        'type' => array(),'fee' => array(),'unit' => array(),
+        'description' => array(),'status' => array()
+    )
 
     // user uid
 	$user_id	= $get_user_value['user_id'];

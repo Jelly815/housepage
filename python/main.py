@@ -5,12 +5,18 @@ Created on Sat Jan 12 20:23:18 2019
 @author: Jelly
 """
 from function import FUNC_CLASS
+from scipy import sparse
 import sys
 import os
 import setting
+import functools
+import numpy as np
+from sklearn.metrics import pairwise_distances
+from scipy.spatial.distance import cosine
 #user_unid = sys.argv[1]
 #user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
 user_unid = '7f16a3540e74b904ed3ee626c79af314'
+#user_unid = 'm185ccab81019a39cba16f666f070bb83'
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -20,22 +26,21 @@ re_val = []
 # 取得A的搜尋紀錄
 record_data = func.get_this_user_search(user_unid)
 
-# 取得A(不喜愛)的物件
-times_range_items_not = func.get_this_user_no_search(user_unid)
-#print(times_range_items_not)
 if len(record_data['often_record']) > 1:
     for key,record in record_data.items():
-        if record:
+        if record and key == 'last_record' and record[0] in record_data['often_record']:
+            continue
+        elif record:
             for record_val in record:
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items = func.get_times_range_items(user_unid,record_val)
-
+                #print(record_val,times_range_items)
                 if times_range_items:
                     user_items_dict.append(times_range_items)
 
                 # 取得非user的相同紀錄
                 same_records_user_id = func.get_same_record(user_unid,record_val)
-
+                #print('AAA',same_records_user_id,record_val)
                 if same_records_user_id:
                     times_range_items = {}
                     for other_user_id in same_records_user_id:
@@ -44,21 +49,19 @@ if len(record_data['often_record']) > 1:
 
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
-    #將所有User都加起來
-    users_interests = user_items_dict + others_user_items_dict
-
-    print('user_items_dict',user_items_dict)
-    print('others_user_items_dict',others_user_items_dict)
-    print('times_range_items_not',times_range_items_not)
-    if len(users_interests) == 0:
-        #找到相同記錄、相同在意項目的人
-        print(times_range_items_not)
-        #找到其他User後，取出不喜歡的項目
-        #尋找這些不喜歡的項目內，是否有相似的使用者
-        #取得相似的使用者，獲得該使用者喜歡的物件
-        #如果users_interests的項目不足5項該怎麼處理
+    #將所有User都加起來(有興趣的物件)
+    users_items = user_items_dict + others_user_items_dict
+    #print('user_items_dict',user_items_dict)
+    #print('others_user_items_dict',others_user_items_dict)
+    # 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人
+    times_range_items_not = func.get_this_user_no_search(user_unid)
 
 
+
+    #取得相似的使用者，獲得該使用者喜歡的物件
+    #如果users_items的項目不足5項該怎麼處理
+
+    #print('user_items_dict',user_items_dict)
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
     hot_house  = func.get_hot_house(record_data['often_record'][0])
@@ -71,41 +74,39 @@ else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
 
-def most_similar_interests_to(interest_id):
-    similarities = interest_similarities[interest_id]
 
-    pairs = [(unique_items[other_interest_id], similarity)
-             for other_interest_id, similarity in enumerate(similarities)
-             if interest_id != other_interest_id and similarity > 0]
+#print('相似使用者的物件',users_items)
+# m199cdc39ee6e65811960a187ccf1fcb9全部可能喜歡的物件:[8, 10, 19]
+unique_items = sorted(list({ like_item
+                        for user_items in users_items
+                        for like_item in user_items }))
+#print('全部喜歡的物件',unique_items)
 
-    return sorted(pairs,
-                  key=lambda pair: pair[1],
-                  reverse=True)
-
-# 對於該物件是否有興趣，是:1,否:0
+# m199cdc39ee6e65811960a187ccf1fcb9對於該物件是否有興趣，是:1,否:0
 def make_user_items_matrix(others_user_items_dict):
-    return [1 if interest in others_user_items_dict else 0
-            for interest in unique_items]
+    return [1 if items in others_user_items_dict else 0
+            for items in unique_items]
 
-# 全部可能喜歡的物件
-unique_items = sorted(list({ interest
-                         for user_interests in users_interests
-                         for interest in user_interests }))
 if unique_items:
-    # 使用者>興趣，是:1,否:0
-    user_interest_matrix = list(map(make_user_items_matrix, users_interests))
-
-    # 興趣>使用者，是:1,否:0
-    interest_user_matrix = [[user_interest_vector[j]
-                         for user_interest_vector in user_interest_matrix]
+    # 使用者可能對某個物件喜歡1,否:0
+    user_items_matrix = list(map(make_user_items_matrix, users_items))
+    #print('使用者有興趣的',user_items_matrix)
+    # 在某個物件那一列元素中，1代表每個對此可能喜歡的使用者,0標示，代表可能不喜歡
+    items_user_matrix = [[user_items_vector[j]
+                        for user_items_vector in user_items_matrix]
                         for j, _ in enumerate(unique_items)]
+    #print('興趣對使用者',items_user_matrix)
     # 使用餘弦相似度
-    interest_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
-                      for user_vector_j in interest_user_matrix]
-                     for user_vector_i in interest_user_matrix]
+    items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
+                        for user_vector_j in items_user_matrix]
+                        for user_vector_i in items_user_matrix]
 
-    # 第一個即是A
-    print(most_similar_interests_to(0))
-    #most_similar_interests_to(0)
+    #print('items_similarities',items_similarities)
+    #print("Item based similarity")
+    #print("most similar to 'Big Data'")
+    # 找出與某物件最類似的
+    #print(func.most_similar_items_to(0,items_similarities[0],unique_items))
 
-
+    
+    #print("相似的而m199cdc39ee6e65811960a187ccf1fcb9沒有的物件，推薦給他")
+    #print(func.item_based_to_user(0,user_items_matrix[0],items_similarities[0],unique_items,users_items))
