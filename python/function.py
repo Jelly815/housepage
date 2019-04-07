@@ -121,6 +121,7 @@ class FUNC_CLASS(DB_CONN):
     def get_this_user_no_search(self,user_id):
         user_record = {}
         user_range  = {}
+        user_recommend  = []
         if user_id != '':
             # 取得useritems_str 半年內的搜尋紀錄
             user_today_sql = """
@@ -134,7 +135,7 @@ class FUNC_CLASS(DB_CONN):
             try:
                 self.execute(user_today_sql,[user_id,setting.search_house_seconds])
                 user_today_arr  = self.fetchall()
-
+                record_arr      = []
                 if len(user_today_arr) > 0:
                     items_arr   = {
                             'area':[],'road':[],'room':[],
@@ -147,6 +148,7 @@ class FUNC_CLASS(DB_CONN):
 
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
+                        record_arr.append(record)
                         users   = [val['unid'] for y,val in enumerate(self.get_same_record(user_id,record))]
 
                         #本User看過的物件資料
@@ -156,7 +158,7 @@ class FUNC_CLASS(DB_CONN):
                             FROM    `ex_main`
                             WHERE   `id` = %s AND `is_closed` = 0
                             """
-                        #print(user_today_sql,[user_today['main_id']])
+
                         self.execute(user_today_sql,[user_today['main_id']])
 
                         this_user_mains = self.fetchall()
@@ -186,9 +188,11 @@ class FUNC_CLASS(DB_CONN):
 
                     for user_id,record_items in  user_record.items():
                         user_to_others = []
+
                         for key,values in record_items.items():
+
                             # 比對是否有一樣的
-                            if key in setting.similar_list:
+                            if key in setting.similar_list and len(values) > 0:
                                 intersection = list(set(map(lambda x: str(x), items_arr[key])) & set(values))
                                 percent = round((len(intersection) / len(items_arr[key])),3) if len(items_arr[key]) != 0 else 0
 
@@ -196,7 +200,7 @@ class FUNC_CLASS(DB_CONN):
                                 user_to_others.append(1 if len(intersection) > 0 and percent >= 0.5 else 0)
 
                             # 比對是否在範圍內
-                            elif key in setting.range_list:
+                            elif key in setting.range_list and len(values) > 0:
                                 values      = list(map(lambda x: float(x), values))
                                 items_arr[key]  = list(map(lambda x: float(x), items_arr[key]))
                                 # 計算標準差
@@ -216,11 +220,24 @@ class FUNC_CLASS(DB_CONN):
 
                         user_range[user_id] = round((sum(user_to_others) / self.items_len),3)
 
-                print(user_range,user_range)
-            except:
-                user_record = {}
+                # 找到的User，依照相似度高至低排序
+                user_range  = sorted(user_range.items(), key=lambda d: d[1], reverse=True)
 
-        return user_record
+                # 依照搜尋紀錄、相似者，找到喜愛的物件
+                #*************紀錄不對，因為這邊的紀錄似乎是不喜歡物件的搜尋紀錄
+                for this_record in record_arr:
+                    for user in user_range:
+                        # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
+                        times_range_items = self.get_times_range_items(user[0],this_record)
+
+                        if times_range_items:
+                            for x in times_range_items:
+                                user_recommend.append(x)
+                print(user_recommend)
+            except:
+                user_recommend = []
+
+        return list(set(user_recommend))
 
     # 取得非user的相同的紀錄
     def get_same_record(self,user_id,record,limit=1):
@@ -305,7 +322,6 @@ class FUNC_CLASS(DB_CONN):
                 self.execute(record_sql,record_vals)
                 record_arr = self.fetchall()
 
-
                 if record_arr:
                     for _, record in enumerate(record_arr):
                         for key,val in record.items():
@@ -333,12 +349,11 @@ class FUNC_CLASS(DB_CONN):
                     #if new_arr['item_stay_time']:
                     #    self.plt_pie(new_arr)
 
+                    # 如果User有加入最愛的習慣1;反之0
+                    is_like = 1 if sum(new_arr['add_favorite']) > 0 else 0
+
                     # 取得該範圍內，User有加入最愛的物件
-                    is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range)
-
-
-                    # 查看是否曾經看過地圖
-
+                    is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range,is_like)
         except:
             is_favorite_items = []
 
@@ -387,7 +402,6 @@ class FUNC_CLASS(DB_CONN):
             hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
 
         try:
-            #print(hot_house_sql,hot_house_vals)
             self.execute(hot_house_sql,hot_house_vals)
             hot_house      = self.fetchall()
         except:
@@ -451,18 +465,23 @@ class FUNC_CLASS(DB_CONN):
         return time_range
 
     # 取得該時間範圍，User有加入最愛的物件
-    def get_is_favorite(self,data,columns_list,time_range):
+    def get_is_favorite(self,data,columns_list,time_range,is_like):
         items_arr   = []
         df = pd.DataFrame(data, columns=columns_list)
         df = df[df['item_stay_time'] >= time_range]
-        df_favorite = df[df.add_favorite == 1]
 
         # 如果有加入最愛，則把該物件加入list
-        if not df_favorite.empty:
-            for x in df_favorite.index:
-                items_arr.append(df['main_id'][x])
-        else:
-            items_arr = df.main_id
+        if is_like == 1:
+            df_favorite = df[df.add_favorite == 1]
+
+            if not df_favorite.empty:
+                for x in df_favorite.index:
+                    items_arr.append(df['main_id'][x])
+            else:
+                items_arr = df.main_id
+        elif is_like == 0:
+            items_arr   = [data[x] for x in data if x == 'main_id']
+
         return list(set(items_arr))
 
     # 餘弦相似

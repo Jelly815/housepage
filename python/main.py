@@ -15,8 +15,8 @@ from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import cosine
 #user_unid = sys.argv[1]
 #user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
-user_unid = '7f16a3540e74b904ed3ee626c79af314'
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#user_unid = '7f16a3540e74b904ed3ee626c79af314'
+user_unid = 'm185ccab81019a39cba16f666f070bb83'
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -40,7 +40,7 @@ if len(record_data['often_record']) > 1:
 
                 # 取得非user的相同紀錄
                 same_records_user_id = func.get_same_record(user_unid,record_val)
-                #print('AAA',same_records_user_id,record_val)
+
                 if same_records_user_id:
                     times_range_items = {}
                     for other_user_id in same_records_user_id:
@@ -53,8 +53,6 @@ if len(record_data['often_record']) > 1:
     users_items = user_items_dict + others_user_items_dict
     #print('user_items_dict',user_items_dict)
     #print('others_user_items_dict',others_user_items_dict)
-    # 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人
-    times_range_items_not = func.get_this_user_no_search(user_unid)
 
 
 
@@ -74,7 +72,11 @@ else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
 
+# 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人
+times_range_items_not = func.get_this_user_no_search(user_unid)
+print('(不喜愛)的物件',times_range_items_not)
 
+#print(times_range_items_not,users_items)
 #print('相似使用者的物件',users_items)
 # m199cdc39ee6e65811960a187ccf1fcb9全部可能喜歡的物件:[8, 10, 19]
 unique_items = sorted(list({ like_item
@@ -107,6 +109,6 @@ if unique_items:
     # 找出與某物件最類似的
     #print(func.most_similar_items_to(0,items_similarities[0],unique_items))
 
-    
+
     #print("相似的而m199cdc39ee6e65811960a187ccf1fcb9沒有的物件，推薦給他")
     #print(func.item_based_to_user(0,user_items_matrix[0],items_similarities[0],unique_items,users_items))
