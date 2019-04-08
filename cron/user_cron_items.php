@@ -33,15 +33,15 @@ if (!function_exists('stats_standard_deviation')) {
 
 $db 	= new db_function();
 
-$sql    =   "SELECT main.`area`,main.`road`,main.`room`,main.`ping`,".
-                        "main.`parking`,main.`age`,main.`floor`,main.`type`,".
-                        "main.`direction`,main.`fee`,main.`builder`,main.`unit`,".
-                        "main.`price`,main.`description`,main.`around`,".
-                        "main.`status`,main.`community` ".
-                "FROM   `ex_main` main,`ex_record_items` items,`ex_user` user ".
-                "WHERE  items.`main_id` = main.`id` AND ".
-                        "items.`user_id` = user.`unid` AND ".
-                        "items.`last_time` >= (NOW() - INTERVAL 180 DAY) ";
+$sql    =   "SELECT items.`record_id`,main.`area`,main.`road`,main.`room`,main.`ping`,".
+                    "main.`parking`,main.`age`,main.`floor`,main.`type`,".
+                    "main.`direction`,main.`fee`,main.`builder`,main.`unit`,".
+                    "main.`price`,main.`description`,main.`around`,".
+                    "main.`status`,main.`community` ".
+            "FROM   `ex_main` main,`ex_record_items` items,`ex_user` user ".
+            "WHERE  items.`main_id` = main.`id` AND ".
+                    "items.`user_id` = user.`unid` AND ".
+                    "items.`last_time` >= (NOW() - INTERVAL 180 DAY) ";
 
 $get_user   = $db->select_table_data('ex_record','DISTINCT `user_id`');
 foreach ($get_user as $key => $get_user_value) {

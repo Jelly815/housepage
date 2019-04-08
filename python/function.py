@@ -224,6 +224,7 @@ class FUNC_CLASS(DB_CONN):
                 user_range  = sorted(user_range.items(), key=lambda d: d[1], reverse=True)
 
                 # 依照搜尋紀錄、相似者，找到喜愛的物件
+                # 是否要排除相似度小於50%的
                 #*************紀錄不對，因為這邊的紀錄似乎是不喜歡物件的搜尋紀錄
                 for this_record in record_arr:
                     for user in user_range:
