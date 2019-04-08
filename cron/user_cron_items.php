@@ -45,14 +45,15 @@ $sql    =   "SELECT items.`record_id`,main.`area`,main.`road`,main.`room`,main.`
 
 $get_user   = $db->select_table_data('ex_record','DISTINCT `user_id`');
 foreach ($get_user as $key => $get_user_value) {
-    $items  = array(
-        'area' => array(),'room' => array(),'parking' => array(),
+    $record_id_arr  = array();
+    $items_arr      = array(
+        'area'  => array(),'room' => array(),'parking' => array(),
         'floor' => array(),'direction' => array(),'builder' => array(),
         'price' => array(),'around' => array(),'community' => array(),
-        'road' => array(),'ping' => array(),'age' => array(),
-        'type' => array(),'fee' => array(),'unit' => array(),
+        'road'  => array(),'ping' => array(),'age' => array(),
+        'type'  => array(),'fee' => array(),'unit' => array(),
         'description' => array(),'status' => array()
-    )
+    );
 
     // user uid
 	$user_id	= $get_user_value['user_id'];
@@ -66,7 +67,7 @@ foreach ($get_user as $key => $get_user_value) {
     $main_res 	= $db->db->Execute($like_sql,array($user_id))->getArray();
 
     foreach ($main_res as $main_value) {
-        array_push($items_arr['record_id'], $main_value['record_id']);
+        array_push($record_id_arr, (int)$main_value['record_id']);
     	if($main_value['area'] != '')array_push($items_arr['area'], $main_value['area']);
     	if($main_value['road'] != '')array_push($items_arr['road'], $main_value['road']);
     	if($main_value['room'] != '0')array_push($items_arr['room'], $main_value['room']);
@@ -94,17 +95,24 @@ foreach ($get_user as $key => $get_user_value) {
     );
 
     $db->insert_table_data('ex_record_items_obj',$like_data);
+    $record_id_arr  = array_unique($record_id_arr,SORT_NUMERIC);
+    $like_data      = array(
+        'user_id'   => $user_id,
+        'items'     => implode(',',$record_id_arr),
+        'is_like'   => 2,
+    );
+
+    $db->insert_table_data('ex_record_items_obj',$like_data);
 
     // 可能不喜歡的物件
-    $items_arr['area']      = $items_arr['road']        =
-    $items_arr['room']      = $items_arr['ping']        =
-    $items_arr['parking']   = $items_arr['age']         =
-    $items_arr['floor']     = $items_arr['type']        =
-    $items_arr['direction'] = $items_arr['fee']         =
-    $items_arr['builder']   = $items_arr['unit']        =
-    $items_arr['price']     = $items_arr['description'] =
-    $items_arr['around']    = $items_arr['status']      =
-    $items_arr['community'] = array();
+    $items_arr  = array(
+        'area' => array(),'room' => array(),'parking' => array(),
+        'floor' => array(),'direction' => array(),'builder' => array(),
+        'price' => array(),'around' => array(),'community' => array(),
+        'road' => array(),'ping' => array(),'age' => array(),
+        'type' => array(),'fee' => array(),'unit' => array(),
+        'description' => array(),'status' => array()
+    );
 
     $no_like_sql=   $sql.
                     " AND items.`times` = 1 ".

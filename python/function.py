@@ -11,11 +11,7 @@ import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import sys
-import os
-import time
 import datetime
-import re
 from collections import defaultdict
 import json
 
@@ -106,12 +102,7 @@ class FUNC_CLASS(DB_CONN):
                 if user_often_arr is not None:
                     for x, often in enumerate(user_often_arr):
                         user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
-                        if user_record['last_record']:
-                            diff = set(user_record['often_record'][x]).difference(set(user_record['last_record'][0]))
 
-                        # 如果經常搜尋紀錄中有含最後的搜尋，則刪除最後搜尋的條件，避免重複物件出現
-                        #if diff == set():
-                            #user_record['last_record'] = []
             except:
                 user_record = {}
 
@@ -122,6 +113,7 @@ class FUNC_CLASS(DB_CONN):
         user_record = {}
         user_range  = {}
         user_recommend  = []
+
         if user_id != '':
             # 取得useritems_str 半年內的搜尋紀錄
             user_today_sql = """
@@ -135,6 +127,7 @@ class FUNC_CLASS(DB_CONN):
             try:
                 self.execute(user_today_sql,[user_id,setting.search_house_seconds])
                 user_today_arr  = self.fetchall()
+
                 record_arr      = []
                 if len(user_today_arr) > 0:
                     items_arr   = {
@@ -220,21 +213,48 @@ class FUNC_CLASS(DB_CONN):
 
                         user_range[user_id] = round((sum(user_to_others) / self.items_len),3)
 
+                        # 排除相似度小於0.5的User
+                        if float(user_range[user_id]) < 0.5:
+                            del user_range[user_id]
+
                 # 找到的User，依照相似度高至低排序
                 user_range  = sorted(user_range.items(), key=lambda d: d[1], reverse=True)
 
                 # 依照搜尋紀錄、相似者，找到喜愛的物件
-                # 是否要排除相似度小於50%的
-                #*************紀錄不對，因為這邊的紀錄似乎是不喜歡物件的搜尋紀錄
-                for this_record in record_arr:
-                    for user in user_range:
-                        # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
-                        times_range_items = self.get_times_range_items(user[0],this_record)
+                for user in user_range:
+                    # 找到該User喜愛物件的搜尋條件id
+                    user_record_sql = """
+                        SELECT  `items`
+                        FROM    `ex_record_items_obj`
+                        WHERE   `user_id`   = %s AND
+                                `is_like` = 2
+                        """
 
-                        if times_range_items:
-                            for x in times_range_items:
-                                user_recommend.append(x)
-                print(user_recommend)
+                    try:
+                        self.execute(user_record_sql,[user[0]])
+                        user_record_arr     = self.fetchall()
+
+                        # 找到搜尋條件
+                        for x in user_record_arr[0]['items'].split(','):
+                            user_record_sql = """
+                                SELECT  `area`,`price`,`ping`,`style`,`type`
+                                FROM    `ex_record`
+                                WHERE   `id` = %s
+                                """
+                            self.execute(user_record_sql,[x])
+                            user_record_arr2     = self.fetchall()
+
+                            # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
+                            times_range_items = self.get_times_range_items(user[0],\
+                                [user_record_arr2[0]['area'],user_record_arr2[0]['price'],\
+                                user_record_arr2[0]['ping'],user_record_arr2[0]['style'],\
+                                user_record_arr2[0]['type']])
+
+                            if times_range_items:
+                                for x in times_range_items:
+                                    user_recommend.append(x)
+                    except:
+                        user_record_arr     = {}
             except:
                 user_recommend = []
 
@@ -353,7 +373,7 @@ class FUNC_CLASS(DB_CONN):
                     # 如果User有加入最愛的習慣1;反之0
                     is_like = 1 if sum(new_arr['add_favorite']) > 0 else 0
 
-                    # 取得該範圍內，User有加入最愛的物件
+                    # 取得該範圍內，User的物件
                     is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range,is_like)
         except:
             is_favorite_items = []
@@ -481,7 +501,9 @@ class FUNC_CLASS(DB_CONN):
             else:
                 items_arr = df.main_id
         elif is_like == 0:
-            items_arr   = [data[x] for x in data if x == 'main_id']
+            for x in data:
+                if x == 'main_id':
+                    items_arr = [y for y in data[x]]
 
         return list(set(items_arr))
 
@@ -505,6 +527,7 @@ class FUNC_CLASS(DB_CONN):
                       key=lambda pair: pair[1],
                       reverse=True)
 
+    # 基於項目推薦給User，大於0.5才推薦
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
@@ -512,8 +535,10 @@ class FUNC_CLASS(DB_CONN):
         for item_id, is_like in enumerate(user_items_vector):
             if is_like == 1:
                 similar_likes = self.most_similar_items_to(item_id,similarities,unique_items)
+
                 for item, similarity in similar_likes:
-                    suggestions[item] += similarity
+                    if(suggestions[item] < 1.0):
+                        suggestions[item] += similarity
 
         # 依據權重進行排序
         suggestions = sorted(suggestions.items(),
@@ -523,6 +548,6 @@ class FUNC_CLASS(DB_CONN):
         if include_current_items:
             return suggestions
         else:
-            return [(suggestion, weight)
+            return [suggestion
                     for suggestion, weight in suggestions
-                    if suggestion not in users_items[user_id]]
+                    if suggestion not in users_items[user_id] and float(weight) >= 0.5]
