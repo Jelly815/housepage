@@ -66,6 +66,7 @@ foreach ($get_user as $key => $get_user_value) {
     $main_res 	= $db->db->Execute($like_sql,array($user_id))->getArray();
 
     foreach ($main_res as $main_value) {
+        array_push($items_arr['record_id'], $main_value['record_id']);
     	if($main_value['area'] != '')array_push($items_arr['area'], $main_value['area']);
     	if($main_value['road'] != '')array_push($items_arr['road'], $main_value['road']);
     	if($main_value['room'] != '0')array_push($items_arr['room'], $main_value['room']);
