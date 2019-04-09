@@ -531,14 +531,15 @@ class FUNC_CLASS(DB_CONN):
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
-
-        for item_id, is_like in enumerate(user_items_vector):
-            if is_like == 1:
-                similar_likes = self.most_similar_items_to(item_id,similarities,unique_items)
-
-                for item, similarity in similar_likes:
-                    if(suggestions[item] < 1.0):
-                        suggestions[item] += similarity
+        
+        if len(user_items_vector) > 0:
+            for item_id, is_like in enumerate(user_items_vector[user_id]):
+                if is_like == 1 and len(similarities) > 0:
+                    similar_likes = self.most_similar_items_to(item_id,similarities[user_id],unique_items)
+    
+                    for item, similarity in similar_likes:
+                        if(suggestions[item] < 1.0):
+                            suggestions[item] += similarity
 
         # 依據權重進行排序
         suggestions = sorted(suggestions.items(),

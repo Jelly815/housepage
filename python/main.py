@@ -88,7 +88,7 @@ items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
 #print(func.most_similar_items_to(0,items_similarities[0],unique_items))
 
 # 推薦相似者喜歡的物件給他
-recommand_items     = func.item_based_to_user(0,user_items_matrix[0],items_similarities[0],unique_items,users_items)
+recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items,users_items)
 
 if len(recommand_items) < 10:
     # 找到相似記錄相似者喜歡的物件給他
@@ -102,4 +102,7 @@ if len(recommand_items) < 10:
             recommand_items.append(val['id'])
 
 # 隨機取5個物件出來
-print(random.sample(recommand_items, 5))
+if len(recommand_items) > 0:
+    print(random.sample(recommand_items, 5))
+else:
+    print('None')
