@@ -554,21 +554,74 @@ class FUNC_CLASS(DB_CONN):
                     if suggestion not in users_items[user_id] and float(weight) >= 0.5]
 
     # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
-    def check_close(self,items):
+    def check_close(self,user_unid,items):
         search_id   = []
         main_id     = ','.join(str(i) for i in items)
 
-        chk_main_sql = "SELECT  `id`,`city`,`area`,`road`,`room`,`style`,`ping`,`parking`,\
-                                `age`,`floor`,`type`,`direction`,`fee`,`builder`,`unit`,\
-                                `price`,`description`,`around`,`status`,`community` \
-                        FROM    `ex_main` WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
+        # 該User是否有ex_record_items_obj紀錄
+        chk_user_sql    =  "SELECT  `items` \
+                            FROM    `ex_record_items_obj` \
+                            WHERE   `user_id` = %s AND `is_like` = 3"
+        self.execute(chk_user_sql,[user_unid])
+        this_user_obj   = self.fetchall()
+        this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',')
 
+        chk_main_sql    =  "SELECT  `id`"
+
+        # 檢查community
+        chk_main_sql   += ",`community`" if this_user_obj[0] == '1' else ''
+
+        # 檢查status
+        chk_main_sql   += ",`status`" if this_user_obj[1] == '1' else ''
+        print(this_user_obj[1])
+        # 檢查description
+        chk_main_sql   += ",`description`" if this_user_obj[2] == '1' else ''
+
+        # 檢查price
+        chk_main_sql   += ",`price`" if this_user_obj[3] == '1' else ''
+
+        # 檢查unit
+        chk_main_sql   += ",`unit`" if this_user_obj[4] == '1' else ''
+
+        # 檢查builder
+        chk_main_sql   += ",`builder`" if this_user_obj[5] == '1' else ''
+
+        # 檢查fee
+        chk_main_sql   += ",`fee`" if this_user_obj[6] == '1' else ''
+
+        # 檢查direction
+        chk_main_sql   += ",`direction`" if this_user_obj[7] == '1' else ''
+
+        # 檢查type
+        chk_main_sql   += ",`type`" if this_user_obj[8] == '1' else ''
+
+        # 檢查floor
+        chk_main_sql   += ",`floor`" if this_user_obj[9] == '1' else ''
+
+        # 檢查age
+        chk_main_sql   += ",`age`" if this_user_obj[10] == '1' else ''
+
+        # 檢查parking
+        chk_main_sql   += ",`parking`" if this_user_obj[11] == '1' else ''
+
+        # 檢查ping
+        chk_main_sql   += ",`ping`" if this_user_obj[12] == '1' else ''
+
+        # 檢查room
+        chk_main_sql   += ",`room`" if this_user_obj[13] == '1' else ''
+
+        # 檢查area
+        chk_main_sql   += ",`area`" if this_user_obj[14] == 1 else ''
+
+        chk_main_sql   +=  " FROM    `ex_main` \
+                            WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
+        print(chk_main_sql)
         self.execute(chk_main_sql,[])
 
         this_user_mains = self.fetchall()
         for x,val in enumerate(this_user_mains):
             search_id.append(val['id'])
             items.remove(val['id']);
-        print(search_id)
+        #print(search_id)
         return items
 
