@@ -555,15 +555,20 @@ class FUNC_CLASS(DB_CONN):
 
     # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
     def check_close(self,items):
+        search_id   = []
         main_id     = ','.join(str(i) for i in items)
 
-        chk_main_sql = "SELECT `id` FROM `ex_main` WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
+        chk_main_sql = "SELECT  `id`,`city`,`area`,`road`,`room`,`style`,`ping`,`parking`,\
+                                `age`,`floor`,`type`,`direction`,`fee`,`builder`,`unit`,\
+                                `price`,`description`,`around`,`status`,`community` \
+                        FROM    `ex_main` WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
 
         self.execute(chk_main_sql,[])
-        
+
         this_user_mains = self.fetchall()
         for x,val in enumerate(this_user_mains):
+            search_id.append(val['id'])
             items.remove(val['id']);
-        
+        print(search_id)
         return items
 
