@@ -12,4 +12,4 @@ ON `items_stay`.`record_items_id` = `items`.`id` AND `items_stay`.`type_key`= 's
 
 WHERE `record`.`id` = `items`.`record_id` AND (`items`.`times` > 1 OR `items`.`add_favorite` = 1) AND
 	`items_stay`.`type_value` > 5 AND `items`.`last_time` >= (NOW() - INTERVAL 180 DAY) AND
-	(SELECT COUNT(`id`) FROM `ex_main` WHERE `is_closed` = 0 AND `id` = `items`.`main_id`) > 0
+	(SELECT COUNT(`id`) FROM `ex_main` WHERE `id` = `items`.`main_id`) > 0

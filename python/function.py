@@ -149,7 +149,7 @@ class FUNC_CLASS(DB_CONN):
                             SELECT  `community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,
                                     `direction`,`type`,`floor`,`age`,`parking`,`ping`,`room`,`road`,`area`
                             FROM    `ex_main`
-                            WHERE   `id` = %s AND `is_closed` = 0
+                            WHERE   `id` = %s
                             """
 
                         self.execute(user_today_sql,[user_today['main_id']])
@@ -383,35 +383,35 @@ class FUNC_CLASS(DB_CONN):
     # 取得分類最熱門的房子(no_data=0，有1筆記錄；no_data=1:有1筆記錄，但資料不足；no_data=:完全沒資料)
     def get_hot_house(self,record,no_data=0,user_id=''):
         hot_house_vals = []
-        hot_house_sql      = """
+        hot_house_sql  = """
                 SELECT  `id`
                 FROM    `ex_main`
                 WHERE   `area` = %s
                 """
 
         if no_data == 1:
-            hot_house_sql      += """
+            hot_house_sql  += """
                         AND
                         `style`= %s AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
                 """
-            hot_house_vals = [record[0],record[3]]
+            hot_house_vals  = [record[0],record[3]]
         elif no_data == 2:
-            user_area_sql = "SELECT `area_id` FROM `ex_user` WHERE unid = %s"
+            user_area_sql   = "SELECT `area_id` FROM `ex_user` WHERE unid = %s"
             self.execute(user_area_sql,[user_id])
-            user_area      = self.fetchall()
+            user_area       = self.fetchall()
 
-            hot_house_sql      += """
+            hot_house_sql  += """
                         AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
                 """
-            hot_house_vals = [user_area[0]['area_id']]
+            hot_house_vals  = [user_area[0]['area_id']]
         else:
-            hot_house_sql      += """
+            hot_house_sql  += """
                         AND
                         `price`= %s AND
                         `ping` <= %s AND
@@ -531,12 +531,12 @@ class FUNC_CLASS(DB_CONN):
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
-        
+
         if len(user_items_vector) > 0:
             for item_id, is_like in enumerate(user_items_vector[user_id]):
                 if is_like == 1 and len(similarities) > 0:
                     similar_likes = self.most_similar_items_to(item_id,similarities[user_id],unique_items)
-    
+
                     for item, similarity in similar_likes:
                         if(suggestions[item] < 1.0):
                             suggestions[item] += similarity
@@ -552,3 +552,18 @@ class FUNC_CLASS(DB_CONN):
             return [suggestion
                     for suggestion, weight in suggestions
                     if suggestion not in users_items[user_id] and float(weight) >= 0.5]
+
+    # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
+    def check_close(self,items):
+        main_id     = ','.join(str(i) for i in items)
+
+        chk_main_sql = "SELECT `id` FROM `ex_main` WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
+
+        self.execute(chk_main_sql,[])
+        
+        this_user_mains = self.fetchall()
+        for x,val in enumerate(this_user_mains):
+            items.remove(val['id']);
+        
+        return items
+

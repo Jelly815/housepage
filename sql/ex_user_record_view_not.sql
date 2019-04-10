@@ -11,4 +11,4 @@ LEFT JOIN `ex_record_items_stay` `items_stay`
 ON `items_stay`.`record_items_id` = `items`.`id` AND `items_stay`.`type_key`='stay_time'
 
 WHERE `record`.`id` = `items`.`record_id` AND `items`.`times` = 1 AND `items`.`add_favorite` = 0 AND
-	(SELECT COUNT(`id`) FROM `ex_main` WHERE `is_closed` = 0 AND `id` = `items`.`main_id`) > 0
+	(SELECT COUNT(`id`) FROM `ex_main` WHERE `id` = `items`.`main_id`) > 0

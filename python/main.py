@@ -9,8 +9,8 @@ import sys
 import random
 #user_unid = sys.argv[1]
 #user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
-user_unid = '7f16a3540e74b904ed3ee626c79af314'
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#user_unid = '7f16a3540e74b904ed3ee626c79af314'
+user_unid = 'm185ccab81019a39cba16f666f070bb83'
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -28,7 +28,7 @@ if len(record_data['often_record']) > 1:
             for record_val in record:
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items       = func.get_times_range_items(user_unid,record_val)
-         
+
                 if times_range_items:
                     user_items_dict.append(times_range_items)
 
@@ -100,6 +100,9 @@ if len(recommand_items) < 10:
         hot_house   = func.get_hot_house([],2,user_unid)
         for key, val in enumerate(hot_house):
             recommand_items.append(val['id'])
+
+# 檢查是否有已經close的物件，若有則取相似度最高的物件替換
+recommand_items     = func.check_close(recommand_items)
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0:
