@@ -160,11 +160,14 @@ class FUNC_CLASS(DB_CONN):
                             new_row = list(val)
                             for i in new_row:
                                 if i == 'description':  #主建物坪數
+                                    '''
                                     items_str = str(val[i])
                                     items_str = items_str.split('坪')
                                     items_str = items_str[0].split('：')
 
                                     items_arr[i].append(items_str[1])
+                                    '''
+                                    items_arr[i].append(self.get_description(val[i]))
                                 elif val[i] is not None:
                                     items_arr[i].append(val[i])
 
@@ -553,11 +556,16 @@ class FUNC_CLASS(DB_CONN):
                     for suggestion, weight in suggestions
                     if suggestion not in users_items[user_id] and float(weight) >= 0.5]
 
+    # 取得主建物的值
+    def get_description(self,description):
+        items_str = str(description)
+        items_str = items_str.split('坪')
+        items_str = items_str[0].split('：')
+
+        return (items_str[1] if items_str[1] else '')
+
     # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
     def check_close(self,user_unid,items):
-        search_id   = []
-        main_id     = ','.join(str(i) for i in items)
-
         # 該User是否有ex_record_items_obj紀錄
         chk_user_sql    =  "SELECT  `items` \
                             FROM    `ex_record_items_obj` \
@@ -568,60 +576,95 @@ class FUNC_CLASS(DB_CONN):
 
         chk_main_sql    =  "SELECT  `id`"
 
-        # 檢查community
-        chk_main_sql   += ",`community`" if this_user_obj[0] == '1' else ''
+        this_user_obj   = list(map(lambda x: int(x), this_user_obj))
 
-        # 檢查status
-        chk_main_sql   += ",`status`" if this_user_obj[1] == '1' else ''
-        print(this_user_obj[1])
-        # 檢查description
-        chk_main_sql   += ",`description`" if this_user_obj[2] == '1' else ''
+        # 該User有被記錄到有興趣的項目
+        if sum(this_user_obj) > 0:
+            # 檢查community
+            chk_main_sql   += ",`community`" if this_user_obj[0] == 1 else ''
+            # 檢查status
+            chk_main_sql   += ",`status`" if this_user_obj[1] == 1 else ''
+            # 檢查description
+            #chk_main_sql   += ",`description`" if this_user_obj[2] == 1 else ''
+            # 檢查price
+            chk_main_sql   += ",`price`" if this_user_obj[3] == 1 else ''
+            # 檢查unit
+            chk_main_sql   += ",`unit`" if this_user_obj[4] == 1 else ''
+            # 檢查builder
+            chk_main_sql   += ",`builder`" if this_user_obj[5] == 1 else ''
+            # 檢查fee
+            chk_main_sql   += ",`fee`" if this_user_obj[6] == 1 else ''
+            # 檢查direction
+            chk_main_sql   += ",`direction`" if this_user_obj[7] == 1 else ''
+            # 檢查type
+            chk_main_sql   += ",`type`" if this_user_obj[8] == 1 else ''
+            # 檢查floor
+            chk_main_sql   += ",`floor`" if this_user_obj[9] == 1 else ''
+            # 檢查age
+            chk_main_sql   += ",`age`" if this_user_obj[10] == 1 else ''
+            # 檢查parking
+            chk_main_sql   += ",`parking`" if this_user_obj[11] == 1 else ''
+            # 檢查ping
+            chk_main_sql   += ",`ping`" if this_user_obj[12] == 1 else ''
+            # 檢查room
+            chk_main_sql   += ",`room`" if this_user_obj[13] == 1 else ''
+            # 檢查area
+            chk_main_sql   += ",`area`" if this_user_obj[14] == 1 else ''
+        # 該User完全沒有有興趣的項目
+        else:
+            chk_main_sql   += ",`area`,`price`,`ping`,`type`,`room`"
 
-        # 檢查price
-        chk_main_sql   += ",`price`" if this_user_obj[3] == '1' else ''
-
-        # 檢查unit
-        chk_main_sql   += ",`unit`" if this_user_obj[4] == '1' else ''
-
-        # 檢查builder
-        chk_main_sql   += ",`builder`" if this_user_obj[5] == '1' else ''
-
-        # 檢查fee
-        chk_main_sql   += ",`fee`" if this_user_obj[6] == '1' else ''
-
-        # 檢查direction
-        chk_main_sql   += ",`direction`" if this_user_obj[7] == '1' else ''
-
-        # 檢查type
-        chk_main_sql   += ",`type`" if this_user_obj[8] == '1' else ''
-
-        # 檢查floor
-        chk_main_sql   += ",`floor`" if this_user_obj[9] == '1' else ''
-
-        # 檢查age
-        chk_main_sql   += ",`age`" if this_user_obj[10] == '1' else ''
-
-        # 檢查parking
-        chk_main_sql   += ",`parking`" if this_user_obj[11] == '1' else ''
-
-        # 檢查ping
-        chk_main_sql   += ",`ping`" if this_user_obj[12] == '1' else ''
-
-        # 檢查room
-        chk_main_sql   += ",`room`" if this_user_obj[13] == '1' else ''
-
-        # 檢查area
-        chk_main_sql   += ",`area`" if this_user_obj[14] == 1 else ''
-
-        chk_main_sql   +=  " FROM    `ex_main` \
-                            WHERE `id` IN (" + main_id + ") AND `is_closed` = 1"
-        print(chk_main_sql)
-        self.execute(chk_main_sql,[])
-
+        chk_main_sql   +=  " FROM   `ex_main` \
+                            WHERE   `id` IN (" + ','.join(str(i) for i in items) + ") AND \
+                                    `is_closed` = 1"
+        self.execute(chk_main_sql)
         this_user_mains = self.fetchall()
-        for x,val in enumerate(this_user_mains):
-            search_id.append(val['id'])
-            items.remove(val['id']);
-        #print(search_id)
-        return items
+
+        for _,mains in enumerate(this_user_mains):
+            fields_arr  = {}
+            for x,key in enumerate(mains):
+                # 固定值
+                if key in setting.similar_list:
+                    fields_arr[key] = '='+str(mains[key])
+
+                # 範圍值
+                elif key in setting.range_list:
+                    mains[key]  = float(mains[key])
+                    diff        = (mains[key] * setting.range_percent)
+                    start_val   = round((mains[key] - diff),3) if (mains[key] - diff) >= 0 else 0
+                    end_val     = round((mains[key] + diff),3) if (mains[key] + diff) >= 0 else 0
+
+                    fields_arr[key] = " BETWEEN "+str(start_val)+" AND "+str(end_val)
+            # 取得相似的物件
+            get_similar_sql     =  "SELECT  `id` "+\
+                                   "FROM    `ex_main` "+\
+                                   "WHERE   `is_closed` = 0 "
+
+            for key,val in fields_arr.items():
+                get_similar_sql+= ' AND `'+key+'`'+str(val)
+
+            get_similar_sql    +=  ' AND `id` != '+str(mains['id'])
+
+            self.execute(get_similar_sql)
+            get_similar = self.fetchall()
+
+            # 如果比對沒有相似的，只保留基本搜尋條件[basic_list]
+            if len(get_similar) == 0 and sum(this_user_obj) > 0:
+                chk_main_sql    =   "SELECT  `id` "+\
+                                    "FROM   `ex_main` "+\
+                                    "WHERE   `is_closed` = 0 AND `id` != "+str(mains['id'])
+
+                for key,val in fields_arr.items():
+                    if key in setting.basic_list:
+                        chk_main_sql+= ' AND `'+key+'`'+str(val)
+
+                self.execute(chk_main_sql)
+                chk_main    = self.fetchall()
+
+                for x in chk_main:
+                    items.append(x['id'])
+
+            items.remove(mains['id']);
+
+        return list(set(items))
 

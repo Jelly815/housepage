@@ -101,7 +101,7 @@ if len(recommand_items) < 10:
         for key, val in enumerate(hot_house):
             recommand_items.append(val['id'])
 
-# 檢查是否有已經close的物件，若有則取相似度最高的物件替換
+# 檢查是否有已經close的物件，若有則取相似的物件替換
 recommand_items     = func.check_close(user_unid,recommand_items)
 
 # 隨機取5個物件出來
