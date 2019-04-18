@@ -395,7 +395,7 @@ class FUNC_CLASS(DB_CONN):
         if no_data == 1:
             hot_house_sql  += """
                         AND
-                        `style`= %s AND
+                        `price`= %s AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
