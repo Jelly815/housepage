@@ -71,40 +71,39 @@ class FUNC_CLASS(DB_CONN):
         user_record['often_record'] = []
 
         if user_id != '':
-            # 取得user 最後搜尋的條件
-            user_last_sql = """
-                SELECT  `area`,`price`,`ping`,`style`,`type`
-                FROM    `ex_user_record_view`
-                WHERE   `user_id` = %s
-                ORDER BY `last_time` DESC LIMIT 1
+            user_sql    = """
+                SELECT  record.`area`,record.`price`,record.`ping`,record.`style`,record.`type`
+                FROM    `ex_record` record,`ex_record_items` items
+                WHERE   record.`id` = items.`record_id` AND
+                        record.`user_id` = items.`user_id` AND
+                        record.`user_id` = %s AND
+                        items.`last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                 """
 
-            # 取得user 經常搜尋的條件
-            user_often_sql = """
-                SELECT  `area`,`price`,`ping`,`style`,`type`
-                FROM    `ex_record`
-                WHERE   `user_id` = %s
-                ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 3
-                """
             try:
                 # 取得user [最後]搜尋的條件
-                self.execute(user_last_sql,[user_id])
+                self.execute(user_sql+" ORDER BY items.`last_time` DESC LIMIT 1",\
+                    [user_id,setting.search_house_seconds])
                 user_last_arr = self.fetchall()
-
+                #print('user_last_arr',user_last_arr)
                 if(user_last_arr is not None):
                     for x, last in enumerate(user_last_arr):
                         user_record['last_record'].append([last['area'],last['price'],last['ping'],last['style'],last['type']])
 
                 # 取得user [經常]搜尋的條件
-                self.execute(user_often_sql,[user_id])
+                self.execute(user_sql+" GROUP by  record.`area`,record.`price`,record.`ping`,record.`style`,record.`type` \
+                    ORDER BY record.`times` DESC,record.`price`,record.`ping` DESC LIMIT 3",\
+                    [user_id,setting.search_house_seconds])
                 user_often_arr = self.fetchall()
-
+                #print('user_often_arr',user_often_arr)
                 if user_often_arr is not None:
                     for x, often in enumerate(user_often_arr):
                         user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
-
+            
             except:
                 user_record = {}
+                user_record['last_record']  = []
+                user_record['often_record'] = []
 
         return user_record
 
@@ -113,6 +112,7 @@ class FUNC_CLASS(DB_CONN):
         user_record = {}
         user_range  = {}
         user_recommend  = []
+        out_items   = ['around','road']
 
         if user_id != '':
             # 取得useritems_str 半年內的搜尋紀錄
@@ -128,9 +128,8 @@ class FUNC_CLASS(DB_CONN):
                 self.execute(user_today_sql,[user_id,setting.search_house_seconds])
                 user_today_arr  = self.fetchall()
 
-                record_arr      = []
                 if len(user_today_arr) > 0:
-                    items_arr   = {
+                    user_items_arr   = {
                             'area':[],'road':[],'room':[],
                             'ping':[],'parking':[],'age':[],
                             'floor':[],'type':[],'direction':[],
@@ -141,7 +140,8 @@ class FUNC_CLASS(DB_CONN):
 
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
-                        record_arr.append(record)
+
+                        # 取得非user有相同記錄的人
                         users   = [val['unid'] for y,val in enumerate(self.get_same_record(user_id,record))]
 
                         #本User看過的物件資料
@@ -160,16 +160,9 @@ class FUNC_CLASS(DB_CONN):
                             new_row = list(val)
                             for i in new_row:
                                 if i == 'description':  #主建物坪數
-                                    '''
-                                    items_str = str(val[i])
-                                    items_str = items_str.split('坪')
-                                    items_str = items_str[0].split('：')
-
-                                    items_arr[i].append(items_str[1])
-                                    '''
-                                    items_arr[i].append(self.get_description(val[i]))
+                                    user_items_arr[i].append(self.get_description(val[i]))
                                 elif val[i] is not None:
-                                    items_arr[i].append(val[i])
+                                    user_items_arr[i].append(val[i])
 
                         #找到其他User後，取出不喜歡的項目
                         for unid in users:
@@ -186,38 +179,41 @@ class FUNC_CLASS(DB_CONN):
                         user_to_others = []
 
                         for key,values in record_items.items():
-
+                            if key in out_items:
+                                continue
                             # 比對是否有一樣的
-                            if key in setting.similar_list and len(values) > 0:
-                                intersection = list(set(map(lambda x: str(x), items_arr[key])) & set(values))
-                                percent = round((len(intersection) / len(items_arr[key])),3) if len(items_arr[key]) != 0 else 0
+                            elif key in setting.similar_list and len(values) > 0:
+                                intersection = list(set(map(lambda x: str(x), user_items_arr[key])) & set(values))
+                                percent = round((len(intersection) / len(user_items_arr[key])),3) if len(user_items_arr[key]) != 0 else 0
 
                                 # 相似的大於一半才算
-                                user_to_others.append(1 if len(intersection) > 0 and percent >= 0.5 else 0)
+                                user_to_others.append(1 if len(intersection) > 0 and percent >= setting.similar_percent else 0)
 
                             # 比對是否在範圍內
                             elif key in setting.range_list and len(values) > 0:
                                 values      = list(map(lambda x: float(x), values))
-                                items_arr[key]  = list(map(lambda x: float(x), items_arr[key]))
+                                user_items_arr[key]  = list(map(lambda x: float(x), user_items_arr[key]))
                                 # 計算標準差
                                 std_num     = np.std(values)
                                 # 計算平均值
                                 mean_num    = np.mean(values)
 
-                                star_num    = std_num - mean_num
-                                end_num     = std_num + mean_num
+                                star_num    = mean_num - std_num
+                                end_num     = mean_num + std_num
 
                                 # 範圍內的大於一半才算
                                 intersection= [1 if x >= star_num and x <= end_num else 0
-                                               for x in items_arr[key]]
-                                percent = round((sum(intersection) / len(items_arr[key])),3) if len(items_arr[key]) != 0 else 0
+                                               for x in user_items_arr[key]]
 
-                                user_to_others.append(1 if len(intersection) > 0 and percent >= 0.5 else 0)
+                                percent = round((sum(intersection) / len(user_items_arr[key])),3) if len(user_items_arr[key]) != 0 else 0
 
+                                user_to_others.append(1 if len(intersection) > 0 and percent >= setting.similar_percent else 0)
+                            else:
+                                user_to_others.append(0)
                         user_range[user_id] = round((sum(user_to_others) / self.items_len),3)
 
                         # 排除相似度小於0.5的User
-                        if float(user_range[user_id]) < 0.5:
+                        if float(user_range[user_id]) < setting.similar_percent:
                             del user_range[user_id]
 
                 # 找到的User，依照相似度高至低排序
@@ -232,13 +228,14 @@ class FUNC_CLASS(DB_CONN):
                         WHERE   `user_id`   = %s AND
                                 `is_like` = 2
                         """
-
                     try:
                         self.execute(user_record_sql,[user[0]])
                         user_record_arr     = self.fetchall()
 
                         # 找到搜尋條件
+                        ''' 無意義的搜尋
                         for x in user_record_arr[0]['items'].split(','):
+
                             user_record_sql = """
                                 SELECT  `area`,`price`,`ping`,`style`,`type`
                                 FROM    `ex_record`
@@ -252,10 +249,12 @@ class FUNC_CLASS(DB_CONN):
                                 [user_record_arr2[0]['area'],user_record_arr2[0]['price'],\
                                 user_record_arr2[0]['ping'],user_record_arr2[0]['style'],\
                                 user_record_arr2[0]['type']])
-
+                            print(times_range_items)
                             if times_range_items:
                                 for x in times_range_items:
                                     user_recommend.append(x)
+                        '''
+                        user_recommend = [x for x in user_record_arr[0]['items'].split(',')]
                     except:
                         user_record_arr     = {}
             except:
@@ -263,7 +262,7 @@ class FUNC_CLASS(DB_CONN):
 
         return list(set(user_recommend))
 
-    # 取得非user的相同的紀錄
+    # 取得非user有相同記錄的人
     def get_same_record(self,user_id,record,limit=1):
         record_arr = {}
 
@@ -351,33 +350,35 @@ class FUNC_CLASS(DB_CONN):
                         for key,val in record.items():
                             new_arr[key].append(val)
 
-                # 刪除[物件停留時間]離群值
-                is_outlier = True
-                outlier_index = self.get_outlier(new_arr,'item_stay_time')
+                # 如果User有加入最愛的習慣1;反之0
+                is_like = 1 if sum(new_arr['add_favorite']) > 0 else 0
 
-                while is_outlier:
-                    if outlier_index[1] is not None:
-                        del record_arr[outlier_index[1]]
-                        for x in new_arr:
-                            del new_arr[x][outlier_index[1]]
-                        is_outlier = False
-                    else:
-                        is_outlier = False
+                user_time_range = 0
+                if is_like == 0:
+                    # 刪除[物件停留時間]離群值
+                    is_outlier = True
+                    outlier_index = self.get_outlier(new_arr,'item_stay_time')
 
-                is_favorite_items = []
-                if new_arr['item_stay_time']:
-                    # 取得該User瀏覽區間
-                    user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
+                    while is_outlier:
+                        if outlier_index[1] is not None:
+                            del record_arr[outlier_index[1]]
+                            for x in new_arr:
+                                del new_arr[x][outlier_index[1]]
+                            is_outlier = False
+                        else:
+                            is_outlier = False
 
-                    # 某user喜歡物件的時間圓餅圖
-                    #if new_arr['item_stay_time']:
-                    #    self.plt_pie(new_arr)
+                    is_favorite_items = []
+                    if new_arr['item_stay_time']:
+                        # 取得該User瀏覽區間
+                        user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
 
-                    # 如果User有加入最愛的習慣1;反之0
-                    is_like = 1 if sum(new_arr['add_favorite']) > 0 else 0
+                        # 某user喜歡物件的時間圓餅圖
+                        #if new_arr['item_stay_time']:
+                        #    self.plt_pie(new_arr)
 
-                    # 取得該範圍內，User的物件
-                    is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range,is_like)
+                # 取得該範圍內，User的物件
+                is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range,is_like)
         except:
             is_favorite_items = []
 
@@ -422,6 +423,7 @@ class FUNC_CLASS(DB_CONN):
                         `type` = %s AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
+                LIMIT 5
                 """
             hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
 
@@ -469,15 +471,15 @@ class FUNC_CLASS(DB_CONN):
         df.dropna(inplace=True)
 
         if not df.empty:
-            # abs:絕對值;  abs(X - 平均值)
-            df['x-Mean']    = abs(df[field] - df[field].mean())
+            # abs:絕對值;  abs(X - 平均值)；mean:取均值
+            x_mean          = abs(df[field] - df[field].mean())
             # std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
-            df['1.96*std']  = 1.96*df[field].std()
-            df['Outlier']   = abs(df[field] - df[field].mean()) > 1.96*df[field].std()
+            std_196         = 1.96*df[field].std()
+            df['outlier']   = x_mean > std_196
 
             # 刪除為True的資料
             for x in range(len(df)):
-                this_bool = df.iloc[x]['Outlier']
+                this_bool = df.iloc[x]['outlier']
                 del_index = x if this_bool else None
 
         return [df_NaN,del_index]
@@ -513,7 +515,9 @@ class FUNC_CLASS(DB_CONN):
     # 餘弦相似
     def cosine_similarity(self,v, w):
         # math.sqrt:平方根
-        return self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w))
+        sqrt_dot = math.sqrt(self.dot(v, v) * self.dot(w, w))
+
+        return self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w)) if sqrt_dot > 0 else 0
 
     # 點乘積(內積)
     def dot(self,v, w):
@@ -554,7 +558,7 @@ class FUNC_CLASS(DB_CONN):
         else:
             return [suggestion
                     for suggestion, weight in suggestions
-                    if suggestion not in users_items[user_id] and float(weight) >= 0.5]
+                    if suggestion not in users_items[user_id] and float(weight) >= setting.similar_percent]
 
     # 取得主建物的值
     def get_description(self,description):

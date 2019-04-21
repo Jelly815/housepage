@@ -6,24 +6,15 @@ Created on Mon Dec 10 23:57:35 2018
 """
 
 import math, random
+import pandas as pd
+import numpy as np
 from collections import defaultdict, Counter
 
 users_interests = [
-    ["Hadoop", "Big Data", "HBase", "Java", "Spark", "Storm", "Cassandra"],
-    ["NoSQL", "MongoDB", "Cassandra", "HBase", "Postgres"],
-    ["Python", "scikit-learn", "scipy", "numpy", "statsmodels", "pandas"],
-    ["R", "Python", "statistics", "regression", "probability"],
-    ["machine learning", "regression", "decision trees", "libsvm"],
-    ["Python", "R", "Java", "C++", "Haskell", "programming languages"],
-    ["statistics", "probability", "mathematics", "theory"],
-    ["machine learning", "scikit-learn", "Mahout", "neural networks"],
-    ["neural networks", "deep learning", "Big Data", "artificial intelligence"],
-    ["Hadoop", "Java", "MapReduce", "Big Data"],
-    ["statistics", "R", "statsmodels"],
-    ["C++", "deep learning", "artificial intelligence", "probability"],
-    ["pandas", "R", "Python"],
-    ["databases", "HBase", "Postgres", "MySQL", "MongoDB"],
-    ["libsvm", "regression", "support vector machines"]
+    ["01", "02", "03"],
+    ["01", "02", "04"],
+    ["01", "02", "05"],
+    ["01", "05", "06"]
 ]
 
 def dot(v, w):
@@ -42,7 +33,7 @@ def cosine_similarity(v, w):
 
 def most_similar_interests_to(interest_id):
     similarities = interest_similarities[interest_id]
-    print(similarities)
+
     pairs = [(unique_interests[other_interest_id], similarity)
              for other_interest_id, similarity in enumerate(similarities)
              if interest_id != other_interest_id and similarity > 0]
@@ -69,7 +60,7 @@ def item_based_suggestions(user_id, include_current_interests=False):
         return [(suggestion, weight)
                 for suggestion, weight in suggestions
                 if suggestion not in users_interests[user_id]]
-# 36項興趣
+
 unique_interests = sorted(list({ interest
                                  for user_interests in users_interests
                                  for interest in user_interests }))
@@ -86,5 +77,36 @@ interest_user_matrix = [[user_interest_vector[j]
 interest_similarities = [[cosine_similarity(user_vector_i, user_vector_j)
                           for user_vector_j in interest_user_matrix]
                          for user_vector_i in interest_user_matrix]
-print(interest_similarities[0])
+    
+print(most_similar_interests_to(0))
 #print(most_similar_interests_to(0))
+
+
+del_index       = None
+#data = {'time':[30,30,60,60,100,150,300,300,500,700]}
+#data = {'time':[30,30,60,60,100,150,300,300,500]}
+data = {'time':[30,30,60,60,100,150,300,300]}
+df = pd.DataFrame(data)
+df_NaN = df[df.isnull().any(axis=1)].index.values
+
+# 刪除 NaN 值
+df.dropna(inplace=True)
+
+# abs:絕對值;  abs(X - 平均值)；mean:取均值
+df['x-Mean']    = abs(df['time'] - df['time'].mean())
+# std:標準差，有 95% 信心估計母群體平均數，在樣本平均數 ± 1.96 * (母群體標準差 / 樣本數 n 的平方根) 的範圍內。
+df['1.96*std']  = 1.96*df['time'].std()
+df['Outlier']   = abs(df['time'] - df['time'].mean()) > 1.96*df['time'].std()
+print(df['Outlier'])
+# 刪除為True的資料
+for x in range(len(df)):
+    this_bool = df.iloc[x]['Outlier']
+    del_index = x if this_bool else None
+
+print([df_NaN,del_index])
+
+user = [438,598,638]
+other = [315,418,598,578,498]
+
+print('Other_mean',np.mean(other))
+print('Other_mean',np.std(other))

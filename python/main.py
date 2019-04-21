@@ -6,11 +6,14 @@ Created on Sat Jan 12 20:23:18 2019
 """
 from function import FUNC_CLASS
 import sys
+import setting
 import random
 #user_unid = sys.argv[1]
 #user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
-#user_unid = '7f16a3540e74b904ed3ee626c79af314'
+#user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
 user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#[304,1000,30,2,3],[304,1000,30,3,3],[304,1000,40,2,3],[304,1000,40,3,3]
+#user_unid = 'mca3907edc888d46215b3a35c294e73fa'
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -45,7 +48,12 @@ if len(record_data['often_record']) > 1:
                             others_user_items_dict.append(times_range_items)
     #將所有User都加起來(有興趣的物件)
     users_items = user_items_dict + others_user_items_dict
-
+    #print(users_items)
+    # 全部可能喜歡的物件
+    unique_items = sorted(list({ like_item
+                        for user_items in users_items
+                        for like_item in user_items }))
+    #print(unique_items)
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
     hot_house  = func.get_hot_house(record_data['often_record'][0])
@@ -58,13 +66,8 @@ else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
 
-# 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人
+####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
 times_range_items_not = func.get_this_user_no_search(user_unid)
-
-# 全部可能喜歡的物件
-unique_items = sorted(list({ like_item
-                        for user_items in users_items
-                        for like_item in user_items }))
 
 # 對於該物件是否有興趣，是:1,否:0
 def make_user_items_matrix(others_user_items_dict):
@@ -73,7 +76,7 @@ def make_user_items_matrix(others_user_items_dict):
 
 # 使用者可能對某個物件喜歡1,否:0
 user_items_matrix = list(map(make_user_items_matrix, users_items))
-
+#print(user_items_matrix)
 # 在某個物件那一列元素中，1代表每個對此可能喜歡的使用者,0標示，代表可能不喜歡
 items_user_matrix = [[user_items_vector[j]
                     for user_items_vector in user_items_matrix]
@@ -90,16 +93,15 @@ items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
 # 推薦相似者喜歡的物件給他
 recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items,users_items)
 
-if len(recommand_items) < 10:
-    # 找到相似記錄相似者喜歡的物件給他
-    recommand_items.extend(times_range_items_not)
-    recommand_items = list(set(recommand_items))
+# 找到相似記錄相似者喜歡的物件給他
+recommand_items.extend(times_range_items_not)
+recommand_items = list(set(recommand_items))
 
-    if len(recommand_items) < 10:
-        # 加入User所在區域熱門的物件給他
-        hot_house   = func.get_hot_house([],2,user_unid)
-        for key, val in enumerate(hot_house):
-            recommand_items.append(val['id'])
+# 當推薦物件少於10筆時，加入User所在區域熱門的物件
+if len(recommand_items) < setting.less_how_num:
+    hot_house   = func.get_hot_house([],2,user_unid)
+    for key, val in enumerate(hot_house):
+        recommand_items.append(val['id'])
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換
 recommand_items     = func.check_close(user_unid,recommand_items)

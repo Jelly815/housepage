@@ -24,3 +24,9 @@ range_list 		= ["description","price","unit","fee","age","ping"]
 
 # 基本搜尋項目
 basic_list 		= ["area","price","ping","room","type"]
+
+# 相似度百分比
+similar_percent = 0.5
+
+# 當推薦物件少於幾筆時，要加入User所在區域熱門的物件
+less_how_num 	= 10
