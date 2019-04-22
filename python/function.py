@@ -83,7 +83,7 @@ class FUNC_CLASS(DB_CONN):
             try:
                 # 取得user [最後]搜尋的條件
                 self.execute(user_sql+" ORDER BY items.`last_time` DESC LIMIT 1",\
-                    [user_id,setting.search_house_seconds])
+                    [user_id,setting.search_house_days])
                 user_last_arr = self.fetchall()
                 #print('user_last_arr',user_last_arr)
                 if(user_last_arr is not None):
@@ -93,13 +93,13 @@ class FUNC_CLASS(DB_CONN):
                 # 取得user [經常]搜尋的條件
                 self.execute(user_sql+" GROUP by  record.`area`,record.`price`,record.`ping`,record.`style`,record.`type` \
                     ORDER BY record.`times` DESC,record.`price`,record.`ping` DESC LIMIT 3",\
-                    [user_id,setting.search_house_seconds])
+                    [user_id,setting.search_house_days])
                 user_often_arr = self.fetchall()
                 #print('user_often_arr',user_often_arr)
                 if user_often_arr is not None:
                     for x, often in enumerate(user_often_arr):
                         user_record['often_record'].append([often['area'],often['price'],often['ping'],often['style'],often['type']])
-            
+
             except:
                 user_record = {}
                 user_record['last_record']  = []
@@ -125,7 +125,7 @@ class FUNC_CLASS(DB_CONN):
                 """
 
             try:
-                self.execute(user_today_sql,[user_id,setting.search_house_seconds])
+                self.execute(user_today_sql,[user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
 
                 if len(user_today_arr) > 0:
@@ -284,7 +284,7 @@ class FUNC_CLASS(DB_CONN):
                 user_id,
                 record[0],record[1],record[2],
                 record[3],record[4],
-                (int)(setting.search_house_seconds * limit)
+                (int)(setting.search_house_days * limit)
         ]
 
         try:
@@ -292,12 +292,12 @@ class FUNC_CLASS(DB_CONN):
                 self.execute(record_sql,record_vals)
                 record_arr = self.fetchall()
             else:
-                # 若setting.search_house_seconds設定的天數找不到資料，則往回推天數，直到找到資料
+                # 若setting.search_house_days設定的天數找不到資料，則往回推天數，直到找到資料
                 limit += 1
 
                 login_last_day = self.get_user_login_time()
-                if login_last_day > setting.search_house_seconds:
-                    limit_round = int(login_last_day / setting.search_house_seconds)
+                if login_last_day > setting.search_house_days:
+                    limit_round = int(login_last_day / setting.search_house_days)
 
                     if limit <= limit_round:
                         self.get_same_record(user_id,record,limit)
@@ -371,7 +371,7 @@ class FUNC_CLASS(DB_CONN):
                     is_favorite_items = []
                     if new_arr['item_stay_time']:
                         # 取得該User瀏覽區間
-                        user_time_range = self.get_user_time_range(new_arr['item_stay_time'])
+                        user_time_range = self.get_user_time_range(list(set(new_arr['item_stay_time'])))
 
                         # 某user喜歡物件的時間圓餅圖
                         #if new_arr['item_stay_time']:

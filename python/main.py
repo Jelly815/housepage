@@ -108,6 +108,6 @@ recommand_items     = func.check_close(user_unid,recommand_items)
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0:
-    print(random.sample(recommand_items, 5))
+    print(random.sample(recommand_items, setting.random_num))
 else:
     print('None')

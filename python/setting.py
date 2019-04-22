@@ -12,7 +12,7 @@ search_times 	= 1
 view_seconds 	= 5
 
 # 設定尋找房子的時間(預設6個月)，單位:天(60*60*24*180)
-search_house_seconds = 180
+search_house_days = 180
 
 # 範圍內百分比
 range_percent 	= 0.05
@@ -30,3 +30,6 @@ similar_percent = 0.5
 
 # 當推薦物件少於幾筆時，要加入User所在區域熱門的物件
 less_how_num 	= 10
+
+# 隨機取得要推薦的數量
+random_num 		= 5

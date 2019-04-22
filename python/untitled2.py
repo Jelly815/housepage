@@ -110,3 +110,9 @@ other = [315,418,598,578,498]
 
 print('Other_mean',np.mean(other))
 print('Other_mean',np.std(other))
+
+median = [30,60,90,100,150,300]
+new_data    = set(median)
+p_index     = int(0.5 * len(new_data))
+print('median',sorted(new_data)[p_index])
+    
