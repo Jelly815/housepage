@@ -97,14 +97,14 @@ recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similari
 recommand_items.extend(times_range_items_not)
 recommand_items = list(set(recommand_items))
 
+# 檢查是否有已經close的物件，若有則取相似的物件替換
+recommand_items     = func.check_close(user_unid,recommand_items)
+
 # 當推薦物件少於10筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:
     hot_house   = func.get_hot_house([],2,user_unid)
     for key, val in enumerate(hot_house):
         recommand_items.append(val['id'])
-
-# 檢查是否有已經close的物件，若有則取相似的物件替換
-recommand_items     = func.check_close(user_unid,recommand_items)
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0:
