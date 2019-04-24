@@ -514,10 +514,14 @@ class FUNC_CLASS(DB_CONN):
 
     # 餘弦相似
     def cosine_similarity(self,v, w):
+        re_val = 0
         # math.sqrt:平方根
         sqrt_dot = math.sqrt(self.dot(v, v) * self.dot(w, w))
 
-        return self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w)) if sqrt_dot > 0 else 0
+        if sqrt_dot > 0:
+            re_val = self.dot(v, w) / math.sqrt(self.dot(v, v) * self.dot(w, w))
+
+        return re_val
 
     # 點乘積(內積)
     def dot(self,v, w):
@@ -584,6 +588,16 @@ class FUNC_CLASS(DB_CONN):
 
         # 該User有被記錄到有興趣的項目
         if sum(this_user_obj) > 0:
+            key = 0
+            for item in setting.care_list:
+                # 檢查各個項目
+                if item != 'description':
+                    chk_main_sql   += ",`"+item+"`" if this_user_obj[key] == 1 else ''
+                    key += 1
+                else:
+                    key += 1
+                    continue
+            '''
             # 檢查community
             chk_main_sql   += ",`community`" if this_user_obj[0] == 1 else ''
             # 檢查status
@@ -614,31 +628,36 @@ class FUNC_CLASS(DB_CONN):
             chk_main_sql   += ",`room`" if this_user_obj[13] == 1 else ''
             # 檢查area
             chk_main_sql   += ",`area`" if this_user_obj[14] == 1 else ''
+            '''
         # 該User完全沒有有興趣的項目
         else:
             chk_main_sql   += ",`area`,`price`,`ping`,`type`,`room`"
 
-        chk_main_sql   +=  " FROM   `ex_main` \
-                            WHERE   `id` IN (" + ','.join(str(i) for i in items) + ") AND \
-                                    `is_closed` = 1"
+        chk_main_sql   +=  " FROM   `ex_main` "+\
+                            "WHERE   `id` IN (" + ','.join(str(i) for i in items) + ") AND "+\
+                                    "`is_closed` = 1"
+
         self.execute(chk_main_sql)
         this_user_mains = self.fetchall()
 
         for _,mains in enumerate(this_user_mains):
             fields_arr  = {}
             for x,key in enumerate(mains):
-                # 固定值
-                if key in setting.similar_list:
-                    fields_arr[key] = '='+str(mains[key])
+                if mains[key]:
+                    # 固定值
+                    if key in setting.similar_list:
+                        if mains[key]:
+                            fields_arr[key] = '='+str(mains[key])
 
-                # 範圍值
-                elif key in setting.range_list:
-                    mains[key]  = float(mains[key])
-                    diff        = (mains[key] * setting.range_percent)
-                    start_val   = round((mains[key] - diff),3) if (mains[key] - diff) >= 0 else 0
-                    end_val     = round((mains[key] + diff),3) if (mains[key] + diff) >= 0 else 0
+                    # 範圍值
+                    elif key in setting.range_list:
+                        mains[key]  = float(mains[key])
+                        diff        = (mains[key] * setting.range_percent)
+                        start_val   = round((mains[key] - diff),3) if (mains[key] - diff) >= 0 else 0
+                        end_val     = round((mains[key] + diff),3) if (mains[key] + diff) >= 0 else 0
 
-                    fields_arr[key] = " BETWEEN "+str(start_val)+" AND "+str(end_val)
+                        fields_arr[key] = " BETWEEN "+str(start_val)+" AND "+str(end_val)
+
             # 取得相似的物件
             get_similar_sql     =  "SELECT  `id` "+\
                                    "FROM    `ex_main` "+\
@@ -648,7 +667,7 @@ class FUNC_CLASS(DB_CONN):
                 get_similar_sql+= ' AND `'+key+'`'+str(val)
 
             get_similar_sql    +=  ' AND `id` != '+str(mains['id'])
-
+            print(get_similar_sql)
             self.execute(get_similar_sql)
             get_similar = self.fetchall()
 

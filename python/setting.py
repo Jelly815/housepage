@@ -15,7 +15,7 @@ view_seconds 	= 5
 search_house_days = 180
 
 # 範圍內百分比
-range_percent 	= 0.05
+range_percent 	= 0.1
 
 # 相似的項目
 similar_list 	= ["community","status","builder","direction","type","floor","parking","room","area"]
@@ -24,6 +24,11 @@ range_list 		= ["description","price","unit","fee","age","ping"]
 
 # 基本搜尋項目
 basic_list 		= ["area","price","ping","room","type"]
+
+# 在意項目設定
+care_list		= ["community","status","description","price","unit","builder","fee","direction","type","floor","age","parking","ping","room","area"]
+
+#####在意項目的範圍百分比似乎不能都一樣#######
 
 # 相似度百分比
 similar_percent = 0.5
