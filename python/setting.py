@@ -27,8 +27,12 @@ basic_list 		= ["area","price","ping","room","type"]
 
 # 在意項目設定
 care_list		= ["community","status","description","price","unit","builder","fee","direction","type","floor","age","parking","ping","room","area"]
-
-#####在意項目的範圍百分比似乎不能都一樣#######
+# 在意項目類似值
+care_list_direction	= [["1","5"],["2","6"],["3","8"],["4","7"]]
+# 在意項目越小越好
+care_list_small	= ["price","unit","fee","age"]
+# 在意項目越大越好
+care_list_max	= ["description","ping"]
 
 # 相似度百分比
 similar_percent = 0.5

@@ -591,49 +591,18 @@ class FUNC_CLASS(DB_CONN):
             key = 0
             for item in setting.care_list:
                 # 檢查各個項目
-                if item != 'description':
+                if item != 'description' and item != 'floor':
                     chk_main_sql   += ",`"+item+"`" if this_user_obj[key] == 1 else ''
                     key += 1
                 else:
                     key += 1
                     continue
-            '''
-            # 檢查community
-            chk_main_sql   += ",`community`" if this_user_obj[0] == 1 else ''
-            # 檢查status
-            chk_main_sql   += ",`status`" if this_user_obj[1] == 1 else ''
-            # 檢查description
-            #chk_main_sql   += ",`description`" if this_user_obj[2] == 1 else ''
-            # 檢查price
-            chk_main_sql   += ",`price`" if this_user_obj[3] == 1 else ''
-            # 檢查unit
-            chk_main_sql   += ",`unit`" if this_user_obj[4] == 1 else ''
-            # 檢查builder
-            chk_main_sql   += ",`builder`" if this_user_obj[5] == 1 else ''
-            # 檢查fee
-            chk_main_sql   += ",`fee`" if this_user_obj[6] == 1 else ''
-            # 檢查direction
-            chk_main_sql   += ",`direction`" if this_user_obj[7] == 1 else ''
-            # 檢查type
-            chk_main_sql   += ",`type`" if this_user_obj[8] == 1 else ''
-            # 檢查floor
-            chk_main_sql   += ",`floor`" if this_user_obj[9] == 1 else ''
-            # 檢查age
-            chk_main_sql   += ",`age`" if this_user_obj[10] == 1 else ''
-            # 檢查parking
-            chk_main_sql   += ",`parking`" if this_user_obj[11] == 1 else ''
-            # 檢查ping
-            chk_main_sql   += ",`ping`" if this_user_obj[12] == 1 else ''
-            # 檢查room
-            chk_main_sql   += ",`room`" if this_user_obj[13] == 1 else ''
-            # 檢查area
-            chk_main_sql   += ",`area`" if this_user_obj[14] == 1 else ''
-            '''
+
         # 該User完全沒有有興趣的項目
         else:
             chk_main_sql   += ",`area`,`price`,`ping`,`type`,`room`"
 
-        chk_main_sql   +=  " FROM   `ex_main` "+\
+        chk_main_sql   +=  ",`direction` FROM   `ex_main` "+\
                             "WHERE   `id` IN (" + ','.join(str(i) for i in items) + ") AND "+\
                                     "`is_closed` = 1"
 
@@ -647,16 +616,27 @@ class FUNC_CLASS(DB_CONN):
                     # 固定值
                     if key in setting.similar_list:
                         if mains[key]:
-                            fields_arr[key] = '='+str(mains[key])
+                            if key == 'direction':
+                                for x in setting.care_list_direction:
+                                    if mains[key] in x:
+                                        fields_arr[key] = ' IN ('+','.join(x)+')'
+                            else:
+                                fields_arr[key] = '='+str(mains[key])
 
                     # 範圍值
                     elif key in setting.range_list:
                         mains[key]  = float(mains[key])
                         diff        = (mains[key] * setting.range_percent)
-                        start_val   = round((mains[key] - diff),3) if (mains[key] - diff) >= 0 else 0
-                        end_val     = round((mains[key] + diff),3) if (mains[key] + diff) >= 0 else 0
+                        start_val   = math.floor(mains[key] - diff) if (mains[key] - diff) >= 0 else 0
+                        end_val     = math.ceil(mains[key] + diff) if (mains[key] + diff) >= 0 else 0
 
-                        fields_arr[key] = " BETWEEN "+str(start_val)+" AND "+str(end_val)
+                        # 在意項目越小越好
+                        if key in setting.care_list_small:
+                            fields_arr[key] = " <= "+str(end_val)
+
+                        # 在意項目越大越好
+                        elif key in setting.care_list_max:
+                            fields_arr[key] = " >= "+ str(start_val)
 
             # 取得相似的物件
             get_similar_sql     =  "SELECT  `id` "+\
@@ -667,11 +647,12 @@ class FUNC_CLASS(DB_CONN):
                 get_similar_sql+= ' AND `'+key+'`'+str(val)
 
             get_similar_sql    +=  ' AND `id` != '+str(mains['id'])
-            print(get_similar_sql)
+            
             self.execute(get_similar_sql)
             get_similar = self.fetchall()
-
+            
             # 如果比對沒有相似的，只保留基本搜尋條件[basic_list]
+            '''
             if len(get_similar) == 0 and sum(this_user_obj) > 0:
                 chk_main_sql    =   "SELECT  `id` "+\
                                     "FROM   `ex_main` "+\
@@ -686,7 +667,10 @@ class FUNC_CLASS(DB_CONN):
 
                 for x in chk_main:
                     items.append(x['id'])
-
+            '''
+            for x in get_similar:
+                    items.append(x['id'])
+                    
             items.remove(mains['id']);
 
         return list(set(items))

@@ -9,7 +9,7 @@ import sys
 import setting
 import random
 #user_unid = sys.argv[1]
-#user_unid = 'm199cdc39ee6e65811960a187ccf1fcb9'
+#user_unid = 'm6bb771cd12d1658a7e26b3c63632d8f7'
 #user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
 #user_unid = 'm185ccab81019a39cba16f666f070bb83'
 #[304,1000,30,2,3],[304,1000,30,3,3],[304,1000,40,2,3],[304,1000,40,3,3]
@@ -97,8 +97,9 @@ recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similari
 recommand_items.extend(times_range_items_not)
 recommand_items = list(set(recommand_items))
 
-# 檢查是否有已經close的物件，若有則取相似的物件替換
-recommand_items     = func.check_close(user_unid,recommand_items)
+# 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
+if recommand_items:
+    recommand_items     = func.check_close(user_unid,recommand_items)
 
 # 當推薦物件少於10筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:
@@ -108,7 +109,7 @@ if len(recommand_items) < setting.less_how_num:
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0:
-    random.sample(recommand_items, setting.random_num)
-    #print(random.sample(recommand_items, setting.random_num))
+    #random.sample(recommand_items, setting.random_num)
+    print(random.sample(recommand_items, setting.random_num))
 else:
     print('None')
