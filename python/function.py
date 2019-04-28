@@ -616,10 +616,8 @@ class FUNC_CLASS(DB_CONN):
                     # 固定值
                     if key in setting.similar_list:
                         if mains[key]:
-                            if key == 'direction':
-                                for x in setting.care_list_direction:
-                                    if mains[key] in x:
-                                        fields_arr[key] = ' IN ('+','.join(x)+')'
+                            if key == 'direction' and mains[key] in setting.care_list_direction:
+                                fields_arr[key] = ' IN ('+','.join(setting.care_list_direction)+')'
                             else:
                                 fields_arr[key] = '='+str(mains[key])
 
@@ -647,10 +645,10 @@ class FUNC_CLASS(DB_CONN):
                 get_similar_sql+= ' AND `'+key+'`'+str(val)
 
             get_similar_sql    +=  ' AND `id` != '+str(mains['id'])
-            
+
             self.execute(get_similar_sql)
             get_similar = self.fetchall()
-            
+
             # 如果比對沒有相似的，只保留基本搜尋條件[basic_list]
             '''
             if len(get_similar) == 0 and sum(this_user_obj) > 0:
@@ -670,7 +668,7 @@ class FUNC_CLASS(DB_CONN):
             '''
             for x in get_similar:
                     items.append(x['id'])
-                    
+
             items.remove(mains['id']);
 
         return list(set(items))

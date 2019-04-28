@@ -28,7 +28,7 @@ basic_list 		= ["area","price","ping","room","type"]
 # 在意項目設定
 care_list		= ["community","status","description","price","unit","builder","fee","direction","type","floor","age","parking","ping","room","area"]
 # 在意項目類似值
-care_list_direction	= [["1","5"],["2","6"],["3","8"],["4","7"]]
+care_list_direction	= ["2","4","6","7"] # 坐西朝東,坐北朝南,坐西北朝東南,坐東北朝西南
 # 在意項目越小越好
 care_list_small	= ["price","unit","fee","age"]
 # 在意項目越大越好
