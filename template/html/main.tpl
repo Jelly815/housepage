@@ -4,6 +4,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{HEADERTITLE}</title>
         <link rel="stylesheet" href="{CSSPATH}style.css" type="text/css" />
+        <link rel="stylesheet" href="{CSSPATH}build.min2.css" type="text/css" />
+        <!--<link rel="stylesheet" href="{CSSPATH}bootstrap.min.css" type="text/css" />-->
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery-1.12.4.js"></script>
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery.lightbox.js"></script>
         <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
