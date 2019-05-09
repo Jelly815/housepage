@@ -19,7 +19,7 @@ form {
 .header{
 	width: 960px;
 	margin: 0 auto;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	min-height:220px;
 }
 .header ul#navigation{
@@ -116,15 +116,16 @@ form {
 }
 .header div#featured{
 	clear: both;
+	height: 370px;
 }
 .header div#featured div.first{
 	margin: 0;
 }
-.header div#featured div{
+.header div#featured #first_content{
 	height: auto;
 	width: auto;
 	float: left;
-	margin: 0 0 0 20px;
+	margin: 0;
 }
 .header div#featured div ul{
 	/*overflow: hidden;*/
@@ -150,16 +151,16 @@ form {
 	line-height: 40px;
 	margin: 0 0 0 4px;
 }
-.header div#featured div.first ul li.selected a{
+.header div#featured div.first ul li.selected #first_a{
 	background: url(../images/bg-feat-menu-selected-right.gif) no-repeat left top;
 	color: #191C21;
 	width:170px;
 	/*padding: 0 32px;*/
 }
-.header div#featured div ul li.selected a:hover{
+.header div#featured div ul li.selected #first_a:hover{
 	color: #868686;
 }
-.header div#featured div.first ul li a{
+.header div#featured div.first ul li #first_a{
 	background: url(../images/bg-feat-menu-right.gif) no-repeat left top;
 	display: block;
 	_display: inline-block;
@@ -173,32 +174,32 @@ form {
 	padding: 0 33px;
 	font-weight: bold;
 }
-.header div#featured div ul li a:hover{
+.header div#featured div ul li #first_a:hover{
 	color: #191C21;
 }
-.header div#featured div ul li.selected div{
-	width: 960px;
-	/*height: 425px;
-	position: absolute;*/
+.header div#featured div ul li.selected #first_content{
+	width: 930px;
+	height: 200px;
+	position: absolute;
 	border-radius: 5px;
 	left: 0;
-	padding: 10px 0 0;
+	padding: 30px 20px;
 	_top: 72px;
 	background: url(../images/bg-featured-bottom-curve.gif) no-repeat left bottom #fff;
 }
-.header div#featured div ul li.selected div a{
-	position: absolute;
+.header div#featured div ul li.selected #first_content a{
+	/*position: absolute;
 	left: 0;
 	background: none!important;
 	margin: 0;
-    padding: 0!important;
+    padding: 0!important;*/
 }
 .header div#featured div ul li.selected div a img{
 	border: 0;
 }
 .header div#featured div ul li div a{
-	position: absolute;
-	left: -99999px;
+	/*position: absolute;
+	left: -99999px;*/
 }
 .header div#featured div ul li.selected div p{
 	left: 0;
@@ -268,7 +269,7 @@ form {
 	font-size: 11px;
 }
 .header div#featured div div{
-	margin: 0;
+	/*margin: 0;*/
 }
 .header div#featured div div h3{
 	background: url(../images/interface.gif) no-repeat 0 -160px;
@@ -345,7 +346,7 @@ a.search_key_button {
 }
 #content {
     width: 960px;
-    background-color: #09154F;
+    /*background-color: #09154F;*/
     overflow: hidden;
     margin: 0 auto;
 }

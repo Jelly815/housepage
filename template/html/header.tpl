@@ -46,276 +46,142 @@
         <div class="first">
             <ul>
                 <li class="selected first">
-                    <a href="featured.html">Search</a>
-                    <div>
+                    <a id="first_a" href="featured.html">Search</a>
 
-
-
-                    </div>
-                </li>
-<div>
-    <div>
-        <div class="filter-row">
-            <div class="clearfix">
-                <div class="filter-name pull-left" style="padding-top: 6px;">位置</div>
-                <div class="filter-body clearfix relative">
-                    <div class="filter-location">
-                        <div class="clearfix">
-                            <div title="高雄市" class="filter-region filter-location-btn pull-left  z-active">
-                                <div class="u-arrow"></div>
-                                <div class="j-region filter-location-btn-txt">高雄市</div>
+                    <div id="first_content">
+                        <div class="mb20 filter-location-wrap">
+                            <div class="filter-shadow" style="display: none;"></div>
+                            <div class="filter-row">
+                                <div class="clearfix">
+                                    <div class="filter-name pull-left" style="padding-top: 6px;">區域</div>
+                                    <div class="filter-body clearfix relative">
+                                        <div class="filter-location">
+                                            <div class="clearfix">
+                                                <div title="高雄市" class="filter-region filter-location-btn pull-left  z-active">
+                                                    <div class="u-arrow"></div>
+                                                    <div class="j-region filter-location-btn-txt">高雄市</div>
+                                                </div>
+                                                <div title="" class="filter-section filter-location-btn pull-left">
+                                                    <div class="u-arrow"></div>
+                                                    <div class="filter-location-btn-txt">選擇鄉鎮</div>
+                                                </div>
+                                            </div>
+                                            <div class="filter-location-list" style="display:none;">
+                                                <div class="section-list clearfix">
+                                                    <div class="section-list-unlimited pull-left">不限</div>
+                                                    <div class="section-list-options clearfix">
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">三民區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳳山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">左營區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鼓山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">苓雅區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">楠梓區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前鎮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">仁武區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大寮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">小港區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳥松區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">新興區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前金區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">岡山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大社區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">橋頭區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大樹區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鹽埕區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">美濃區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">林園區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">燕巢區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">湖內區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">路竹區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">梓官區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茄萣區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">六龜區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">杉林區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">阿蓮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">甲仙區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗津區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">彌陀區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">田寮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">內門區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">永安區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">桃源區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">那瑪夏區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茂林區</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div title="" class="filter-section filter-location-btn pull-left">
-                                <div class="u-arrow"></div>
-                                <div class="filter-location-btn-txt">選擇鄉鎮</div>
+                        </div>
+                        <div class="filter-saleprice-wrap">
+                            <div class="filter-row clearfix">
+                                <div class="filter-name">金額</div>
+                                <div class="filter-body clearfix relative">
+                                    <div class="filter-saleprice-options clearfix oh">
+                                        <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="300萬以下" class="">300萬以下</a></div>
+                                        <div class="filter-items z-multiple" style="margin-left:-30px;"><a href="javascript:;" data-gtm-stat="300-600萬以下" class="">300-600萬以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="600-1000萬以下" class="">600-1000萬以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="1000-1500萬以下" class="">1000-1500萬以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="1500-2000萬以下" class="">1500-2000萬以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="2000萬以上" class="">2000萬以上</a></div>
+                                    </div>
+                                </div>
                             </div>
-                    </div>
-                    <div class="filter-location-list" style="display:none;">
-                        <div class="region-list clearfix">
-                            <div class="region-list-row clearfix">
-                                <strong class="region-list-orientation">北部</strong>
-                                <div class="region-list-item"><a href="javascript:;">新北市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">桃園市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">台北市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">新竹縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">新竹市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">基隆市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">宜蘭縣</a></div>
+                        </div>
+                        <div class="mb20 filter-shape-wrap">
+                            <div class="filter-row clearfix">
+                                <div class="filter-name pull-left">類型</div>
+                                <div class="filter-body clearfix">
+                                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="公寓" class="">公寓</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="電梯大樓" class="">電梯大樓</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="透天厝" class="">透天厝</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="別墅" class="">別墅</a></div>
+                                </div>
                             </div>
-                            <div class="region-list-row clearfix">
-                                <strong class="region-list-orientation">中部</strong>
-                                <div class="region-list-item"><a href="javascript:;">台中市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">苗栗縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">彰化縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">南投縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">雲林縣</a></div>
+                        </div>
+                        <div class="mb20 filter-pattern-wrap">
+                            <div class="filter-row clearfix">
+                                <div class="filter-name">房數</div>
+                                <div class="filter-body clearfix oh">
+                                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="1房" class="">1房</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="2房" class="">2房</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="3房" class="">3房</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="4房" class="">4房</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="5房及以上" class="">5房及以上</a></div>
+                                </div>
                             </div>
-                            <div class="region-list-row clearfix">
-                                <strong class="region-list-orientation">南部</strong>
-                                <div class="region-list-item z-select"><a href="javascript:;">高雄市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">台南市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">屏東縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">嘉義市</a></div>
-                                <div class="region-list-item"><a href="javascript:;">嘉義縣</a></div>
-                            </div>
-                            <div class="region-list-row clearfix">
-                                <strong class="region-list-orientation">東部</strong>
-                                <div class="region-list-item"><a href="javascript:;">花蓮縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">台東縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">金門縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">澎湖縣</a></div>
-                                <div class="region-list-item"><a href="javascript:;">連江縣</a></div>
-                            </div>
-                            <div class="region-list-row clearfix">
-                                <strong class="region-list-orientation">其他</strong>
-                                <div class="region-list-item"><a href="javascript:;">海外</a>
+                        </div>
+                        <div class="filter-area-wrap">
+                            <div class="filter-row clearfix">
+                                <div class="filter-name">
+                                    <div class="area-switch">
+                                        <div title="坪數" class="area-switch-cur">坪數
+                                            <i class="area-switch-icon fa fa-angle-down"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-body clearfix">
+                                    <div class="filter-area-options clearfix oh">
+                                        <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="20坪以下" class="">20坪以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="20-30坪以下" class="">20-30坪以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="30-40坪以下" class="">30-40坪以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="40-50坪以下" class="">40-50坪以下</a></div>
+                                        <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="50坪以上" class="">50坪及以上</a></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="filter-location-list" style="display:none;">
-                        <div class="section-list clearfix">
-                            <div class="section-list-unlimited pull-left">不限</div>
-                            <div class="section-list-options clearfix">
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">三民區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳳山區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">左營區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鼓山區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">苓雅區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">楠梓區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前鎮區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">仁武區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大寮區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">小港區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳥松區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">新興區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前金區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">岡山區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大社區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">橋頭區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大樹區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鹽埕區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">美濃區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">林園區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">燕巢區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">湖內區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗山區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">路竹區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">梓官區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茄萣區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">六龜區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">杉林區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">阿蓮區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">甲仙區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗津區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">彌陀區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">田寮區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">內門區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">永安區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">桃源區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">那瑪夏區</a></div>
-                                <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茂林區</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="mb20 filter-kind-wrap">
-    <div class="filter-saleprice-wrap">
-        <div class="filter-row clearfix">
-            <div class="filter-name pull-left">售金</div>
-            <div class="filter-body clearfix relative">
-                <div class="filter-saleprice-options clearfix oh">
-                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_不限" class="">不限</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_1000萬以下" class="">1000萬以下</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_1000-1500萬" class="">1000-1500萬</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_1500-2000萬" class="">1500-2000萬</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_2000-2500萬" class="">2000-2500萬</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_2500-3000萬" class="">2500-3000萬</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_3000-4000萬" class="">3000-4000萬</a></div><div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_售金_4000萬以上" class="">4000萬以上</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mb20 filter-shape-wrap">
-        <div class="filter-row clearfix">
-            <div class="filter-name pull-left">型態</div>
-            <div class="filter-body clearfix">
-                <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="中古屋列表頁_型態_不限" class="">不限</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_型態_公寓" class="">公寓</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_型態_電梯大樓" class="">電梯大樓</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_型態_透天厝" class="">透天厝</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_型態_別墅" class="">別墅</a></div>
-            </div>
-        </div>
-    </div>
-    <div class="mb20 filter-pattern-wrap">
-        <div class="filter-row clearfix">
-            <div class="filter-name pull-left">格局</div>
-            <div class="filter-body clearfix">
-                <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_不限" class="">不限</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_1房" class="">1房</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_2房" class="">2房</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_3房" class="">3房</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_4房" class="">4房</a></div>
-                <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_格局_5房及以上" class="">5房及以上</a></div>
-            </div>
-        </div>
-    </div>
-    <div class="filter-area-wrap">
-        <div class="filter-row clearfix">
-            <div class="filter-name pull-left">
-                <div class="area-switch">
-                    <div title="權狀坪數" class="area-switch-cur">權狀
-                        <i class="area-switch-icon fa fa-angle-down"></i>
-                    </div>
-                    <div title="主建坪數" data-gtm-stat="中古屋列表頁_坪數_主建" class="area-switch-float">主建</div>
-                </div>
-            </div>
-            <div class="filter-body clearfix">
-                <div class="filter-area-options clearfix oh">
-                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_不限" class="">不限</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_20坪以下" class="">20坪以下</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_20-30坪" class="">20-30坪</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_30-40坪" class="">30-40坪</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_40-50坪" class="">40-50坪</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_50-60坪" class="">50-60坪</a></div>
-                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="中古屋列表頁_坪數_60坪以上" class="">60坪以上</a></div>
-                    <div class="filter-custom pull-left flex-row flex-ai-center">
-                        <input type="text" maxlength="6" class="filter-custom-min filter-custom-input"> <span class="filter-custom-line">-</span> <input type="text" maxlength="6" class="filter-custom-max filter-custom-input"> <span class="filter-custom-unit">坪</span> <button type="button" class="filter-custom-submit" >確定</button></div></div></div></div></div> <div class="filter-more-wrap mb20 z-kind-null"><div class="filter-row clearfix"><div class="filter-name pull-left" style="padding-top: 7px;">更多</div> <div class="filter-body clearfix"><div class="filter-fcicount filter-more pull-left" style="width: 80px;"><div class="u-arrow"></div>
-</div>
-<div class="filter-houseage filter-more pull-left" style="width: 90px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-屋齡
-</div> <div class="filter-more-list" ><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-5年以下
-</div><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-5-10年
-</div><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-10-20年
-</div><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-20-30年
-</div><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-30-40年
-</div><div data-gtm-stat="中古屋列表頁_更多_屋齡" class="filter-more-item">
-40年以上
-</div> <div class="mb15 clearfix"><div class="filter-custom pull-left flex-row flex-ai-center"><input type="text" maxlength="3" class="filter-custom-min filter-custom-input"> <span class="filter-custom-line">-</span> <input type="text" maxlength="3" class="filter-custom-max filter-custom-input"> <span class="filter-custom-unit">年</span> <button type="button" class="filter-custom-submit">確定</button></div></div></div></div> <div class="filter-price filter-more pull-left" style="width: 80px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-單價
-</div> <div class="filter-more-list" ><div data-gtm-stat="中古屋列表頁_更多_單價" class="filter-more-item">
-20萬以下
-</div><div data-gtm-stat="中古屋列表頁_更多_單價" class="filter-more-item">
-20-30萬
-</div><div data-gtm-stat="中古屋列表頁_更多_單價" class="filter-more-item">
-30-50萬
-</div><div data-gtm-stat="中古屋列表頁_更多_單價" class="filter-more-item">
-50-70萬
-</div><div data-gtm-stat="中古屋列表頁_更多_單價" class="filter-more-item">
-70萬以上
-</div></div></div> <div class="filter-direction filter-more pull-left" style="width: 90px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-朝向
-</div> <div class="filter-more-list" ><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐東朝西
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐西朝東
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐南朝北
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐北朝南
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐東南朝西北
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐西南朝東北
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐西北朝東南
-</div><div data-gtm-stat="中古屋列表頁_更多_朝向" class="filter-more-item">
-坐東北朝西南
-</div></div></div> <div class="filter-floor filter-more pull-left" style="width: 80px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-樓層
-</div>
-<div class="filter-more-list" >
-
-
-
-<div class="mb15 clearfix"><div class="filter-custom pull-left flex-row flex-ai-center"><input type="text" maxlength="3" class="filter-custom-min filter-custom-input"> <span class="filter-custom-line">-</span> <input type="text" maxlength="3" class="filter-custom-max filter-custom-input"> <span class="filter-custom-unit">層</span> <button type="button" class="filter-custom-submit">確定</button></div></div></div></div> <div class="filter-fitment filter-more pull-left" style="width: 100px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-裝潢程度
-</div> <div class="filter-more-list" ><div data-gtm-stat="中古屋列表頁_更多_裝潢程度" class="filter-more-item">
-尚未裝潢
-</div><div data-gtm-stat="中古屋列表頁_更多_裝潢程度" class="filter-more-item">
-簡易裝潢
-</div><div data-gtm-stat="中古屋列表頁_更多_裝潢程度" class="filter-more-item">
-中檔裝潢
-</div><div data-gtm-stat="中古屋列表頁_更多_裝潢程度" class="filter-more-item">
-高檔裝潢
-</div></div></div> <div class="filter-life filter-more pull-left" style="width: 100px;"><div class="u-arrow"></div> <div title="" class="filter-more-txt">
-生活機能
-</div>
-<div class="filter-more-list" >
-<div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-便利店
-</div>
-<div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-傳統市場
-</div>
-<div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-近醫療機構
-</div>
-<div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-近學校
-</div><div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-近公園
-</div><div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-近夜市
-</div><div data-gtm-stat="中古屋列表頁_更多_生活機能" class="filter-more-item">
-百貨公司
-</div></div></div>
-
-</div></div></div></div>
+                </li>
             </ul>
-
         </div>
-
     </div>
     <!-- END BLOCK : index_header -->
 </div>
@@ -393,5 +259,11 @@ $(function () {
         $(this).parent('li').addClass('selected first');
         $('#search_div').show().css('display',"inline-block" );
     });
+
+    $('.filter-section').click(function(event) {
+        $('.filter-location').addClass('z-open');
+        $('.filter-location-list').show();
+    });
+
 });
 </script>
