@@ -9,21 +9,22 @@ import math
 db_conn = DB_CONN()
 
 #url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&firstRow=60&totalRows=14679&timestamp=1548122419382'
-#url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&price=100$_2000$&order=posttime_desc&firstRow=60&totalRows=12671&timestamp=1549086616121'
-url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&section=268&price=690$_845$&area=29$_36$&timestamp=1556122918428'
+#url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&section=268&price=690$_845$&area=29$_36$&timestamp=1556122918428'
+url = 'http://www.twhg.com.tw/damian/turning_over_clouldcall.php?a=0.10517867464733333&city=%E9%AB%98%E9%9B%84%E5%B8%82'
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
 }
 
-#response = requests.get(url, headers=headers)
+response = requests.get(url, headers=headers)
 
-#json_text = response.text
+json_text = response.text
 
-#json_text = json_text.encode("utf8").decode("cp950", "ignore")
-#data = json.loads(json_text)
-
-#house_list = data['data']['house_list']
+json_text = json_text.encode("utf8").decode("cp950", "ignore")
+data = json.loads(json_text)
+print(data)
+house_list = data['data']['house_list']
+'''
 house_list = [{\
 "address": "建國路三段319巷",\
 "area": 30.77,\
@@ -68,6 +69,7 @@ house_list = [{\
 "unit_price": "23.66萬/坪",\
 "unitprice": "23.66"
 }]
+'''
 data_list = {}
 
 db_conn = DB_CONN()
