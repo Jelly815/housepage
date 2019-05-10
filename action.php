@@ -95,6 +95,15 @@ switch($action){
 
         echo $w_json;
     break;
+    case 'search_view':
+        $area       = isset($_GET['area'])?filter_var($_GET['area'], FILTER_SANITIZE_STRING):'';
+        $price      = isset($_GET['price'])?filter_var($_GET['price'], FILTER_SANITIZE_STRING):'';
+        $type       = isset($_GET['type'])?filter_var($_GET['type'], FILTER_SANITIZE_STRING):'';
+        $room       = isset($_GET['room'])?filter_var($_GET['room'], FILTER_SANITIZE_STRING):'';
+        $ping       = isset($_GET['ping'])?filter_var($_GET['ping'], FILTER_SANITIZE_STRING):'';
+
+        echo '<pre>';print_r($area);echo '</pre>';
+    break;
 	default:
 
 }

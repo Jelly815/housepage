@@ -16,9 +16,9 @@
         <li {SELECTED_DEFAULT}>
             <a href="index.php" title="{HOMEPAGE}">{HOMEPAGE}</a>
         </li>
-        <li>
+        <!--<li>
             <a id="navi_search" href="javascript:;" title="{ADSEARCH}">{ADSEARCH}</a>
-        </li>
+        </li>-->
         <li {SELECTED_SIGNUP} id="login_li">
             {LOGIN_URL}
         </li>
@@ -63,7 +63,7 @@
                                                 </div>
                                                 <div title="" class="filter-section filter-location-btn pull-left">
                                                     <div class="u-arrow"></div>
-                                                    <div class="filter-location-btn-txt">選擇鄉鎮</div>
+                                                    <div class="filter-location-btn-txt">縣市/鄉鎮</div>
                                                 </div>
                                             </div>
                                             <div class="filter-location-list" style="display:none;">
@@ -262,8 +262,26 @@ $(function () {
 
     $('.filter-section').click(function(event) {
         $('.filter-location').addClass('z-open');
-        $('.filter-location-list').show();
+        event.stopPropagation();
+        $('.filter-location-list').toggle();
     });
 
+    $(document).click(function(event){
+        //選擇鄉鎮
+        if(!$('.filter-location-list').is(event.target) &&
+            $('.filter-location-list').has(event.target).length === 0)
+        { // Mark 1
+            $('.filter-location-list').hide();
+        }
+    });
+
+    url = '';
+    $(".section-list-item-link").click(function(event) {
+        url += $(this).text()+',';
+
+        //console.log(url);
+    });
+
+    console.log(url);
 });
 </script>
