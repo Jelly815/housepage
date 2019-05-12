@@ -8,17 +8,6 @@ $db 	= new db_function();
 $op 	= isset($_GET['op'])?filter_var($_GET['op'], FILTER_SANITIZE_STRING):'';
 $selected 			= 'class="selected first"';
 
-
-// 呼叫推薦引擎
-#$params = 'c'.md5(uniqid(rand())); #傳遞給python指令碼的入口引數
-#echo "<pre>";print_r($params);echo "</pre>";
-#$command2 = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
-#$output2 = shell_exec($command2);
-#echo $output2;
-#exit;
-
-
-
 $text 	= array(
 	'ADMINMAIL'		=> ADMINMAIL,
 	'HEADERTITLE' 	=> HEADERTITLE,
@@ -40,14 +29,7 @@ $text 	= array(
 	'SIGNPATH'		=> SIGNPATH
 );
 
-if(isset($_SESSION['uname']) && $op == OUT){
-	$_SESSION['uname']	= null;
-	$_SESSION['umail']	= null;
-	unset($_SESSION['uname']);
-	unset($_SESSION['umail']);
-
-	header('location:'.INDEXPATH);
-}elseif(isset($_SESSION['uname'])){
+if(isset($_SESSION['uname'])){
 	$text['USER_NAME']	= HI.$_SESSION['uname'];
 	$text['LOGIN_URL']	= '<a id="logout_btn" href="javascript:;" title="'.LOGOUT.'">'.LOGOUT.'</a>';
 }

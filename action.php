@@ -12,15 +12,18 @@ switch($action){
 	case 'login':
 		$user_mail 	= isset($_POST['user'])?filter_var($_POST['user'], FILTER_VALIDATE_EMAIL):'';
 		$user_psw 	= isset($_POST['pwd'])?filter_var($_POST['pwd'], FILTER_SANITIZE_STRING):'';
-
 		$user_psw 	= md5($user_psw);
 
-        $re_array   = $db->login($user_mail,$user_psw);
+        $re_array   = $db->select_table_data('ex_user','name,email,unid',
+            array(
+                array(0,'pwd','=',$user_psw),
+                array(0,'email','=',$user_mail)));
 
         if(!empty($re_array)){
-            $_SESSION['uname']  = $re_array[0]['ex_name'];
-            $_SESSION['umail']  = $re_array[0]['ex_mail'];
-            $log_msg['msg'] = HI.$_SESSION['uname'];
+            $_SESSION['uname']  = $re_array[0]['name'];
+            $_SESSION['umail']  = $re_array[0]['email'];
+            $_SESSION['uid']    = $re_array[0]['unid'];
+            $log_msg['msg']     = HI.$_SESSION['uname'];
         }else{
             $log_msg    = array('status' => false,'msg' => ALERTXT05);
         }
@@ -31,8 +34,10 @@ switch($action){
     case 'logout':
         $_SESSION['uname']  = null;
         $_SESSION['umail']  = null;
+        $_SESSION['uid']  = null;
         unset($_SESSION['uname']);
         unset($_SESSION['umail']);
+        unset($_SESSION['uid']);
 
         header("Refresh:0; url=".INDEXPATH);
     break;

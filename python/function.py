@@ -421,7 +421,7 @@ class FUNC_CLASS(DB_CONN):
             hot_house_sql  += """
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
-                LIMIT 5
+                LIMIT 20
                 """
         else:
             hot_house_sql  += """

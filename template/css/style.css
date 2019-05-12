@@ -179,7 +179,7 @@ form {
 }
 .header div#featured div ul li.selected #first_content{
 	width: 870px;
-	height: 200px;
+	height: 220px;
 	position: absolute;
 	border-radius: 5px;
 	left: 0;
@@ -373,6 +373,7 @@ a.search_key_button {
 	margin: 0;
     overflow: hidden;
 	border-radius: 5px;
+	min-height: 450px;
 }
 #content ul li{
 	height: 1%;
@@ -415,7 +416,7 @@ a.search_key_button {
     width: 158px;
 	color: #393D42;
 	font-family: arial;
-	font-size: 12px;
+	font-size: 8.5pt;
 	margin: 0 0 15px;
 }
 #content ul li a.details{

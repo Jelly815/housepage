@@ -41,16 +41,14 @@ class db_function extends db_connect{
 		$result = $re_array = array();
 		$pwd 	= md5($pwd);
 
-		$sql 	=  "SELECT 	`ex_name`,`ex_mail`
-					FROM 	`ex_user`
-					WHERE 	ex_mail = ? AND
-							ex_pwd 	= ? ";
+		$sql 	=  "SELECT 	`name`,`email`,`unid` ".
+				   "FROM 	`ex_user` ".
+				   "WHERE 	email = ? AND ".
+						   "pwd = ? ";
 
 		$vals 	= array($email,$pwd);
 		$sql 	= $this->db->prepare($sql);
-
 		$result = $this->db->execute($sql,$vals);
-
 		if($result && $result->RecordCount() > 0){
 			$re_array 	= $this->db->Insert_ID();
 		}

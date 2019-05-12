@@ -9,8 +9,8 @@ import sys
 import setting
 import random
 
-#user_unid = sys.argv[1]
-user_unid = 'c3f9c9dc9e726007cbba1301052c0dc0a'
+user_unid = sys.argv[1]
+#user_unid = 'c3f9c9dc9e726007cbba1301052c0dc0a'
 #user_unid = 'm6bb771cd12d1658a7e26b3c63632d8f7'
 #user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
 #user_unid = 'm185ccab81019a39cba16f666f070bb83'
@@ -22,6 +22,7 @@ user_items_dict = []
 others_user_items_dict = []
 times_range_items = []
 re_val = []
+users_items = []
 # 取得A的搜尋紀錄
 record_data = func.get_this_user_search(user_unid)
 

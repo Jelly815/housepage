@@ -183,6 +183,7 @@
                                 <div style="display: none" id="option_area"></div>
                             </div>
                         </div>
+                        <div class="filter-items z-small" style="float: right"><a href="index.php" data-gtm-stat="50坪以上" class="">[重設]</a></div>
                     </div>
                 </li>
             </ul>
@@ -283,6 +284,7 @@ $(function () {
     if($("#option_str").text() == '' && $("#option_price").text() =='' &&
         $("#option_shape").text() == '' && $("#option_wrap").text() == '' &&
         $("#option_area").text() == ''){
+        // search results
         $.ajax({
             url: 'search_results.php',
             type: 'POST',
@@ -297,6 +299,26 @@ $(function () {
         })
         .done(function(data) {
             $(".second ul").empty().html(data);
+        })
+        .fail(function() {
+            console.log("error");
+        });
+
+        // personalized recommendation
+        $.ajax({
+            url: 'recommend.php',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                area:   '',
+                price:  '',
+                type:   '',
+                room:   '',
+                ping:   ''
+            },
+        })
+        .done(function(data) {
+            $("#content .first ul").empty().html(data);
         })
         .fail(function() {
             console.log("error");
