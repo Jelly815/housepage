@@ -252,6 +252,6 @@ $add_record_arr = array(
 		}
 		*/
     $tpl->gotoBlock( "_ROOT" );
-    $tpl->assign("url","index.php?op=search_view&area=".rtrim($area_str,',')."&ping=".implode(',', $ping_arr)."&price=".implode(',', $price_arr)."&type=".rtrim($type_str,',')."&roon=".implode(',', $room_arr));
+    $tpl->assign("url","index.php?op=view_search&area=".rtrim($area_str,',')."&ping=".implode(',', $ping_arr)."&price=".implode(',', $price_arr)."&type=".rtrim($type_str,',')."&roon=".implode(',', $room_arr));
     $tpl->printToScreen();
 ?>
