@@ -17,7 +17,7 @@ form {
 }
 /*-------------------------	Header --------------------------*/
 .header{
-	width: 960px;
+	width: 900px;
 	margin: 0 auto;
 	/*overflow: hidden;*/
 	min-height:220px;
@@ -178,7 +178,7 @@ form {
 	color: #191C21;
 }
 .header div#featured div ul li.selected #first_content{
-	width: 930px;
+	width: 870px;
 	height: 200px;
 	position: absolute;
 	border-radius: 5px;
@@ -186,6 +186,7 @@ form {
 	padding: 30px 20px;
 	_top: 72px;
 	background: url(../images/bg-featured-bottom-curve.gif) no-repeat left bottom #fff;
+	margin-left: -20px;
 }
 .header div#featured div ul li.selected #first_content a{
 	/*position: absolute;
@@ -340,7 +341,7 @@ a.search_key_button {
 }
 /*-------------------------	Content --------------------------*/
 .content {
-    margin: 0;
+    margin: 20 0 0 0;
     width: auto;
     padding: 0 0 30px;
 }
@@ -391,6 +392,7 @@ a.search_key_button {
 	margin: 0 15px 0 0;
 }
 #content ul li span{
+	width: 158px;
 	display: block;
 	clear: none;
     float: left;
@@ -413,7 +415,7 @@ a.search_key_button {
     width: 158px;
 	color: #393D42;
 	font-family: arial;
-	font-size: 14px;
+	font-size: 12px;
 	margin: 0 0 15px;
 }
 #content ul li a.details{
@@ -457,7 +459,7 @@ a.search_key_button {
 	color: #4d4d4d;
 	text-decoration: none;
 	position: absolute;
-	top: 480px;
+	top: 505px;
 	right: 15px;
 	background: url(../images/arrow1.gif) no-repeat right center;
 	padding: 0 10px 0 0;
@@ -977,7 +979,7 @@ a.search_key_button {
 	width: 33px;
 	height: 26px;
 	border: 0;
-	margin: 0 0 0 -15px;
+	margin: 0 0 0 -33px;
 	cursor: pointer;
 }
 .footer p{

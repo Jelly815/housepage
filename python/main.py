@@ -8,12 +8,14 @@ from function import FUNC_CLASS
 import sys
 import setting
 import random
+
 #user_unid = sys.argv[1]
+user_unid = 'c3f9c9dc9e726007cbba1301052c0dc0a'
 #user_unid = 'm6bb771cd12d1658a7e26b3c63632d8f7'
 #user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
 #user_unid = 'm185ccab81019a39cba16f666f070bb83'
 #[304,1000,30,2,3],[304,1000,30,3,3],[304,1000,40,2,3],[304,1000,40,3,3]
-user_unid = 'mca3907edc888d46215b3a35c294e73fa'
+#user_unid = 'mca3907edc888d46215b3a35c294e73fa'
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -65,10 +67,10 @@ elif len(record_data['often_record']) == 1:
 else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
-print('unique_items',unique_items)
+#print('unique_items',unique_items)
 ####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
 times_range_items_not = func.get_this_user_no_search(user_unid)
-print('times_range_items_not',times_range_items_not)
+#print('times_range_items_not',times_range_items_not)
 # 對於該物件是否有興趣，是:1,否:0
 def make_user_items_matrix(others_user_items_dict):
     return [1 if items in others_user_items_dict else 0
@@ -76,17 +78,17 @@ def make_user_items_matrix(others_user_items_dict):
 
 # 使用者可能對某個物件喜歡1,否:0
 user_items_matrix = list(map(make_user_items_matrix, users_items))
-print('user_items_matrix',user_items_matrix)
+#print('user_items_matrix',user_items_matrix)
 # 在某個物件那一列元素中，1代表每個對此可能喜歡的使用者,0標示，代表可能不喜歡
 items_user_matrix = [[user_items_vector[j]
                     for user_items_vector in user_items_matrix]
                     for j, _ in enumerate(unique_items)]
-print('items_user_matrix',items_user_matrix)
+#print('items_user_matrix',items_user_matrix)
 # 使用餘弦相似度
 items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
                     for user_vector_j in items_user_matrix]
                     for user_vector_i in items_user_matrix]
-print('items_similarities',items_similarities)
+#print('items_similarities',items_similarities)
 # 找出與某物件最類似的
 #print(func.most_similar_items_to(0,items_similarities[0],unique_items))
 
@@ -111,5 +113,6 @@ if len(recommand_items) < setting.less_how_num:
 if len(recommand_items) > 0:
     #random.sample(recommand_items, setting.random_num)
     print(random.sample(recommand_items, setting.random_num))
+    #json_str = json.dumps(random.sample(recommand_items, setting.random_num));
 else:
     print('None')

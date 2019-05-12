@@ -218,7 +218,6 @@ class db_function extends db_connect{
 			$sql        = $this->db->Prepare($sql);
 
 			if($type == 1){
-
 				$rs     = $this->db->SelectLimit($sql,$page_limit,$page_num,$arr);
 	            if(!empty($rs)){
 	                $return_data  		= $rs->getArray();

@@ -390,12 +390,11 @@ class FUNC_CLASS(DB_CONN):
         hot_house_sql  = """
                 SELECT  `id`
                 FROM    `ex_main`
-                WHERE   `area` = %s
                 """
 
         if no_data == 1:
             hot_house_sql  += """
-                        AND
+                WHERE   `area` = %s AND
                         `price`= %s AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
@@ -407,16 +406,26 @@ class FUNC_CLASS(DB_CONN):
             self.execute(user_area_sql,[user_id])
             user_area       = self.fetchall()
 
+            hot_house_vals = ''
+            if user_area:
+                hot_house_vals  = [user_area[0]['area_id']]
+                hot_house_sql  += " WHERE   `area` = %s AND "
+            else:
+                hot_house_vals = []
+                for num in range(276,318) :
+                    hot_house_vals.append(num)
+
+                hot_house_sql  += " WHERE   `area` IN ("+ ','.join((str(num) for num in hot_house_vals)) +") AND "
+                hot_house_vals = []
+                
             hot_house_sql  += """
-                        AND
                         `is_closed` = 0
                 ORDER BY `view_num`,`update_time`
                 LIMIT 5
                 """
-            hot_house_vals  = [user_area[0]['area_id']]
         else:
             hot_house_sql  += """
-                        AND
+                WHERE   `area` = %s AND
                         `price`= %s AND
                         `ping` <= %s AND
                         `style`= %s AND
@@ -428,8 +437,12 @@ class FUNC_CLASS(DB_CONN):
             hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
 
         try:
-            self.execute(hot_house_sql,hot_house_vals)
+            if hot_house_vals:
+                self.execute(hot_house_sql,hot_house_vals)
+            else:
+                self.execute(hot_house_sql)
             hot_house      = self.fetchall()
+            
         except:
             hot_house = []
 

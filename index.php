@@ -2,10 +2,22 @@
 session_start();
 include_once('./lib/handling.php');
 include_once('./lib/lang.php');
-echo "<pre>";print_r($_SERVER['REMOTE_ADDR']);echo "</pre>";
+
+#echo "<pre>";print_r($_SERVER['REMOTE_ADDR']);echo "</pre>";
 $db 	= new db_function();
 $op 	= isset($_GET['op'])?filter_var($_GET['op'], FILTER_SANITIZE_STRING):'';
 $selected 			= 'class="selected first"';
+
+
+// 呼叫推薦引擎
+#$params = 'c'.md5(uniqid(rand())); #傳遞給python指令碼的入口引數
+#echo "<pre>";print_r($params);echo "</pre>";
+#$command2 = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
+#$output2 = shell_exec($command2);
+#echo $output2;
+#exit;
+
+
 
 $text 	= array(
 	'ADMINMAIL'		=> ADMINMAIL,
@@ -24,7 +36,8 @@ $text 	= array(
 	'ALERTXT06'		=> ALERTXT06,
 	'ALERTXT08'		=> ALERTXT08,
 	'ALERTXT10'		=> ALERTXT10,
-	'ALERTXT11'		=> ALERTXT11
+	'ALERTXT11'		=> ALERTXT11,
+	'SIGNPATH'		=> SIGNPATH
 );
 
 if(isset($_SESSION['uname']) && $op == OUT){
@@ -106,15 +119,5 @@ if($op == ''){
 	$tpl->newBlock("index_header");
 }
 
-// 初始化搜尋
-$city_arr 	= $db->get_table_value('`ex_area`','`id`,`name`','`city_id` = 0 AND `disable` = 0','`sort`');
-
-foreach ($city_arr as $city_value) {
-	//$tpl->newBlock("city_option");
-	//$tpl->assign(array(
-	//	'city_id'	=> $city_value['id'],
-	//	'city_name'	=> $city_value['name'],
-	//));
-}
 $tpl->printToScreen ();
 ?>

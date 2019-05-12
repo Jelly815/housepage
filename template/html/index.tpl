@@ -1,6 +1,6 @@
 <div id="content">
     <div class="first">
-        <h2>Hot Deals</h2>
+        <h2>Personalized Recommendation </h2>
         <ul>
             <li>
                 <a href="deals.html"><img src="template/images/riverside-city.jpg" alt="" width="140" height="86"/></a>
@@ -34,7 +34,7 @@
         <a class="view_all" href="deals.html">View all</a>
     </div>
     <div class="second">
-        <h2>Special Offers</h2>
+        <h2>Search<br>results</h2>
         <ul>
             <li>
                 <a href="offers.html"><img src="template/images/palace.jpg" alt=""/></a>
@@ -68,7 +68,7 @@
         <a class="view_all" href="offers.html">View all</a>
     </div>
     <div id="news">
-        <h2>Get Updated</h2>
+        <h2>Get<br>Updated</h2>
         <a href="http://twitter.com/fwtemplates">Follow us <font>Twitter</font></a>
         <a href="http://facebook.com/freewebsitetemplates">Like us in <font>Facebook</font></a>
         <a href="#">Visit our <font>Blog</font></a>

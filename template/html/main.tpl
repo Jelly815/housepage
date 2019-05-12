@@ -8,8 +8,8 @@
         <!--<link rel="stylesheet" href="{CSSPATH}bootstrap.min.css" type="text/css" />-->
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery-1.12.4.js"></script>
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery.lightbox.js"></script>
-        <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script language="javascript" type="text/javascript" src="{JSPATH}jquery-1.12.1-ui.min.js"></script>
+        <link rel="stylesheet" href="{CSSPATH}jquery-1.12.1-ui.css">
 
         <script src="{JSPATH}jquery.tagsinput-revisited.js"></script>
         <link rel="stylesheet" href="{CSSPATH}jquery.tagsinput-revisited.css" />

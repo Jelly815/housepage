@@ -68,7 +68,7 @@
                                             </div>
                                             <div class="filter-location-list" style="display:none;">
                                                 <div class="section-list clearfix">
-                                                    <div class="section-list-unlimited pull-left">不限</div>
+                                                    <!--<div class="section-list-unlimited section-list-item pull-left" style="width:40px">不限</div>-->
                                                     <div class="section-list-options clearfix">
                                                         <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">三民區</a></div>
                                                         <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳳山區</a></div>
@@ -113,6 +113,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div style="margin-left: 330px;color:#393D42" id="option_str"></div>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +122,7 @@
                                 <div class="filter-name">金額</div>
                                 <div class="filter-body clearfix relative">
                                     <div class="filter-saleprice-options clearfix oh">
-                                        <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                        <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="300萬以下" class="">300萬以下</a></div>
                                         <div class="filter-items z-multiple" style="margin-left:-30px;"><a href="javascript:;" data-gtm-stat="300-600萬以下" class="">300-600萬以下</a></div>
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="600-1000萬以下" class="">600-1000萬以下</a></div>
@@ -130,31 +131,34 @@
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="2000萬以上" class="">2000萬以上</a></div>
                                     </div>
                                 </div>
+                                <div style="display: none" id="option_price"></div>
                             </div>
                         </div>
                         <div class="mb20 filter-shape-wrap">
                             <div class="filter-row clearfix">
                                 <div class="filter-name pull-left">類型</div>
                                 <div class="filter-body clearfix">
-                                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                    <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="公寓" class="">公寓</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="電梯大樓" class="">電梯大樓</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="透天厝" class="">透天厝</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="別墅" class="">別墅</a></div>
                                 </div>
+                                <div style="display: none" id="option_shape"></div>
                             </div>
                         </div>
                         <div class="mb20 filter-pattern-wrap">
                             <div class="filter-row clearfix">
                                 <div class="filter-name">房數</div>
                                 <div class="filter-body clearfix oh">
-                                    <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                    <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="1房" class="">1房</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="2房" class="">2房</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="3房" class="">3房</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="4房" class="">4房</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="5房及以上" class="">5房及以上</a></div>
                                 </div>
+                                <div style="display: none" id="option_wrap"></div>
                             </div>
                         </div>
                         <div class="filter-area-wrap">
@@ -168,7 +172,7 @@
                                 </div>
                                 <div class="filter-body clearfix">
                                     <div class="filter-area-options clearfix oh">
-                                        <div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>
+                                        <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="20坪以下" class="">20坪以下</a></div>
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="20-30坪以下" class="">20-30坪以下</a></div>
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="30-40坪以下" class="">30-40坪以下</a></div>
@@ -176,6 +180,7 @@
                                         <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="50坪以上" class="">50坪及以上</a></div>
                                     </div>
                                 </div>
+                                <div style="display: none" id="option_area"></div>
                             </div>
                         </div>
                     </div>
@@ -206,7 +211,7 @@ $(function () {
         if($(this).select().val() != ''){
             $('.attireCodeToggleBlock').show();
             //$('.fstMultipleMode .fstResultItem').remove();
-//console.log('start');
+            //console.log('start');
             $.ajax({
                 url: 'action.php',
                 type: 'GET',
@@ -275,13 +280,212 @@ $(function () {
         }
     });
 
-    url = '';
-    $(".section-list-item-link").click(function(event) {
-        url += $(this).text()+',';
+    if($("#option_str").text() == '' && $("#option_price").text() =='' &&
+        $("#option_shape").text() == '' && $("#option_wrap").text() == '' &&
+        $("#option_area").text() == ''){
+        $.ajax({
+            url: 'search_results.php',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                area:   '',
+                price:  '',
+                type:   '',
+                room:   '',
+                ping:   ''
+            },
+        })
+        .done(function(data) {
+            $(".second ul").empty().html(data);
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+    // 區域
+    $('.section-list-item').click(function() {
+        var rule_area   = $("#option_str").text().match($(this).text());
 
-        //console.log(url);
+        if(rule_area == null){
+            var str     = $("#option_str").text();
+            var str_arr = str.split(",");
+
+            if(str_arr.length < 5){
+                var str = str !=''?str+','+$(this).text():$(this).text();
+                $("#option_str").text(str);
+                $(this).children().css({
+                    "color": "#ff7921",
+                    "background-image": "url(template/images/checkbox-checked.png)"
+                });
+                 $.ajax({
+                    url: 'search_results.php',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        area:   str,
+                        price:  $("#option_price").text(),
+                        type:   $("#option_shape").text(),
+                        room:   $("#option_wrap").text(),
+                        ping:   $("#option_area").text()
+                    },
+                })
+                .done(function(data) {
+                    $(".second ul").empty().html(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            }else{
+                var rule_area = str.match("您最多可選擇5個鄉鎮");
+                if(rule_area == null){
+                    $("#option_str").html(str+"<font color='#ff7921'> ["+$(this).children().attr("j-tips-txt")+"]</font>");
+                }
+            }
+        }
     });
+    // 金額
+    $('.filter-saleprice-options .filter-items').click(function() {
+        var rule_price   = $("#option_price").text().match($(this).text());
 
-    console.log(url);
+        if(rule_price == null){
+            var str     = $("#option_price").text();
+            var str_arr = str.split(",");
+
+            if(str_arr.length < 6){
+                var str = str !=''?str+','+$(this).text():$(this).text();
+                $("#option_price").text(str);
+                $(this).children().css({
+                    "color": "#ff7921",
+                    "background-image": "url(template/images/checkbox-checked.png)"
+                });
+                $.ajax({
+                    url: 'search_results.php',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        area:   $("#option_str").text(),
+                        price:  str,
+                        type:   $("#option_shape").text(),
+                        room:   $("#option_wrap").text(),
+                        ping:   $("#option_area").text()
+                    },
+                })
+                .done(function(data) {
+                    $(".second ul").empty().html(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            }
+        }
+    });
+    // 類型
+    $('.filter-shape-wrap .filter-items').click(function() {
+        var rule_price   = $("#option_shape").text().match($(this).text());
+
+        if(rule_price == null){
+            var str     = $("#option_shape").text();
+            var str_arr = str.split(",");
+
+            if(str_arr.length < 4){
+                var str = str !=''?str+','+$(this).text():$(this).text();
+                $("#option_shape").text(str);
+                $(this).children().css({
+                    "color": "#ff7921",
+                    "background-image": "url(template/images/checkbox-checked.png)"
+                });
+                $.ajax({
+                    url: 'search_results.php',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        area:   $("#option_str").text(),
+                        price:  $("#option_price").text(),
+                        type:   str,
+                        room:   $("#option_wrap").text(),
+                        ping:   $("#option_area").text()
+                    },
+                })
+                .done(function(data) {
+                    $(".second ul").empty().html(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            }
+        }
+    });
+    // 房數
+    $('.filter-pattern-wrap .filter-items').click(function() {
+        var rule_price   = $("#option_wrap").text().match($(this).text());
+
+        if(rule_price == null){
+            var str     = $("#option_wrap").text();
+            var str_arr = str.split(",");
+
+            if(str_arr.length < 5){
+                var str = str !=''?str+','+$(this).text():$(this).text();
+                $("#option_wrap").text(str);
+                $(this).children().css({
+                    "color": "#ff7921",
+                    "background-image": "url(template/images/checkbox-checked.png)"
+                });
+                $.ajax({
+                    url: 'search_results.php',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        area:   $("#option_str").text(),
+                        price:  $("#option_price").text(),
+                        type:   $("#option_shape").text(),
+                        room:   str,
+                        ping:   $("#option_area").text()
+                    },
+                })
+                .done(function(data) {
+                    $(".second ul").empty().html(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            }
+        }
+    });
+    // 坪數
+    $('.filter-area-options .filter-items').click(function() {
+        var rule_price   = $("#option_area").text().match($(this).text());
+
+        if(rule_price == null){
+            var str     = $("#option_area").text();
+            var str_arr = str.split(",");
+
+            if(str_arr.length < 5){
+                var str = str !=''?str+','+$(this).text():$(this).text();
+                $("#option_area").text(str);
+                $(this).children().css({
+                    "color": "#ff7921",
+                    "background-image": "url(template/images/checkbox-checked.png)"
+                });
+                $.ajax({
+                    url: 'search_results.php',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {
+                        area:   $("#option_str").text(),
+                        price:  $("#option_price").text(),
+                        type:   $("#option_shape").text(),
+                        room:   $("#option_wrap").text(),
+                        ping:   str
+                    },
+                })
+                .done(function(data) {
+                    $(".second ul").empty().html(data);
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            }
+        }
+    });
 });
 </script>
