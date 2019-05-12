@@ -194,64 +194,7 @@
 			));
         }
 
-$add_record_arr = array(
-            $_SESSION['uid'] => array(
-                    explode(',', rtrim($area_str,',')), // 區域
-                    $ping_arr,  // 坪數
-                    $price_arr,     // 金額
-                    explode(',', rtrim($type_str,',')), // 類型
-                    $room_arr,      // 房數
-            ),
-        );
-
-    // 儲存搜尋紀錄
-        /*
-        $add_record_sql =
-		"INSERT INTO `ex_record` (`user_unid`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
-
-		$up_record_sql 	=
-			"UPDATE `ex_record` SET `times` = `times` + 1 WHERE `user_id`= ? AND `area` = ? AND `price` = ? AND `ping` = ? AND `style` = ? AND `type` = ? ";
-
-		$add_record_arr = array(
-			$_SESSION['uid'] => array(
-					explode(',', rtrim($area_str,',')), // 區域
-					$ping_arr, 	// 坪數
-					$price_arr, 	// 金額
-					explode(',', rtrim($type_str,',')), // 類型
-					$room_arr, 		// 房數
-			),
-		);
-
-		foreach ($add_record_arr as $record_key => $record_value) {
-			$user_unid 	= $record_key;
-
-			foreach ($record_value[0] as $area_key => $area_value) {
-				foreach ($record_value[1] as $ping_key => $ping_value) {
-					foreach ($record_value[2] as $money_key => $money_value) {
-						foreach ($record_value[3] as $type_key => $type_value) {
-							foreach ($record_value[4] as $style_key => $style_value) {
-								// 檢查是否有紀錄
-								$get_record 	= $db->get_table_value('ex_record','id',
-								"`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' AND ".
-								"`price` = '{$money_value}' AND `ping` = '{$ping_value}' AND ".
-								"`style` = '{$style_value}' AND `type` = '{$type_value}' ");
-
-								if(!empty($get_record)){
-									$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value);
-
-									$result 	= $db->update_data($up_record_sql,$vals_arr);
-								}else{
-									$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value,1);
-									$result 	= $db->insert_data($add_record_sql,$vals_arr);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
     $tpl->gotoBlock( "_ROOT" );
-    $tpl->assign("url","index.php?op=view_search&area=".rtrim($area_str,',')."&ping=".implode(',', $ping_arr)."&price=".implode(',', $price_arr)."&type=".rtrim($type_str,',')."&roon=".implode(',', $room_arr));
+    $tpl->assign("url","index.php?op=view_search&area=".rtrim($area_str,',')."&ping=".implode(',', $ping_arr)."&price=".implode(',', $price_arr)."&type=".rtrim($type_str,',')."&room=".implode(',', $room_arr));
     $tpl->printToScreen();
 ?>

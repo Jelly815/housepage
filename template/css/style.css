@@ -534,11 +534,12 @@ a.search_key_button {
 }
 .content div#excursions,.content div#activities,.content div#restaurant,.content div#destinations,.content div#deals,.content div#ships-and-activities,
 .content div#offers,.content div#featured{
-	margin-top: -490px;
+	margin: -50px 0 0 300px;
 	background-color: #fff;
 	padding: 0 0 40px;
 	overflow: hidden;
 	border-radius: 5px;
+	width:960px;
 }
 .content div#cruises{
 	margin-top: -490px;
@@ -552,7 +553,7 @@ a.search_key_button {
 	min-height:502px;
 	margin:auto;
     background-color: #fff;
-    padding: 0 0 200px;
+    margin: -50px 0 0 300px;
     overflow: hidden;
     border-radius: 5px;
 }
@@ -860,10 +861,11 @@ a.search_key_button {
 	border-color: #dfdfdf;
 	overflow: hidden;
 	height: 1%;
+	min-height: 130px;
 }
-.content div#offers ul li div{
+.content div#offers ul li div div{
 	float: left;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 0px;
     width: 420px;
 }
 .content div#offers ul li div h3{

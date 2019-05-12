@@ -41,6 +41,7 @@ $tpl->assignInclude('footer',_TFOOTER);
 $tpl->assignInclude('login',_TLOGIN);
 $tpl->assignInclude('alert',_TALERT);
 
+$text['SELECTED_DEFAULT']= $selected;
 switch($op){
 	/*
 	case ADDPIC:	//新增作品
@@ -75,11 +76,17 @@ switch($op){
 		}
 	  break;
 	 */
+	case VIEWSEARCH:		// view all
+		$text['PAGE_TITLE']			= TITLEVIEWSEARCH;
+		include_once(_PVIEWSEARCH);
+		$tpl->assignInclude('themes',_TVIEWSEARCH);
+	break;
 	case SIGN:		//註冊
 		$text['PAGE_TITLE']			= SIGNUP;
 		if(!isset($_SESSION['uname'])){
 			include_once(_PSIGN);
-			$text['SELECTED_SIGNUP']= $selected;
+			$text['SELECTED_SIGNUP']	= $selected;
+			$text['SELECTED_DEFAULT']	= '';
 			$tpl->assignInclude('themes',_TSIGN);
 		}else{
 			header('location:'.INDEXPATH);
@@ -87,7 +94,6 @@ switch($op){
 	break;
 	default:		//首頁
 		//$headTitle = HEADERTITLE;
-		$text['SELECTED_DEFAULT']	= $selected;
 		$tpl -> assignInclude('themes',_TINDEX);
 
 }
