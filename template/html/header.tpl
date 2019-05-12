@@ -193,21 +193,9 @@
 </div>
 <script>
 $(function () {
-    //var $select = $('select');
-
-    // Run, fire and forget
-    //$select.fastselect()
-
-    // Run via plugin facade and get instance
-    //var fastSelectInstance = $select.fastselect(options).data('fastselect');
-
-    // run directly
-    //var fastSelectInstance = new $.Fastselect($select.get(0), options);
     // 關鍵字搜尋
     $('#search_key').tagsInput({placeholder:'{ALERTXT11}'});
     // 縣市
-    //$('.singleSelect').fastselect();
-    //$('.multipleInputDynamicWithInitialValue').fastselect();
     $('#search_city').change(function(event) {
         if($(this).select().val() != ''){
             $('.attireCodeToggleBlock').show();
@@ -284,6 +272,7 @@ $(function () {
     if($("#option_str").text() == '' && $("#option_price").text() =='' &&
         $("#option_shape").text() == '' && $("#option_wrap").text() == '' &&
         $("#option_area").text() == ''){
+        $(".second .view_all").hide();
         // search results
         $.ajax({
             url: 'search_results.php',
@@ -324,8 +313,10 @@ $(function () {
             console.log("error");
         });
     }
+
     // 區域
     $('.section-list-item').click(function() {
+        $(".second .view_all").show();
         var rule_area   = $("#option_str").text().match($(this).text());
 
         if(rule_area == null){
@@ -353,6 +344,7 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
+                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
                 })
                 .fail(function() {
                     console.log("error");
@@ -367,6 +359,7 @@ $(function () {
     });
     // 金額
     $('.filter-saleprice-options .filter-items').click(function() {
+        $(".second .view_all").show();
         var rule_price   = $("#option_price").text().match($(this).text());
 
         if(rule_price == null){
@@ -394,6 +387,7 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
+                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
                 })
                 .fail(function() {
                     console.log("error");
@@ -403,6 +397,7 @@ $(function () {
     });
     // 類型
     $('.filter-shape-wrap .filter-items').click(function() {
+        $(".second .view_all").show();
         var rule_price   = $("#option_shape").text().match($(this).text());
 
         if(rule_price == null){
@@ -430,6 +425,7 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
+                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
                 })
                 .fail(function() {
                     console.log("error");
@@ -439,6 +435,7 @@ $(function () {
     });
     // 房數
     $('.filter-pattern-wrap .filter-items').click(function() {
+        $(".second .view_all").show();
         var rule_price   = $("#option_wrap").text().match($(this).text());
 
         if(rule_price == null){
@@ -466,6 +463,7 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
+                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
                 })
                 .fail(function() {
                     console.log("error");
@@ -475,6 +473,7 @@ $(function () {
     });
     // 坪數
     $('.filter-area-options .filter-items').click(function() {
+        $(".second .view_all").show();
         var rule_price   = $("#option_area").text().match($(this).text());
 
         if(rule_price == null){
@@ -502,6 +501,7 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
+                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
                 })
                 .fail(function() {
                     console.log("error");

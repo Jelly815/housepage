@@ -24,11 +24,6 @@
         		$area_str  .= $flip[$value].",";
         	}
         }
-        #$area_str   = '';
-        #foreach ($area as $key => $value) {
-        #	$area_arr[$value['id']] = $value['name'];
-        #    $area_str  .= $value['id'].",";
-        #}
     // 金額
         $price_str   = '';
         $min = $small = $large = $max = 0;
@@ -88,13 +83,6 @@
         		$type_str  .= $flip[$value].",";
         	}
         }
-
-        #$type       = $db->select_table_data('ex_type','id,name',array(array(2,'name','IN ('.rtrim($type_str,',').')','')));
-        #$type_str   = '';
-        #foreach ($type as $key => $value) {
-        #	$type_arr[$value['id']] = $value['name'];
-        #    $type_str  .= $value['id'].",";
-        #}
     // 房數
         $room_str   = '';
         $max        = 0;
@@ -124,7 +112,7 @@
             if($var_strpos){
                 $value = str_replace("坪及以上", '', $value);
                 $max   = $value;
-                $ping_arr[] = $value;
+                $ping_arr[] = 51;
             }else{
                 $value = str_replace("坪以下", '', $value);
                 $val_arr = explode('-', $value);
@@ -148,7 +136,6 @@
                 }
             }
         }
-
         $ping_str = ($min != 0)?"`ping` <= {$min} ":'';
         if($ping_str != ''){
             $ping_str = ($small != 0)?$ping_str." OR `ping` BETWEEN {$small} AND {$large} ":$ping_str;
@@ -207,6 +194,15 @@
 			));
         }
 
+$add_record_arr = array(
+            $_SESSION['uid'] => array(
+                    explode(',', rtrim($area_str,',')), // 區域
+                    $ping_arr,  // 坪數
+                    $price_arr,     // 金額
+                    explode(',', rtrim($type_str,',')), // 類型
+                    $room_arr,      // 房數
+            ),
+        );
 
     // 儲存搜尋紀錄
         /*
@@ -255,5 +251,7 @@
 			}
 		}
 		*/
+    $tpl->gotoBlock( "_ROOT" );
+    $tpl->assign("url","index.php?op=search_view&area=".rtrim($area_str,',')."&ping=".implode(',', $ping_arr)."&price=".implode(',', $price_arr)."&type=".rtrim($type_str,',')."&roon=".implode(',', $room_arr));
     $tpl->printToScreen();
 ?>

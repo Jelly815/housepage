@@ -4,14 +4,13 @@
         <ul>
 
         </ul>
-        <a class="view_all" href="deals.html">View all</a>
     </div>
     <div class="second">
         <h2>Search<br>results</h2>
         <ul>
 
         </ul>
-        <a class="view_all" href="offers.html">View all</a>
+        <a class="view_all" href="">View all</a>
     </div>
     <div id="news">
         <h2>Get<br>Updated</h2>

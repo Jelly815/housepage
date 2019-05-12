@@ -7,3 +7,4 @@
     <a href="javascript:;" class="book">{search_view}</a>
 </li>
 <!-- END BLOCK : search_row -->
+<div id="search_val" style="display:none">{url}</div>
