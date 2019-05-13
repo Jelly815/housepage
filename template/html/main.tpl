@@ -9,11 +9,13 @@
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery-1.12.4.js"></script>
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery.lightbox.js"></script>
         <script language="javascript" type="text/javascript" src="{JSPATH}jquery-1.12.1-ui.min.js"></script>
+
         <link rel="stylesheet" href="{CSSPATH}jquery-1.12.1-ui.css">
 
         <script src="{JSPATH}jquery.tagsinput-revisited.js"></script>
         <link rel="stylesheet" href="{CSSPATH}jquery.tagsinput-revisited.css" />
     </head>
+    <title>{PAGE_TITLE}</title>
     <body>
         <!-- INCLUDE BLOCK : header -->
         <div class="content">

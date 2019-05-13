@@ -138,8 +138,7 @@ class db_function extends db_connect{
 	 *              2:getOne();
 	 *  @return array
 	*/
-	function select_table_data($table,$select,$where = array(),$orderby = array(),
-								$type = 0,$page_limit = 0,$page_num = 0)
+	function select_table_data($table,$select,$where = array(),$orderby = array(),$type = 0,$page_limit = 0,$page_num = 0)
 	{
         $table 			= trim($table);
 		$arr 			= $return_data 	= array();

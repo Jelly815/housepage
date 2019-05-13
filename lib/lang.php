@@ -6,9 +6,7 @@ define('HOMEPAGE','Homepage');
 define('ADSEARCH','Keyword');
 define('LOGIN','LOGIN');
 define('SIGNUP','SIGNUP');
-define('TITLEADDPIC','新增作品');   // del
 define('TITLEVIEWSEARCH','View All');
-define('TITLEEDITPIC','編輯作品');   // del
 define('HI','Welcome！');
 define('LOGOUT','LOGOUT');
 

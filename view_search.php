@@ -235,7 +235,7 @@ $tpl->prepare ();
             'search_age'    => $value['age'].'年',
             'search_floor'  => $value['floor'],
             'search_builder'=> ($value['builder'] != '')?$value['builder']:$value['community'],
-            'search_arount' => $arount_str
+            'search_arount' => ($value['parking'] == 1)?'有車位 | '.$arount_str:$arount_str
 		));
     }
 ?>

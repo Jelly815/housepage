@@ -11,7 +11,7 @@ define('ADMINMAIL',"jellyandjar@yahoo.com.tw");
 define('THEMES','./template/html/');
 define('CSSPATH','./template/css/');
 define('JSPATH','./js/');
-define('UPLOADPICPATH','../160505pic/');
+//define('UPLOADPICPATH','../160505pic/');
 define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main.py');
 define('_TMAIN',THEMES.'main.tpl');
 define('_THEADER',THEMES.'header.tpl');
@@ -19,24 +19,24 @@ define('_TFOOTER',THEMES.'footer.tpl');
 define('_TSIGN',THEMES.'signup.tpl');
 define('_TLOGIN',THEMES.'login.tpl');
 define('_TVIEWSEARCH',THEMES.'view_search.tpl');
-define('_TADDPIC',THEMES.'addPic.tpl');
-define('_TEDITPIC',THEMES.'editPic.tpl');
+define('_TVIEWMAIN',THEMES.'view_main.tpl');
+//define('_TEDITPIC',THEMES.'editPic.tpl');
 define('_TINDEX',THEMES.'index.tpl');
 define('_TALERT',THEMES.'alert.tpl');
 
 define('INDEXPATH','index.php');
-define('LOGINPATH','index.php?op=ulogin');
+//define('LOGINPATH','index.php?op=ulogin');
 define('SIGNPATH','index.php?op=signup');
 define('VIEWSEARCHPATH','index.php?op=view_search');
-define('ADDPICTOPATH','index.php?op=addPic');
-define('EDITPICTOPATH','index.php?op=editPic');
-define('DELPICTOPATH','index.php?op=delPic');
+define('VIEWMAINPATH','index.php?op=view_main');
+//define('EDITPICTOPATH','index.php?op=editPic');
+//define('DELPICTOPATH','index.php?op=delPic');
 define('OUTOPATH','index.php?op=out');
 
 define('MODULES','modules/');
 define('_PVIEWSEARCH','view_search.php');
-define('_PADDPIC',MODULES.'addPic.php');
-define('_PEDITPIC',MODULES.'editPic.php');
+define('_PVIEWMAIN','view_main.php');
+//define('_PEDITPIC',MODULES.'editPic.php');
 define('_PMAIN','login.php');
 define('_PSIGN','signup.php');
 define('_PINDEX','showAll.php');
@@ -46,13 +46,13 @@ define('MEMBERID','m'.md5(uniqid(rand())));
 define('CUSTOMERID','c'.md5(uniqid(rand())));
 
 // OP
-define('ADDPIC','addPic');
+//define('ADDPIC','addPic');
 define('VIEWSEARCH','view_search');
-define('EDITPIC','editPic');
-define('DELPIC','delPic');
+define('VIEWMAIN','view_main');
+//define('DELPIC','delPic');
 define('SIGN','signup');
 define('OUT','out');
-define('ULOGIN','ulogin');
+//define('ULOGIN','ulogin');
 
 // 年齡區間
 $age_range		= array(

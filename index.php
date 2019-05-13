@@ -76,9 +76,14 @@ switch($op){
 		}
 	  break;
 	 */
+	case VIEWMAIN:		// view main
+		#$text['PAGE_TITLE']			= TITLEVIEWMAIN;
+		$tpl->assignInclude('themes',_TVIEWMAIN);
+		include_once(_PVIEWMAIN);
+	break;
 	case VIEWSEARCH:		// view all
 		$text['PAGE_TITLE']			= TITLEVIEWSEARCH;
-		$tpl->assignInclude('themes',"template/html/view_search.tpl");
+		$tpl->assignInclude('themes',_TVIEWSEARCH);
 		include_once(_PVIEWSEARCH);
 	break;
 	case SIGN:		//註冊

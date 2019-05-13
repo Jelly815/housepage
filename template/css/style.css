@@ -577,6 +577,7 @@ a.search_key_button {
 .content div#featured div a{
 	margin: 0 0 0 30px;
 	float: left;
+	cursor: default;
 }
 .content div#featured div ul{
 	list-style: none;
@@ -584,14 +585,32 @@ a.search_key_button {
 	margin: 0;
 	padding: 0;
 }
-.content div#featured div p{
+.content div#featured div #right ul li{
+	border-width: 1px;
+	border-style: solid none none none;
+	border-color: #dfdfdf;
+	overflow: hidden;
+	height: auto;
+	margin: 0;
+}
+.content div#featured div #right ul li p{
 	clear: both;
     font-family: arial;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 26px;
     padding: 0 30px;
     text-align: justify;
 	color: #555555;
+}
+.content div#featured div #right ul li .detail-house-name{
+    padding: 10px 30px;
+    font-weight:bold;
+}
+.content div#featured div #right ul li .detail-house-item{
+    padding: 0 28px;
+}
+.detail-house-item span {
+    float: left;
 }
 .content div#featured div p a{
 	float: none;
@@ -600,7 +619,7 @@ a.search_key_button {
 .content div#featured div ul li{
 	margin: 0 0 26px;
 	overflow: hidden;
-	height: 1%;
+	height: 177px;
 }
 .content div#featured div a img{
 	border: 0;
