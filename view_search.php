@@ -1,5 +1,4 @@
 <?php
-echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 $area   = (isset($_GET['area']) && $_GET['area'] != '')?filter_var($_GET['area'], FILTER_SANITIZE_STRING):'';
 $price  = (isset($_GET['price']) && $_GET['price'] != '')?explode(',', filter_var($_GET['price'], FILTER_SANITIZE_STRING)):array();
 $type   = (isset($_GET['type']) && $_GET['type'] != '')?filter_var($_GET['type'], FILTER_SANITIZE_STRING):'';
@@ -10,7 +9,7 @@ $tpl->prepare ();
 
 // 儲存搜尋紀錄
     $add_record_sql =
-	"INSERT INTO `ex_record` (`user_unid`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
+	"INSERT INTO `ex_record` (`user_id`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
 
 	$up_record_sql 	=
 		"UPDATE `ex_record` SET `times` = `times` + 1 WHERE `user_id`= ? AND `area` = ? AND `price` = ? AND `ping` = ? AND `style` = ? AND `type` = ? ";
@@ -28,14 +27,14 @@ $tpl->prepare ();
 	foreach ($add_record_arr as $record_key => $record_value) {
 		$user_unid 	= $record_key;
 
-		foreach ($record_value[0] as $area_key => $area_value) {echo '<pre>';print_r($area_value);echo '</pre>';exit;
+		foreach ($record_value[0] as $area_key => $area_value) {
 			foreach ($record_value[1] as $ping_key => $ping_value) {
 				foreach ($record_value[2] as $money_key => $money_value) {
 					foreach ($record_value[3] as $type_key => $type_value) {
 						foreach ($record_value[4] as $style_key => $style_value) {
 							// 檢查是否有紀錄
 							$get_record 	= $db->get_table_value('ex_record','id',
-							"`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' AND ".
+							"`user_id`= '{$user_unid}' AND `area` = '{$area_value}' AND ".
 							"`price` = '{$money_value}' AND `ping` = '{$ping_value}' AND ".
 							"`style` = '{$style_value}' AND `type` = '{$type_value}' ");
 

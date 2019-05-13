@@ -12,7 +12,7 @@ define('THEMES','./template/html/');
 define('CSSPATH','./template/css/');
 define('JSPATH','./js/');
 define('UPLOADPICPATH','../160505pic/');
-define('PYTHONPATH','F:/xampp/htdocs/housepage/python/main.py');
+define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main.py');
 define('_TMAIN',THEMES.'main.tpl');
 define('_THEADER',THEMES.'header.tpl');
 define('_TFOOTER',THEMES.'footer.tpl');

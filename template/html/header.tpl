@@ -23,10 +23,10 @@
             {LOGIN_URL}
         </li>
     </ul>
-    <div id="search_div">
+    <!--<div id="search_div">
         <input id="search_key" name="key" type="text" value="" placeholder="{ALERTXT11}">
         <a class="search_key_button sprited" id="key_button" href="javascript:;" title=""></a>
-        <!--
+
         <form class="attireCodeToggleBlock" action="" style="display: none">
             <input
                     type="text"
@@ -39,8 +39,8 @@
             />
 
             <button class="submitBtn" type="submit">Submit</button>
-        </form>-->
-    </div>
+        </form>
+    </div>-->
     <!-- START BLOCK : index_header -->
     <div id="featured">
         <div class="first">
@@ -269,9 +269,10 @@ $(function () {
         }
     });
 
-    if($("#option_str").text() == '' && $("#option_price").text() =='' &&
+    if($("#option_str").text() == '' && $("#option_price").text() == '' &&
         $("#option_shape").text() == '' && $("#option_wrap").text() == '' &&
-        $("#option_area").text() == ''){
+        $("#option_area").text() == '')
+    {
         $(".second .view_all").hide();
         // search results
         $.ajax({
@@ -312,11 +313,15 @@ $(function () {
         .fail(function() {
             console.log("error");
         });
+    }else if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+        $("#option_area").text() != '')
+    {
+        $(".second .view_all").show();
     }
 
     // 區域
     $('.section-list-item').click(function() {
-        $(".second .view_all").show();
         var rule_area   = $("#option_str").text().match($(this).text());
 
         if(rule_area == null){
