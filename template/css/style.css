@@ -534,7 +534,7 @@ a.search_key_button {
 }
 .content div#excursions,.content div#activities,.content div#restaurant,.content div#destinations,.content div#deals,.content div#ships-and-activities,
 .content div#offers,.content div#featured{
-	margin: -50px 0 0 300px;
+	margin: -50px auto 0 auto;
 	background-color: #fff;
 	padding: 0 0 40px;
 	overflow: hidden;
@@ -553,7 +553,7 @@ a.search_key_button {
 	min-height:502px;
 	margin:auto;
     background-color: #fff;
-    margin: -50px 0 0 300px;
+    margin: -50px auto 0 auto;
     overflow: hidden;
     border-radius: 5px;
 }
@@ -860,21 +860,36 @@ a.search_key_button {
 	border-style: solid none none none;
 	border-color: #dfdfdf;
 	overflow: hidden;
-	height: 1%;
-	min-height: 130px;
+	/*height: 1%;
+	min-height: 130px;*/
 }
-.content div#offers ul li div div{
+.content div#offers ul li div #left{
 	float: left;
     margin: 0 0 0 0px;
+    width: 290px;
+}
+.content div#offers ul li div #right{
+	float: left;
+    margin: 0;
     width: 420px;
 }
-.content div#offers ul li div h3{
+.content div#offers ul li div h3 a{
 	color: #105272;
     font-family: arial;
-    font-size: 14px;
+    font-size: 16px;
     margin: 0 0 10px;
     width: auto;
 	text-transform: uppercase;
+	text-decoration:none;
+}
+.content div#offers ul li #right h3 a{
+	color:#ff7921;
+    font-family: arial;
+    font-size: 16px;
+    margin-left: 16px;
+    width: auto;
+	text-transform: uppercase;
+	text-decoration:none;
 }
 .content div#offers ul li div h4{
 	color: #555555;
@@ -893,8 +908,7 @@ a.search_key_button {
 	padding: 0;
 	overflow: visible;
 }
-.content div#restaurant ul li p,.content div#destinations ul li p,.content div#deals ul li p,.content div#ships-and-activities ul li p,
-.content div#offers ul li p{
+.content div#restaurant ul li p,.content div#destinations ul li p,.content div#deals ul li p,.content div#ships-and-activities ul li p{
 	margin: 10px 0 0;
 	font-family: arial;
 	font-size: 14px;
@@ -903,6 +917,16 @@ a.search_key_button {
 	line-height: 20px;
 	text-align: justify;
 	width: 420px;
+}
+.content div#offers ul li p{
+	margin: 10px 0 0;
+	font-family: arial;
+	font-size: 14px;
+	color: #555555;
+	width: auto;
+	line-height: 20px;
+	text-align: justify;
+	width: 600px;
 }
 .content div#restaurant ul li a img,.content div#destinations ul li a img,.content div#deals ul li a img,.content div#ships-and-activities ul li a img,.content div#offers ul li a img{
 	border: 0;

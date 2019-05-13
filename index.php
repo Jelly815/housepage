@@ -78,8 +78,8 @@ switch($op){
 	 */
 	case VIEWSEARCH:		// view all
 		$text['PAGE_TITLE']			= TITLEVIEWSEARCH;
+		$tpl->assignInclude('themes',"template/html/view_search.tpl");
 		include_once(_PVIEWSEARCH);
-		$tpl->assignInclude('themes',_TVIEWSEARCH);
 	break;
 	case SIGN:		//註冊
 		$text['PAGE_TITLE']			= SIGNUP;
@@ -88,6 +88,7 @@ switch($op){
 			$text['SELECTED_SIGNUP']	= $selected;
 			$text['SELECTED_DEFAULT']	= '';
 			$tpl->assignInclude('themes',_TSIGN);
+			$tpl->prepare ();
 		}else{
 			header('location:'.INDEXPATH);
 		}
@@ -95,16 +96,19 @@ switch($op){
 	default:		//首頁
 		//$headTitle = HEADERTITLE;
 		$tpl -> assignInclude('themes',_TINDEX);
+		$tpl->prepare ();
+		$tpl->newBlock("index_header");
 
 }
-$tpl->prepare ();
+
+$tpl->gotoBlock("_ROOT");
 $tpl->assignGlobal(array(
 	'CSSPATH'  		=> CSSPATH,
     'JSPATH'  		=> JSPATH
 ));
 $tpl->assign($text);
 if($op == ''){
-	$tpl->newBlock("index_header");
+
 }
 
 $tpl->printToScreen ();

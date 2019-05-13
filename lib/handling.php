@@ -15,7 +15,7 @@ class db_function extends db_connect{
 	function insert_data($sql,$vals){
 		$re_id 	= 0;
 		$sql 	= $this->db->prepare($sql);
-
+echo '<pre>';print_r($sql);echo '</pre>';exit;
 		$result = $this->db->execute($sql,$vals);
 
 		if($result && $result->RecordCount() > 0){
@@ -27,7 +27,7 @@ class db_function extends db_connect{
 	function update_data($sql,$vals){
 		$re_data 	= false;
 		$sql 		= $this->db->prepare($sql);
-
+echo '<pre>';print_r($sql);echo '</pre>';exit;
 		$result 	= $this->db->execute($sql,$vals);
 
 		if($result && $result->RecordCount() > 0){

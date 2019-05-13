@@ -1,13 +1,14 @@
 <?php
-global $tpl;
+echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 $area   = (isset($_GET['area']) && $_GET['area'] != '')?filter_var($_GET['area'], FILTER_SANITIZE_STRING):'';
 $price  = (isset($_GET['price']) && $_GET['price'] != '')?explode(',', filter_var($_GET['price'], FILTER_SANITIZE_STRING)):array();
 $type   = (isset($_GET['type']) && $_GET['type'] != '')?filter_var($_GET['type'], FILTER_SANITIZE_STRING):'';
 $room   = (isset($_GET['room']) && $_GET['room'] != '')?explode(',', filter_var($_GET['room'], FILTER_SANITIZE_STRING)):array();
 $ping   = (isset($_GET['ping']) && $_GET['ping'] != '')?explode(',', filter_var($_GET['ping'], FILTER_SANITIZE_STRING)):array();
 
+$tpl->prepare ();
+
 // 儲存搜尋紀錄
-/*
     $add_record_sql =
 	"INSERT INTO `ex_record` (`user_unid`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
 
@@ -16,10 +17,10 @@ $ping   = (isset($_GET['ping']) && $_GET['ping'] != '')?explode(',', filter_var(
 
 	$add_record_arr = array(
         $_SESSION['uid'] => array(
-                $area, 	// 區域
+                explode(',', $area), 	// 區域
                 $ping,  // 坪數
                 $price, // 金額
-                $type, 	// 類型
+                explode(',', $type), 	// 類型
                 $room, 	// 房數
         ),
     );
@@ -27,7 +28,7 @@ $ping   = (isset($_GET['ping']) && $_GET['ping'] != '')?explode(',', filter_var(
 	foreach ($add_record_arr as $record_key => $record_value) {
 		$user_unid 	= $record_key;
 
-		foreach ($record_value[0] as $area_key => $area_value) {
+		foreach ($record_value[0] as $area_key => $area_value) {echo '<pre>';print_r($area_value);echo '</pre>';exit;
 			foreach ($record_value[1] as $ping_key => $ping_value) {
 				foreach ($record_value[2] as $money_key => $money_value) {
 					foreach ($record_value[3] as $type_key => $type_value) {
@@ -37,16 +38,14 @@ $ping   = (isset($_GET['ping']) && $_GET['ping'] != '')?explode(',', filter_var(
 							"`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' AND ".
 							"`price` = '{$money_value}' AND `ping` = '{$ping_value}' AND ".
 							"`style` = '{$style_value}' AND `type` = '{$type_value}' ");
-echo "<pre>";print_r("`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' AND ".
-							"`price` = '{$money_value}' AND `ping` = '{$ping_value}' AND ".
-							"`style` = '{$style_value}' AND `type` = '{$type_value}' ");echo "</pre>";
+
 							if(!empty($get_record)){
 								$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value);
 
-#								$result 	= $db->update_data($up_record_sql,$vals_arr);
+								$result 	= $db->update_data($up_record_sql,$vals_arr);
 							}else{
 								$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value,1);
-#								$result 	= $db->insert_data($add_record_sql,$vals_arr);
+								$result 	= $db->insert_data($add_record_sql,$vals_arr);
 							}
 						}
 					}
@@ -54,10 +53,10 @@ echo "<pre>";print_r("`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' A
 			}
 		}
 	}
-*/
+
 
 // 查詢開始
-	$area_arr = $type_all = array();
+	$area_arr   = $type_arr = $around_arr = array();
 	$area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
     foreach ($area_all as $key => $value) {
     	$area_arr[$value['id']] = $value['name'];
@@ -65,6 +64,10 @@ echo "<pre>";print_r("`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' A
     $type_all   = $db->select_table_data('ex_type','id,name');
     foreach ($type_all as $key => $value) {
     	$type_arr[$value['id']] = $value['name'];
+    }
+    $around_all = $db->select_table_data('ex_around','id,name');
+    foreach ($around_all as $key => $value) {
+        $around_arr[$value['id']] = $value['name'];
     }
 
     $select_arr = array();
@@ -178,14 +181,46 @@ echo "<pre>";print_r("`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' A
     }
 
     $main_data  = $db->select_table_data('ex_main',
-        array('unid','number','area','title','road','room','style','ping',
-            'age','floor','type','parking','unit','view_num','price'),
+        array('unid','number','area','title','road','style','style','ping','around',
+            'age','floor','type','parking','unit','view_num','price','builder','community'),
         $select_arr,
         array('update_time' => 'DESC'));
 
     foreach ($main_data as $key => $value) {
     	$tpl->newBlock('view_search');
+        // 房間
+        $room1 = $room2 = $room3 = $room4 = '';
+        if(strchr($value['style'],';')){
+            $style = ($value['style'] != '')?explode(';',$value['style']):array();
+        }else{
+            $style = ($value['style'] != '')?explode(':',$value['style']):array();
+        }
 
+
+        if(count($style) == 1){
+            list($room1)  = $style;
+        }elseif(count($style) == 2){
+            list($room1,$room2)  = $style;
+        }elseif(count($style) == 3){
+            list($room1,$room2,$room3)  = $style;
+        }elseif(count($style) == 4){
+            list($room1,$room2,$room3,$room4)  = $style;
+        }
+
+        $style = ($room1 != '')?$room1.'房':'';
+        $style .= ($room2 != '')?$room2.'廳':'';
+        $style .= ($room3 != '')?$room3.'衛':'';
+        $style .= ($room4 != '')?$room4.'陽台':'';
+
+        // 生活機能
+        $arount_str = '';
+        $around     = ($value['around'] != '')?explode(';',$value['around']):array();
+
+        foreach ($around as $a_key => $a_value) {
+            if(isset($around_arr[$a_value])){
+                $arount_str .= $around_arr[$a_value].' | ';
+            }
+        }
         $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
         $tpl->assign(array(
         	'search_uuid' 	=> $value['unid'],
@@ -193,34 +228,15 @@ echo "<pre>";print_r("`user_unid`= '{$user_unid}' AND `area` = '{$area_value}' A
 			'search_title' 	=> $value['title'],
 			'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
 			'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
-			'search_room' 	=> $value['room'].'房',
+			'search_room' 	=> $style,
 			'search_ping' 	=> $value['ping'].'坪',
-			'search_view' 	=> $value['view_num'].'人瀏覽',
-			'search_price' 	=> $value['price'].'萬元'
+			'search_view' 	=> $value['view_num'].' 人瀏覽',
+			'search_price' 	=> $value['price'].'萬元',
+            'search_road'   => $value['road'],
+            'search_age'    => $value['age'].'年',
+            'search_floor'  => $value['floor'],
+            'search_builder'=> ($value['builder'] != '')?$value['builder']:$value['community'],
+            'search_arount' => $arount_str
 		));
     }
-
-/*
-	switch($a){
-		 case 'add':
-			$dataArr=addUser();
-			break;
-		 default:
-
-	}
-	$tpl=new TemplatePower(_TSIGN);
-	$tpl->prepare();
-	$tpl->assign($dataArr);
-	$tpl->assign(array('TITLESIGN'=>TITLESIGN,'INPUTNAME'=>INPUTNAME,'PWD'=>PWD,'INPUTPHONE'=>INPUTPHONE,'EMAIL'=>EMAIL,'IMPUTPRTM'=>IMPUTPRTM,'SUBMIT'=>SUBMIT,'RETURNBTN'=>RETURNBTN,'LOGIN'=>LOGIN,'LOGINPATH'=>LOGINPATH,'TITLESIGN'=>TITLESIGN,'SIGNPATH'=>SIGNPATH,'HEADERTITLE'=>HEADERTITLE,'INDEXPATH'=>INDEXPATH));
-	$tpl->assign(array('CSSPATH'=>CSSPATH,'ALERTXT01'=>ALERTXT01,'ALERTXT02'=>ALERTXT02,'ALERTXT03'=>ALERTXT03,'error'=>$error));
-
-	$getDepatm=getDepatm();
-	$count=count($getDepatm);
-	for($i=0;$i<$count;$i++){
-		$tpl->newBlock('pic_row');
-		$tpl->assign(array('id'=>$getDepatm[$i]['ex_id'],'title'=>$getDepatm[$i]['ex_title']));
-	}
-
-	$tpl->printToScreen();
-*/
 ?>
