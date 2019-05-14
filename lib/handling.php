@@ -63,11 +63,11 @@ class db_function extends db_connect{
 		$result = $re_array = array();
 
 		$sql 	=  "INSERT INTO `ex_user`
-						(ex_name,ex_pwd,ex_mail,ex_age)
+						(`name`,`pwd`,`email`,`age`,`sex`,`area_id`)
 					VALUES
-						(?,?,?)";
+						(?,?,?,?,?,?)";
 
-		$val 	= array($data[0],$data[1],$data[2]);
+		$val 	= array($data[0],$data[1],$data[2],$data[3],$data[4],$data[5]);
 		$sql 	= $this->db->prepare($sql);
 		$result = $this->db->execute($sql,$val);
 		$user_id 		= $this->db->insert_Id();

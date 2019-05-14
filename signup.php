@@ -4,11 +4,25 @@ $sign_txt 	= array(
 	'PWD'		=> PWD,
 	'EMAIL'		=> EMAIL,
 	'AGE'		=> INPUTAGE,
+	'SEX'		=> INPUTSEX,
+	'SEXM' 		=> INPUTSEXM,
+	'SEXW'		=> INPUTSEXW,
+	'AREA'		=> INPUTAREA,
 	'ALERTXT02'	=> ALERTXT02,
 	'ALERTXT03' => ALERTXT03,
 	'ALERTXT09'	=> ALERTXT09
 );
 $text 		= array_replace_recursive($text,$sign_txt);
+
+$tpl->prepare ();
+
+foreach ($area_arr as $key => $value) {
+	$tpl->newBlock('show_area');
+	$tpl->assign(array(
+		'id' => $key,
+		'name'	=> $value
+	));
+}
 /*
 	switch($a){
 		 case 'add':

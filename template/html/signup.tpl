@@ -26,7 +26,7 @@
                 <input type="text" name="mail" id="sign_mail" placeholder="{ALERTXT09}" value="{mail}" title="{EMAIL}" class="sprited">
             </label>
             <label id="mailtxt"></label>
-            <h6>{AGE}<label id="sign_mail_error"></label></h6>
+            <h6>{AGE}</h6>
             <label>
                 <select name="age" id="sign_age" style="height: 30px;width: 390px;border:1pt solid #8191A5;border-radius:4px;">
                     <option value="25">低於25歲</option>
@@ -35,6 +35,21 @@
                     <option value="54">45~54歲</option>
                     <option value="64">55~64歲</option>
                     <option value="65">65歲以上</option>
+                </select>
+            </label>
+            <h6>{SEX}</h6>
+            <label>
+                <input type="radio" name="sex" value="M" checked="checked">
+                <label for="M" style="float: left">{SEXM}</label>
+                <input type="radio" name="sex" value="W">
+                <label for="W">{SEXW}</label>
+            </label>
+            <h6>{AREA}</h6>
+            <label>
+                <select name="area" id="sign_area" style="height: 30px;width: 390px;border:1pt solid #8191A5;border-radius:4px;">
+                    <!-- START BLOCK : show_area -->
+                    <option value="{id}">{name}</option>
+                    <!-- END BLOCK : show_area -->
                 </select>
             </label>
             <p>
@@ -70,6 +85,8 @@ $(document).ready(function(){
             profile_hid += $("#sign_pwd").val()  + ';;';
             profile_hid += $("#sign_mail").val() + ';;';
             profile_hid += $("#sign_age").val() + ';;';
+            profile_hid += $("input[type='radio'][name='sex']").val() + ';;';
+            profile_hid += $("#sign_area").val() + ';;';
 
             $("#profile_hid").val(profile_hid);
             changeTab(1, 'setting');

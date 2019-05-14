@@ -313,12 +313,13 @@ $(function () {
         .fail(function() {
             console.log("error");
         });
-    }else if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+    }
+    /*else if($("#option_str").text() != '' && $("#option_price").text() != '' &&
         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
         $("#option_area").text() != '')
     {
         $(".second .view_all").show();
-    }
+    }*/
 
     // 區域
     $('.section-list-item').click(function() {
@@ -350,6 +351,12 @@ $(function () {
                 .done(function(data) {
                     $(".second ul").empty().html(data);
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+                        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+                        $("#option_area").text() != '')
+                    {
+                        $(".second .view_all").show();
+                    }
                 })
                 .fail(function() {
                     console.log("error");
@@ -364,7 +371,6 @@ $(function () {
     });
     // 金額
     $('.filter-saleprice-options .filter-items').click(function() {
-        $(".second .view_all").show();
         var rule_price   = $("#option_price").text().match($(this).text());
 
         if(rule_price == null){
@@ -393,6 +399,12 @@ $(function () {
                 .done(function(data) {
                     $(".second ul").empty().html(data);
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+                        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+                        $("#option_area").text() != '')
+                    {
+                        $(".second .view_all").show();
+                    }
                 })
                 .fail(function() {
                     console.log("error");
@@ -402,7 +414,6 @@ $(function () {
     });
     // 類型
     $('.filter-shape-wrap .filter-items').click(function() {
-        $(".second .view_all").show();
         var rule_price   = $("#option_shape").text().match($(this).text());
 
         if(rule_price == null){
@@ -431,6 +442,12 @@ $(function () {
                 .done(function(data) {
                     $(".second ul").empty().html(data);
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+                        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+                        $("#option_area").text() != '')
+                    {
+                        $(".second .view_all").show();
+                    }
                 })
                 .fail(function() {
                     console.log("error");
@@ -440,7 +457,6 @@ $(function () {
     });
     // 房數
     $('.filter-pattern-wrap .filter-items').click(function() {
-        $(".second .view_all").show();
         var rule_price   = $("#option_wrap").text().match($(this).text());
 
         if(rule_price == null){
@@ -469,6 +485,12 @@ $(function () {
                 .done(function(data) {
                     $(".second ul").empty().html(data);
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+                        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+                        $("#option_area").text() != '')
+                    {
+                        $(".second .view_all").show();
+                    }
                 })
                 .fail(function() {
                     console.log("error");
@@ -478,7 +500,6 @@ $(function () {
     });
     // 坪數
     $('.filter-area-options .filter-items').click(function() {
-        $(".second .view_all").show();
         var rule_price   = $("#option_area").text().match($(this).text());
 
         if(rule_price == null){
@@ -507,6 +528,12 @@ $(function () {
                 .done(function(data) {
                     $(".second ul").empty().html(data);
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    if($("#option_str").text() != '' && $("#option_price").text() != '' &&
+                        $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
+                        $("#option_area").text() != '')
+                    {
+                        $(".second .view_all").show();
+                    }
                 })
                 .fail(function() {
                     console.log("error");

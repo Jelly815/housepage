@@ -376,10 +376,9 @@ a.search_key_button {
 	min-height: 450px;
 }
 #content ul li{
-	height: 1%;
+	height: auto;
 	overflow: hidden;
 	margin: 0 0 20px 0;
-	height: 90px;
 }
 #content ul li a{
 	float: left;
@@ -1149,12 +1148,21 @@ a.form_button {
     padding: 2px 8px;
     line-height: 31px;
 }
+#signup #profile label input[type="radio"]{
+    display: block;
+    background-position: -201px 0;
+    padding: 2px 8px;
+    line-height: 31px;
+    width: 27px;
+    float: left;
+}
 #signup .next{
 	background-position: -419px -96px;
 	float: left;
     width: 79px;
     height: 27px;
     margin: 100px 20px;
+    cursor: pointer;
 }
 #signup .cancel{
 	background-position: -199px -36px;
@@ -1162,4 +1170,5 @@ a.form_button {
     width: 79px;
     height: 27px;
     margin: 100px 0px 0px -25px;
+    cursor: pointer;
 }

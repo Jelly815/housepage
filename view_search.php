@@ -55,11 +55,12 @@ $tpl->prepare ();
 
 
 // 查詢開始
-	$area_arr   = $type_arr = $around_arr = array();
+	$type_arr = $around_arr = array();
+    /*$area_arr   =
 	$area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
     foreach ($area_all as $key => $value) {
     	$area_arr[$value['id']] = $value['name'];
-    }
+    }*/
     $type_all   = $db->select_table_data('ex_type','id,name');
     foreach ($type_all as $key => $value) {
     	$type_arr[$value['id']] = $value['name'];

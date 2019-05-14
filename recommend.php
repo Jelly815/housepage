@@ -14,9 +14,9 @@
             $_SESSION['uid'] = $params;
         }
 
-        $command    = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
-        $output     = shell_exec($command);
-#        $output     = shell_exec('python '.PYTHONPATH.' '.$params);
+#        $command    = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
+#        $output     = shell_exec($command);
+        $output     = shell_exec('python '.PYTHONPATH.' '.$params);
         $output     = str_replace(']','',str_replace('[', '', $output));
         $output     = explode(',', $output);
 

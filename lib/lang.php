@@ -33,6 +33,10 @@ define('INPUTNAME','姓名');
 define('INPUTPHONE','電話');
 define('IMPUTPRTM','部門');
 define('INPUTAGE','年齡');
+define('INPUTSEX','性別');
+define('INPUTSEXM','男');
+define('INPUTSEXW','女');
+define('INPUTAREA','地區');
 
 // 新增作品
 define('PICTITLE','作品名稱');

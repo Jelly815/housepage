@@ -42,6 +42,14 @@ $tpl->assignInclude('login',_TLOGIN);
 $tpl->assignInclude('alert',_TALERT);
 
 $text['SELECTED_DEFAULT']= $selected;
+
+$area_arr   = array();
+// 區域
+$area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
+foreach ($area_all as $key => $value) {
+	$area_arr[$value['id']] = $value['name'];
+}
+
 switch($op){
 	/*
 	case ADDPIC:	//新增作品
@@ -89,11 +97,10 @@ switch($op){
 	case SIGN:		//註冊
 		$text['PAGE_TITLE']			= SIGNUP;
 		if(!isset($_SESSION['uname'])){
-			include_once(_PSIGN);
 			$text['SELECTED_SIGNUP']	= $selected;
 			$text['SELECTED_DEFAULT']	= '';
 			$tpl->assignInclude('themes',_TSIGN);
-			$tpl->prepare ();
+			include_once(_PSIGN);
 		}else{
 			header('location:'.INDEXPATH);
 		}

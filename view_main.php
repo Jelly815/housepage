@@ -1,14 +1,10 @@
 <?php
 $main   = (isset($_GET['main']) && $_GET['main'] != '')?filter_var($_GET['main'], FILTER_SANITIZE_STRING):'';
-
+$main_id = 0;
 $tpl->prepare ();
-
+echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 // 查詢開始
-	$area_arr   = $type_arr = $around_arr = $direction_arr = array();
-	$area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
-    foreach ($area_all as $key => $value) {
-    	$area_arr[$value['id']] = $value['name'];
-    }
+    $type_arr = $around_arr = $direction_arr =
     $type_all   = $db->select_table_data('ex_type','id,name');
     foreach ($type_all as $key => $value) {
     	$type_arr[$value['id']] = $value['name'];
@@ -34,12 +30,13 @@ $tpl->prepare ();
         array('update_time' => 'DESC'));
 
     foreach ($main_data as $key => $value) {
+        $main_id    = $value['id'];
         // 房間
         $room1 = $room2 = $room3 = $room4 = '';
         if(strchr($value['style'],';')){
-            $style = ($value['style'] != '')?explode(';',$value['style']):array();
+            $style  = ($value['style'] != '')?explode(';',$value['style']):array();
         }else{
-            $style = ($value['style'] != '')?explode(':',$value['style']):array();
+            $style  = ($value['style'] != '')?explode(':',$value['style']):array();
         }
 
 
@@ -108,7 +105,8 @@ $tpl->prepare ();
             isset($value['ping']) && $value['ping'] != '' &&
             isset($value['price']) && $value['price'] != '' &&
             isset($value['type']) && $value['type'] != '' &&
-            isset($value['room']) && $value['room'] != ''
+            isset($value['room']) && $value['room'] != '' &&
+            isset($_SESSION['uid'])
         ){
             $add_record_sql =
             "INSERT INTO `ex_record` (`user_id`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
@@ -174,17 +172,17 @@ $tpl->prepare ();
 
                                         // 檢查是否有item紀錄
                                         $get_record2= $db->get_table_value('ex_record_items','id',
-                                        "`user_id`= '".$user_unid."' AND `record_id` = '".$get_record[0]['id']."' AND `main_id` = '".$value['id']."' ");
+                                        "`user_id`= '".$user_unid."' AND `record_id` = '".$get_record[0]['id']."' AND `main_id` = '".$main_id."' ");
                                         if(!empty($get_record2)){
                                             // 更新item
                                             $up_record_sql  = "UPDATE `ex_record_items` SET `times` = `times` + 1 WHERE `user_id`= ? AND `record_id` = ? AND `main_id` = ? ";
-                                            $vals_arr   = array($user_unid,$get_record[0]['id'],$value['id']);
+                                            $vals_arr   = array($user_unid,$get_record[0]['id'],$main_id);
 
                                             $result     = $db->update_data($up_record_sql,$vals_arr);
                                         }else{
                                             // 儲存item
                                             $add_record_sql = "INSERT INTO `ex_record_items` (`user_id`,`record_id`,`main_id`,`times`,`click_map`,`add_favorite`)  values (?,?,?,?,?,?) ";
-                                            $vals_arr   = array($user_unid,$result,$value['id'],1,0,0);
+                                            $vals_arr   = array($user_unid,$result,$main_id,1,0,0);
 
                                             $result     = $db->insert_data($add_record_sql,$vals_arr);
                                         }
@@ -195,10 +193,16 @@ $tpl->prepare ();
 
                                         // 儲存item
                                         $add_record_sql = "INSERT INTO `ex_record_items` (`user_id`,`record_id`,`main_id`,`times`,`click_map`,`add_favorite`)  values (?,?,?,?,?,?) ";
-                                        $vals_arr   = array($user_unid,$last_id->fields[0],$value['id'],1,0,0);
+                                        $vals_arr   = array($user_unid,$last_id->fields[0],$main_id,1,0,0);
 
                                         $result     = $db->insert_data($add_record_sql,$vals_arr);
                                     }
+
+                                    // 更新house
+                                    $up_record_sql  = "UPDATE `ex_main` SET `view_num` = `view_num` + 1 WHERE `id`= ? ";
+                                    $vals_arr   = array($main_id);
+
+                                    $result     = $db->update_data($up_record_sql,$vals_arr);
                                 }
                             }
                         }
@@ -207,4 +211,7 @@ $tpl->prepare ();
             }
         }
     }
+
+    $tpl->gotoBlock("_ROOT");
+    $tpl->assign(array('main_id'=>$main_id));
 ?>

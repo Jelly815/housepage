@@ -48,15 +48,16 @@ switch($action){
         if(str_replace(';;', '', $profile_hid) == ''){
             exit(json_encode(array('status' => false,'msg' => ALERTXT06)));
         }else{
-            list($name,$pwd,$email,$age) = explode(';;', $profile_hid);
+            list($name,$pwd,$email,$age,$sex,$area) = explode(';;', $profile_hid);
             $unid       = MEMBERID;
             $name       = filter_var($name, FILTER_SANITIZE_STRING);
             $pwd        = md5($pwd);
             $email      = filter_var($email, FILTER_SANITIZE_EMAIL);
             $age        = filter_var($age, FILTER_VALIDATE_INT);
+            $sex        = filter_var($sex, FILTER_VALIDATE_INT);
+            $area        = filter_var($area, FILTER_VALIDATE_INT);
 
-
-            $data       = array($unid,$name,$pwd,$email,$age);
+            $data       = array($unid,$name,$pwd,$email,$age,$sex,$area);
             $dataArr    = $db->add_user($data);
 
             if(!empty($dataArr)){
@@ -268,6 +269,46 @@ switch($action){
             }
 
         echo json_encode($main_data);
+    break;
+    // 加入最愛
+    case 'add_favorite':
+        $re_val     = 0;
+        $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+        $re_array   = $db->select_table_data('ex_record_items','add_favorite',
+            array(
+                array(0,'user_id','=',$_SESSION['uid']),
+                array(0,'main_id','=',$main_id)));
+
+        if(isset($re_array[0]['add_favorite']) && $re_array[0]['add_favorite'] == 1){
+            // 更新favorite
+            $up_record_sql  = "UPDATE `ex_record_items` SET `add_favorite` = 0 WHERE `user_id`= ? AND `main_id` = ? ";
+            $re_val     = 0;
+        }else{
+            // 更新favorite
+            $up_record_sql  = "UPDATE `ex_record_items` SET `add_favorite` = 1 WHERE `user_id`= ? AND `main_id` = ? ";
+            $re_val     = 1;
+        }
+        $vals_arr   = array($_SESSION['uid'],$main_id);
+        $db->update_data($up_record_sql,$vals_arr);
+
+        echo $re_val;
+    break;
+    // 點地圖
+    case 'add_map':
+        $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+        $re_array   = $db->select_table_data('ex_record_items','click_map',
+            array(
+                array(0,'user_id','=',$_SESSION['uid']),
+                array(0,'main_id','=',$main_id)));
+
+        if(isset($re_array[0]['click_map']) && $re_array[0]['click_map'] == 0){
+            // 更新map
+            $up_record_sql  = "UPDATE `ex_record_items` SET `click_map` = 1 WHERE `user_id`= ? AND `main_id` = ? ";
+            $vals_arr   = array($_SESSION['uid'],$main_id);
+            $db->update_data($up_record_sql,$vals_arr);
+        }
+
+        echo '';
     break;
 	default:
 

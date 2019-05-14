@@ -186,7 +186,7 @@
 				'search_img' 	=> ($house_img != '')?$house_img:"img/EdPhoto.jpg",
 				'search_title' 	=> $value['title'],
 				'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
-				'search_type' 	=> isset($area_arr[$value['type']])?$type_arr[$value['type']]:'',
+				'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
 				'search_room' 	=> $value['room'].'房',
 				'search_ping' 	=> $value['ping'].'坪',
 				'search_view' 	=> $value['view_num'].'人瀏覽',
