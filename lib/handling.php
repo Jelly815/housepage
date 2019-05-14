@@ -18,10 +18,13 @@ class db_function extends db_connect{
 
 		$result = $this->db->execute($sql,$vals);
 
-		if($result && $result->RecordCount() > 0){
-			$re_id 	= $this->db->Insert_ID();
+		//if($result && $result->RecordCount() > 0){
+		//	$re_id 	= $this->db->insert_Id();
+		//}
+		if ($result === false) {
+			print 'error inserting: '.$conn->ErrorMsg().'<BR>';
 		}
-		return $re_id;
+		return $result;
 	}
 
 	function update_data($sql,$vals){
@@ -50,7 +53,7 @@ class db_function extends db_connect{
 		$sql 	= $this->db->prepare($sql);
 		$result = $this->db->execute($sql,$vals);
 		if($result && $result->RecordCount() > 0){
-			$re_array 	= $this->db->Insert_ID();
+			$re_array 	= $this->db->insert_Id();
 		}
 		return $re_array;
 	}
@@ -67,7 +70,7 @@ class db_function extends db_connect{
 		$val 	= array($data[0],$data[1],$data[2]);
 		$sql 	= $this->db->prepare($sql);
 		$result = $this->db->execute($sql,$val);
-		$user_id 		= $this->db->Insert_ID();
+		$user_id 		= $this->db->insert_Id();
 
 		if($user_id != ''){
 			$re_array 	= array(
