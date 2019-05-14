@@ -606,6 +606,10 @@ a.search_key_button {
     text-align: justify;
 	color: #555555;
 }
+.content div#featured div #right ul li label{
+    width: 290px;
+    display: inline-block;
+}
 .content div#featured div #right ul li .detail-house-name{
     padding: 10px 30px;
     font-weight:bold;

@@ -397,7 +397,7 @@ class FUNC_CLASS(DB_CONN):
                 WHERE   `area` = %s AND
                         `price`= %s AND
                         `is_closed` = 0
-                ORDER BY `view_num`,`update_time`
+                ORDER BY `view_num` DESC,`update_time` DESC
                 LIMIT 5
                 """
             hot_house_vals  = [record[0],record[3]]
@@ -417,11 +417,11 @@ class FUNC_CLASS(DB_CONN):
 
                 hot_house_sql  += " WHERE   `area` IN ("+ ','.join((str(num) for num in hot_house_vals)) +") AND "
                 hot_house_vals = []
-                
+
             hot_house_sql  += """
                         `is_closed` = 0
-                ORDER BY `view_num`,`update_time`
-                LIMIT 20
+                ORDER BY `view_num` DESC,`update_time` DESC
+                LIMIT 5
                 """
         else:
             hot_house_sql  += """
@@ -431,7 +431,7 @@ class FUNC_CLASS(DB_CONN):
                         `style`= %s AND
                         `type` = %s AND
                         `is_closed` = 0
-                ORDER BY `view_num`,`update_time`
+                ORDER BY `view_num` DESC,`update_time` DESC
                 LIMIT 5
                 """
             hot_house_vals = [record[0],record[1],record[2],record[3],record[4]]
@@ -442,7 +442,7 @@ class FUNC_CLASS(DB_CONN):
             else:
                 self.execute(hot_house_sql)
             hot_house      = self.fetchall()
-            
+
         except:
             hot_house = []
 

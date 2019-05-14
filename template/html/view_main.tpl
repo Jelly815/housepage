@@ -14,16 +14,28 @@
 		<div id="right">
 			<ul>
 				<li>
-					<p>房數：{search_room}<br>
-                        坪數：{search_ping}<br>
-                        屋齡：{search_age}<br>
-                        樓層：{search_floor}<br>
-                        建商/建案名稱：{search_builder}<br>
-                        車位：{search_parking}<br>
-                        面向：{search_direction}</p>
+                    <p>
+    					<label>類型：{search_type}</label>
+                        <label>房數：{search_room}</label>
+                        <label>坪數：{search_ping}</label>
+                    </p>
 				</li>
+                <li>
+                    <p>
+                        <label>屋齡：{search_age}</label>
+                        <label>樓層：{search_floor}</label>
+                        <label>建商/建案名稱：{search_builder}</label>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <label>車位：{search_parking}</label>
+                        <label>面向：{search_direction}</label>
+                        <label>管理費：{search_fee}</label>
+                    </p>
+                </li>
 				<li>
-					<p>區域：{search_area} | {search_road} | {search_direction} &nbsp;<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;"><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label></p>
+					<p>區域：{search_area} | {search_road} &nbsp;<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;"><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label></p>
 				</li>
 				<li>
 					<p>生活機能：{search_arount}</p>
