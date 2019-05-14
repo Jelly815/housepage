@@ -450,7 +450,7 @@ a.search_key_button {
     font-size: 14px;
     color: #4d4d4d;
     text-decoration: none;
-    top: 480px;
+    /*top: 480px;*/
     right: 15px;
 }
 #content a.view_all{
@@ -459,10 +459,11 @@ a.search_key_button {
 	color: #4d4d4d;
 	text-decoration: none;
 	position: absolute;
-	top: 505px;
+	/*top: 505px;*/
 	right: 15px;
 	background: url(../images/arrow1.gif) no-repeat right center;
 	padding: 0 10px 0 0;
+	bottom: 15px;
 }
 #content a:hover{
 	color: #105272;
@@ -615,6 +616,10 @@ a.search_key_button {
     font-family: arial;
     color: #555555;
 }
+.content div#featured div #right ul li .stonefont{
+	margin-left: 30px;
+}
+
 .detail-house-item span {
     float: left;
 }

@@ -1,6 +1,7 @@
 <?php
 $main   = (isset($_GET['main']) && $_GET['main'] != '')?filter_var($_GET['main'], FILTER_SANITIZE_STRING):'';
 $main_id = 0;
+
 $tpl->prepare ();
 echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 // 查詢開始
@@ -73,21 +74,22 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
             'search_img2'   => (isset($house_img[1]['img_url']) && $house_img[1]['img_url'] != '')?$house_img[1]['img_url']:"img/EdPhoto.jpg",
             'search_img3'   => (isset($house_img[2]['img_url']) && $house_img[2]['img_url'] != '')?$house_img[2]['img_url']:"img/EdPhoto.jpg",
 			'search_title' 	=> $value['title'],
-			'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
-			'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+			'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'無資料',
+			'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'無資料',
 			'search_room' 	=> $style,
-			'search_ping' 	=> $value['ping'].'坪',
-			'search_view' 	=> $value['view_num'],
-			'search_price' 	=> $value['price'].'萬元',
-            'search_road'   => $value['road'],
-            'search_age'    => $value['age'].'年',
-            'search_floor'  => $value['floor'],
+			'search_ping' 	=> ($value['ping']!='')?$value['ping'].'坪':NODATA,
+			'search_view' 	=> ($value['view_num']!='')?$value['view_num']:NODATA,
+			'search_price' 	=> ($value['price']!='')?$value['price'].'萬元':NODATA,
+            'search_road'   => ($value['road']!='')?$value['road']:NODATA,
+            'search_age'    => ($value['age']!='')?$value['age'].'年':NODATA,
+            'search_floor'  => ($value['floor']!='')?$value['floor']:NODATA,
             'search_builder'=> ($value['builder'] != '')?$value['builder']:$value['community'],
-            'search_arount' => ($value['parking'] == 1)?'有車位 | '.$arount_str:$arount_str,
-            'search_direction' => isset($direction_arr[$value['direction']])?$direction_arr[$value['direction']]:'',
-            'search_fee'    => $value['fee'].'元',
-            'search_unit'   => $value['unit'].'萬/坪',
-            'search_desc'   => $value['description']
+            'search_parking'=> ($value['parking'] == 1)?'有':'否',
+            'search_arount' => $arount_str,
+            'search_direction' => isset($direction_arr[$value['direction']])?$direction_arr[$value['direction']]:NODATA,
+            'search_fee'    => ($value['fee'] != '')?$value['fee'].'元':NODATA,
+            'search_unit'   => ($value['unit']  != '')?$value['unit'].'萬/坪':NODATA,
+            'search_desc'   => ($value['description']  != '')?$value['description']:NODATA
 		));
 
         // other img

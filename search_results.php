@@ -176,22 +176,27 @@
                 'age','floor','type','parking','unit','view_num','price'),
             $select_arr,
             array('update_time' => 'DESC'),
-            1,4,1);
-        foreach ($main_data as $key => $value) {
-        	$tpl->newBlock('search_row');
+            1,5,1);
+        if(!empty($main_data)){
+            foreach ($main_data as $key => $value) {
+            	$tpl->newBlock('search_row');
 
-            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
-            $tpl->assign(array(
-            	'search_uuid' 	=> $value['unid'],
-				'search_img' 	=> ($house_img != '')?$house_img:"img/EdPhoto.jpg",
-				'search_title' 	=> $value['title'],
-				'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
-				'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
-				'search_room' 	=> $value['room'].'房',
-				'search_ping' 	=> $value['ping'].'坪',
-				'search_view' 	=> $value['view_num'].'人瀏覽',
-				'search_price' 	=> $value['price'].'萬元'
-			));
+                $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+                $tpl->assign(array(
+                	'search_uuid' 	=> $value['unid'],
+    				'search_img' 	=> ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+    				'search_title' 	=> $value['title'],
+    				'search_area' 	=> isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+    				'search_type' 	=> isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+    				'search_room' 	=> $value['room'].'房',
+    				'search_ping' 	=> $value['ping'].'坪',
+    				'search_view' 	=> $value['view_num'].'人瀏覽',
+    				'search_price' 	=> $value['price'].'萬元'
+    			));
+            }
+        }else{
+            $tpl->newBlock('search_nodata');
+            $tpl->assign('nodata',NODATA);
         }
 
     $tpl->gotoBlock( "_ROOT" );

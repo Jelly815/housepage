@@ -16,13 +16,15 @@
 
 #        $command    = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
 #        $output     = shell_exec($command);
-        $output     = shell_exec('python '.PYTHONPATH.' '.$params);
+        #$command    = escapeshellcmd('python '.PYTHONPATH.' '.$params);
+        $command    = escapeshellcmd(PYTHONPATH.' '.$params);
+        $output     = shell_exec($command);
         $output     = str_replace(']','',str_replace('[', '', $output));
         $output     = explode(',', $output);
 
-        $area_str   = '';
+        $main_str   = '';
         foreach ($output as $key => $value) {
-            $area_str .= trim($value).',';
+            $main_str .= trim($value).',';
         }
 
         $area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
@@ -37,9 +39,8 @@
         $main_data  = $db->select_table_data('ex_main',
             array('unid','number','area','title','road','room','style','ping',
                 'age','floor','type','parking','unit','view_num','price'),
-            array(array(2,'id','IN ('.rtrim($area_str,',').')','')),
-            array('update_time' => 'DESC'),
-            1,4,1);
+            array(array(2,'id','IN ('.rtrim($main_str,',').')','')),
+            array('update_time' => 'DESC'));
 
         foreach ($main_data as $key => $value) {
         	$tpl->newBlock('search_row');

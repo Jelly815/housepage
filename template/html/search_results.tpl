@@ -7,4 +7,7 @@
     <a href="javascript:;" class="book">{search_view}</a>
 </li>
 <!-- END BLOCK : search_row -->
+<!-- START BLOCK : search_nodata -->
+<li>{nodata}</li>
+<!-- END BLOCK : search_nodata -->
 <div id="search_val" style="display:none">{url}</div>

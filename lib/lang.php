@@ -61,6 +61,7 @@ define('ALERTXT08','請選擇縣市');
 define('ALERTXT09','Email為您的帳號');
 define('ALERTXT10','請選擇地區');
 define('ALERTXT11','請輸入關鍵字');
+define('NODATA','無資料');
 
 // FOOTER
 define('COPYRIGHT','Welcome to Jelly.Chang website '.date('Y'));

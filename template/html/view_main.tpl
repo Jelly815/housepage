@@ -14,10 +14,16 @@
 		<div id="right">
 			<ul>
 				<li>
-					<p>房數：{search_room}<br>坪數：{search_ping}<br>屋齡：{search_age}<br>樓層：{search_floor}</p>
+					<p>房數：{search_room}<br>
+                        坪數：{search_ping}<br>
+                        屋齡：{search_age}<br>
+                        樓層：{search_floor}<br>
+                        建商/建案名稱：{search_builder}<br>
+                        車位：{search_parking}<br>
+                        面向：{search_direction}</p>
 				</li>
 				<li>
-					<p>區域：{search_builder} | {search_area} | {search_road} | {search_direction} &nbsp;<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;"><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label></p>
+					<p>區域：{search_area} | {search_road} | {search_direction} &nbsp;<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;"><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label></p>
 				</li>
 				<li>
 					<p>生活機能：{search_arount}</p>

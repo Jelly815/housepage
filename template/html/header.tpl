@@ -353,8 +353,8 @@ $(function () {
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
-                        $("#option_area").text() != '')
-                    {
+                        $("#option_area").text() != '' && data.match('無資料') == null
+                    ){
                         $(".second .view_all").show();
                     }
                 })
@@ -401,8 +401,8 @@ $(function () {
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
-                        $("#option_area").text() != '')
-                    {
+                        $("#option_area").text() != '' && data.match('無資料') == null
+                    ){
                         $(".second .view_all").show();
                     }
                 })
@@ -444,8 +444,8 @@ $(function () {
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
-                        $("#option_area").text() != '')
-                    {
+                        $("#option_area").text() != '' && data.match('無資料') == null
+                    ){
                         $(".second .view_all").show();
                     }
                 })
@@ -487,8 +487,8 @@ $(function () {
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
-                        $("#option_area").text() != '')
-                    {
+                        $("#option_area").text() != '' && data.match('無資料') == null
+                    ){
                         $(".second .view_all").show();
                     }
                 })
@@ -530,8 +530,8 @@ $(function () {
                     $(".second .view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
-                        $("#option_area").text() != '')
-                    {
+                        $("#option_area").text() != '' && data.match('無資料') == null
+                    ){
                         $(".second .view_all").show();
                     }
                 })
