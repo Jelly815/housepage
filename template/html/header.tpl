@@ -57,7 +57,7 @@
                                     <div class="filter-body clearfix relative">
                                         <div class="filter-location">
                                             <div class="clearfix">
-                                                <div title="高雄市" class="filter-region filter-location-btn pull-left  z-active">
+                                                <div title="高雄市" class="filter-region filter-location-btn pull-left">
                                                     <div class="u-arrow"></div>
                                                     <div class="j-region filter-location-btn-txt">高雄市</div>
                                                 </div>
@@ -113,7 +113,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div style="margin-left: 330px;color:#393D42" id="option_str"></div>
+                                    <div style="margin-left: 330px;color:#ff7921" id="option_str"></div>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,9 @@
                                 <div style="display: none" id="option_area"></div>
                             </div>
                         </div>
-                        <div class="filter-items z-small" style="float: right"><a href="index.php" data-gtm-stat="50坪以上" class="">[重設]</a></div>
+                        <div style="float: right;color:#ff7921;">
+                            <label style="padding-right:20px;">※條件須全部選擇才會於SEARCH &nbsp;RESULTS區塊出現View all</label>
+                            <a href="index.php" data-gtm-stat="50坪以上" >[重設]</a></div>
                     </div>
                 </li>
             </ul>
@@ -364,7 +366,7 @@ $(function () {
             }else{
                 var rule_area = str.match("您最多可選擇5個鄉鎮");
                 if(rule_area == null){
-                    $("#option_str").html(str+"<font color='#ff7921'> ["+$(this).children().attr("j-tips-txt")+"]</font>");
+                    $("#option_str").html(str+"<font color='#393D42'> ["+$(this).children().attr("j-tips-txt")+"]</font>");
                 }
             }
         }

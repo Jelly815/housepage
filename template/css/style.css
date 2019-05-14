@@ -189,11 +189,15 @@ form {
 	margin-left: -20px;
 }
 .header div#featured div ul li.selected #first_content a{
+	color:#061558;
 	/*position: absolute;
 	left: 0;
 	background: none!important;
 	margin: 0;
     padding: 0!important;*/
+}
+.header div#featured div ul li.selected #first_content a:hover{
+	color:#ff7921;
 }
 .header div#featured div ul li.selected div a img{
 	border: 0;
@@ -466,7 +470,7 @@ a.search_key_button {
 	bottom: 15px;
 }
 #content a:hover{
-	color: #105272;
+	color: #ff7921;
 }
 #content div#news{
 	width: 240px;
