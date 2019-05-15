@@ -329,6 +329,35 @@ switch($action){
 
         echo $stay_time;
     break;
+    // 滑鼠事件
+    case 'user_mouse':
+        $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+        $action     = isset($_POST['mouse'])?filter_var($_POST['mouse'], FILTER_SANITIZE_STRING):'';
+        $re_array   = $db->select_table_data('ex_record_items','id',
+            array(
+                array(0,'user_id','=',$_SESSION['uid']),
+                array(0,'main_id','=',$main_id)));
+
+        if(isset($re_array[0]['id'])){
+            $stay_array   = $db->select_table_data('ex_record_items_stay','record_items_id',
+                array(
+                    array(0,'record_items_id','=',$re_array[0]['id']),
+                    array(0,'type_key','=',$action)));
+
+            if(empty($stay_array)){
+                // insert time
+                $add_record_sql =
+                    "INSERT INTO `ex_record_items_stay` (`record_items_id`,`type_key`,`type_value`) VALUES (?,?,?) ";
+                $vals_arr   = array($re_array[0]['id'],$action,1);
+                $db->insert_data($add_record_sql,$vals_arr);
+            }else{
+                $up_record_sql  =
+                    "UPDATE `ex_record_items_stay` SET `type_value` = `type_value` + 1 WHERE `record_items_id`= ? AND `type_key` = ? ";
+                $vals_arr   = array($re_array[0]['id'],$action);
+                $db->update_data($up_record_sql,$vals_arr);
+            }
+        }
+    break;
 	default:
 
 }

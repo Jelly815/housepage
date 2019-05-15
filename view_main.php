@@ -5,7 +5,7 @@ $main_id = 0;
 $tpl->prepare ();
 echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 // 查詢開始
-    $type_arr = $around_arr = $direction_arr =
+    $type_arr = $around_arr = $direction_arr = $status_arr = array();
     $type_all   = $db->select_table_data('ex_type','id,name');
     foreach ($type_all as $key => $value) {
     	$type_arr[$value['id']] = $value['name'];
@@ -18,6 +18,10 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
     foreach ($direction_all as $key => $value) {
         $direction_arr[$value['id']] = $value['name'];
     }
+    $status_all = $db->select_table_data('ex_status','id,name');
+    foreach ($status_all as $key => $value) {
+        $status_arr[$value['id']] = $value['name'];
+    }
 
     $select_arr = array();
 
@@ -26,7 +30,7 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
     }
 
     $main_data  = $db->select_table_data('ex_main',
-        array('id','unid','number','area','title','road','room','style','ping','around','age','floor','type','parking','unit','view_num','price','builder','community','direction','fee','description','room'),
+        array('id','unid','number','area','title','road','room','style','ping','around','age','floor','type','parking','unit','view_num','price','builder','community','direction','fee','description','room','status'),
         $select_arr,
         array('update_time' => 'DESC'));
 
@@ -39,7 +43,6 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
         }else{
             $style  = ($value['style'] != '')?explode(':',$value['style']):array();
         }
-
 
         if(count($style) == 1){
             list($room1)  = $style;
@@ -83,13 +86,15 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
             'search_road'   => ($value['road']!='')?$value['road']:NODATA,
             'search_age'    => ($value['age']!='')?$value['age'].'年':NODATA,
             'search_floor'  => ($value['floor']!='')?$value['floor']:NODATA,
-            'search_builder'=> ($value['builder'] != '')?$value['builder']:$value['community'],
+            'search_builder'=> ($value['builder'] != '')?$value['builder']:NODATA,
+            'search_community'  => ($value['community'] != '')?$value['community']:NODATA,
             'search_parking'=> ($value['parking'] == 1)?'有':'否',
             'search_arount' => $arount_str,
-            'search_direction' => isset($direction_arr[$value['direction']])?$direction_arr[$value['direction']]:NODATA,
+            'search_direction'  => isset($direction_arr[$value['direction']])?$direction_arr[$value['direction']]:NODATA,
             'search_fee'    => ($value['fee'] != '')?$value['fee'].'元':NODATA,
             'search_unit'   => ($value['unit']  != '')?$value['unit'].'萬/坪':NODATA,
-            'search_desc'   => ($value['description']  != '')?$value['description']:NODATA
+            'search_desc'   => ($value['description']  != '')?$value['description']:NODATA,
+            'search_status' => isset($status_arr[$value['status']])?$status_arr[$value['status']]:NODATA,
 		));
 
         // other img

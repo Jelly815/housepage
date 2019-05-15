@@ -1,8 +1,8 @@
 <div id="featured">
 	<h2>{search_title}</h2>
 	<div>
-		<h3 style="font-size: 25px;color:#ff7921;">{search_price}
-			<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">單價：{search_unit}</label>
+		<h3 style="font-size: 25px;color:#ff7921;">
+            <label onmouseout="user_mouse('price')">{search_price}</label>
 			<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">瀏覽人數：{search_view}</label>
             <label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">加入最愛 <a href="javascript:;" id="add_favorite"><img src="img/favorite_gray.jpg" alt="加入最愛" width="20" height="20" style="cursor: pointer;" /></label>
 		</h3>
@@ -13,32 +13,43 @@
 		</ul>
 		<div id="right">
 			<ul>
+                <li>
+                    <p>
+                        <label onmouseout="user_mouse('area')">區域：{search_area}</label>
+                        <label onmouseout="user_mouse('road')">路段：{search_road}</label>
+                        <label><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label>
+                    </p>
+                </li>
 				<li>
                     <p>
-    					<label>類型：{search_type}</label>
-                        <label>房數：{search_room}</label>
-                        <label>坪數：{search_ping}</label>
+    					<label onmouseout="user_mouse('type')">類型：{search_type}</label>
+                        <label onmouseout="user_mouse('room')">房數：{search_room}</label>
+                        <label onmouseout="user_mouse('ping')">坪數：{search_ping}</label>
                     </p>
 				</li>
                 <li>
                     <p>
-                        <label>屋齡：{search_age}</label>
-                        <label>樓層：{search_floor}</label>
-                        <label>建商/建案名稱：{search_builder}</label>
+                        <label onmouseout="user_mouse('age')">屋齡：{search_age}</label>
+                        <label onmouseout="user_mouse('floor')">樓層：{search_floor}</label>
+                        <label onmouseout="user_mouse('parking')">車位：{search_parking}</label>
                     </p>
                 </li>
                 <li>
                     <p>
-                        <label>車位：{search_parking}</label>
-                        <label>面向：{search_direction}</label>
-                        <label>管理費：{search_fee}</label>
+                        <label onmouseout="user_mouse('direction')">面向：{search_direction}</label>
+                        <label onmouseout="user_mouse('unit')">單價：{search_unit}</label>
+                        <label onmouseout="user_mouse('fee')">管理費：{search_fee}</label>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <label onmouseout="user_mouse('builder')">建商：{search_builder}</label>
+                        <label onmouseout="user_mouse('community')">建案名稱：{search_community}</label>
+                        <label onmouseout="user_mouse('status')">屋況：{search_status}</label>
                     </p>
                 </li>
 				<li>
-					<p>區域：{search_area} | {search_road} &nbsp;<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;"><a href="javascript:;" id="add_map" style="cursor: pointer;">[查看地圖]</a></label></p>
-				</li>
-				<li>
-					<p>生活機能：{search_arount}</p>
+					<p onmouseout="user_mouse('around')">生活機能：{search_arount}</p>
 				</li>
 				<li>
 					{search_desc}
@@ -141,5 +152,23 @@
         window.onunload = onclose;
         function onclose(){
         }
+    }
+
+    // 使用者滑鼠事件
+    function user_mouse(action){
+        $.ajax({
+            url: 'action.php?action=user_mouse',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                main_id: "{main_id}",
+                mouse: action
+            }
+        })
+        .done(function(data) {
+        })
+        .fail(function() {
+            console.log("error");
+        });
     }
 </script>
