@@ -310,6 +310,25 @@ switch($action){
 
         echo '';
     break;
+    // 停留時間
+    case 'stay_time':
+        $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+        $stay_time  = isset($_POST['stay_time'])?filter_var($_POST['stay_time'], FILTER_VALIDATE_INT) + 0:'';
+        $re_array   = $db->select_table_data('ex_record_items','id',
+            array(
+                array(0,'user_id','=',$_SESSION['uid']),
+                array(0,'main_id','=',$main_id)));
+
+        if(isset($re_array[0]['id'])){
+            // insert time
+            $add_record_sql =
+                "INSERT INTO `ex_record_items_stay` (`record_items_id`,`type_key`,`type_value`)  values (?,?,?) ";
+            $vals_arr   = array($re_array[0]['id'],'stay_time',$stay_time);
+            $db->insert_data($add_record_sql,$vals_arr);
+        }
+
+        echo $stay_time;
+    break;
 	default:
 
 }

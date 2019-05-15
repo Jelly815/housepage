@@ -54,6 +54,7 @@
 	</div>
 </div>
 <script>
+    // 加入最愛
     $("#add_favorite").click(function(){
         $.ajax({
             url: 'action.php?action=add_favorite',
@@ -75,6 +76,7 @@
             console.log("error");
         });
     });
+    // 點擊地圖
     $("#add_map").click(function(){
         $.ajax({
             url: 'action.php?action=add_map',
@@ -91,48 +93,53 @@
             console.log("error");
         });
     });
-	/*
-	var count_down_sec = parseInt("{count_down_sec}");
-    var count_down_confirm_sec = parseInt("{count_down_confirm_sec}");
-    var text_minute = parseInt(count_down_sec/60);
-    var text_second = parseInt(count_down_sec%60);
+
+    // 停留時間
+    show_time = 0;
+    showTime();
+
     function showTime(){
-        $(".time_tool").show();
-        if(count_down_sec>0){
-            count_down_sec -= 1;
-        }
-        text_minute = parseInt(count_down_sec/60);
-        text_second = parseInt(count_down_sec%60);
-        $(".text_minute").text(text_minute);
-        $(".text_second").text(text_second);
-        text_time = "";
-        if(text_minute>0){
-            text_time += text_minute+"分";
-        }
-        text_time += text_second+"秒";
-        $("#count_down_text").text(text_time);
-        if(count_down_sec==count_down_confirm_sec){
-            alertify.set({ labels:{ ok : "延長"}});
-            alertify.alert("您將於<span id='count_down_text' style='color:red'>"+text_time+"</span>後被登出系統，請按下[延長] 按鈕延長使用時間。", function (e) {
-                if (e) {
-                    count_down_sec = parseInt("{count_down_sec}");
+        show_time =  show_time+1;
+        setTimeout("showTime()",1000);
+    }
+
+    var userAgent = navigator.userAgent; // userAgent
+    var isOpera = userAgent.indexOf("Opera") > -1; // Opera
+    var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; // IE
+    var isIE11 = userAgent.indexOf("rv:11.0") > -1; // IE11
+    var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; // IE的Edge
+
+    if(!isIE && !isEdge && !isIE11) {
+        var is_fireFox = navigator.userAgent.indexOf("Firefox")>-1;
+
+        if(is_fireFox){
+            window.onbeforeunload = function (){
+                if(is_fireFox){
                 }
-            });
+            };
+        }else{
+            window.onunload = function(){
+                $.ajax({
+                    url: 'action.php?action=stay_time',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        main_id: "{main_id}",
+                        stay_time: show_time
+                    }
+                })
+                .done(function(data) {
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+            };
         }
-        if(count_down_sec<=0){
-            log_out();
-            $("#alertify, #alertify-cover").remove();
-            alertify.set({ labels:{ ok : "確定"}});
-            alertify.alert("超出作業時間，已被登出系統", function (e) {
-                if (e) {
-                    location.href='index.php?module=SC&action=login'
-                }
-            });
-            setTimeout("log_out()",3000);
+    }else if(isIE) {
+        window.onbeforeunload = function() {
         }
-        //每秒執行一次,showTime()
-        if(count_down_sec>0){
-            setTimeout("showTime()",1000);
+        window.onunload = onclose;
+        function onclose(){
         }
-    }*/
+    }
 </script>

@@ -26,7 +26,7 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
     }
 
     $main_data  = $db->select_table_data('ex_main',
-        array('id','unid','number','area','title','road','style','style','ping','around','age','floor','type','parking','unit','view_num','price','builder','community','direction','fee','description','room'),
+        array('id','unid','number','area','title','road','room','style','ping','around','age','floor','type','parking','unit','view_num','price','builder','community','direction','fee','description','room'),
         $select_arr,
         array('update_time' => 'DESC'));
 
