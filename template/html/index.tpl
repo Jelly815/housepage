@@ -1,19 +1,19 @@
 <div id="content">
     <div class="first">
-        <h2>Personalized Recommendation </h2>
+        <h2>推薦列表 </h2>
         <ul>
 
         </ul>
     </div>
     <div class="second">
-        <h2>Search<br>results</h2>
+        <h2>Search results</h2>
         <ul>
 
         </ul>
         <a class="view_all" href="">View all</a>
     </div>
     <div id="news">
-        <h2>Get<br>Updated</h2>
+        <h2>Get Updated</h2>
         <a href="#">Follow us <font>Twitter</font></a>
         <a href="#">Like us in <font>Facebook</font></a>
         <a href="#">Visit our <font>Blog</font></a>

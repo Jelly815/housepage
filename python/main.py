@@ -9,8 +9,8 @@ import sys
 import setting
 import random
 
-user_unid = sys.argv[1]
-#user_unid = 'c3c2630db8a1a5581be16e9b79c2661c5'
+#user_unid = sys.argv[1]
+user_unid = 'c02135eff500fd10b717b8ed7c6634b04'
 #user_unid = 'm6bb771cd12d1658a7e26b3c63632d8f7'
 #user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
 #user_unid = 'm185ccab81019a39cba16f666f070bb83'
@@ -103,7 +103,7 @@ recommand_items = list(set(recommand_items))
 # 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
 if recommand_items:
     recommand_items     = func.check_close(user_unid,recommand_items)
-
+#print(recommand_items)
 # 當推薦物件少於10筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:
     hot_house   = func.get_hot_house([],2,user_unid)

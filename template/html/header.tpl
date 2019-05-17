@@ -183,9 +183,13 @@
                                 <div style="display: none" id="option_area"></div>
                             </div>
                         </div>
+                        <div style="float: left;color:#ff7921;">
+                            <a class="view_all" style="display: block;">View all</a>
+                        </div>
                         <div style="float: right;color:#ff7921;">
-                            <label style="padding-right:20px;">※條件須全部選擇才會於SEARCH &nbsp;RESULTS區塊出現View all</label>
-                            <a href="index.php" data-gtm-stat="50坪以上" >[重設]</a></div>
+                            <label style="padding-right:20px;">※條件須全部選擇才會出現View all</label>
+
+                            <a href="index.php" data-gtm-stat="50坪以上">[重設]</a></div>
                     </div>
                 </li>
             </ul>
@@ -275,7 +279,7 @@ $(function () {
         $("#option_shape").text() == '' && $("#option_wrap").text() == '' &&
         $("#option_area").text() == '')
     {
-        $(".second .view_all").hide();
+        $(".view_all").hide();
         // search results
         $.ajax({
             url: 'search_results.php',
@@ -352,12 +356,12 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
-                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    $(".view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
                         $("#option_area").text() != '' && data.match('無資料') == null
                     ){
-                        $(".second .view_all").show();
+                        $(".view_all").show();
                     }
                 })
                 .fail(function() {
@@ -400,12 +404,12 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
-                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    $(".view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
                         $("#option_area").text() != '' && data.match('無資料') == null
                     ){
-                        $(".second .view_all").show();
+                        $(".view_all").show();
                     }
                 })
                 .fail(function() {
@@ -443,12 +447,12 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
-                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    $(".view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
                         $("#option_area").text() != '' && data.match('無資料') == null
                     ){
-                        $(".second .view_all").show();
+                        $(".view_all").show();
                     }
                 })
                 .fail(function() {
@@ -486,12 +490,12 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
-                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    $(".view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
                         $("#option_area").text() != '' && data.match('無資料') == null
                     ){
-                        $(".second .view_all").show();
+                        $(".view_all").show();
                     }
                 })
                 .fail(function() {
@@ -529,12 +533,12 @@ $(function () {
                 })
                 .done(function(data) {
                     $(".second ul").empty().html(data);
-                    $(".second .view_all").attr("href",$(".second ul #search_val").text());
+                    $(".view_all").attr("href",$(".second ul #search_val").text());
                     if($("#option_str").text() != '' && $("#option_price").text() != '' &&
                         $("#option_shape").text() != '' && $("#option_wrap").text() != '' &&
                         $("#option_area").text() != '' && data.match('無資料') == null
                     ){
-                        $(".second .view_all").show();
+                        $(".view_all").show();
                     }
                 })
                 .fail(function() {

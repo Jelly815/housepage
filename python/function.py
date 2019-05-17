@@ -85,7 +85,7 @@ class FUNC_CLASS(DB_CONN):
                 self.execute(user_sql+" ORDER BY items.`last_time` DESC LIMIT 1",\
                     [user_id,setting.search_house_days])
                 user_last_arr = self.fetchall()
-                #print('user_last_arr',user_last_arr)
+
                 if(user_last_arr is not None):
                     for x, last in enumerate(user_last_arr):
                         user_record['last_record'].append([last['area'],last['price'],last['ping'],last['style'],last['type']])
@@ -593,7 +593,8 @@ class FUNC_CLASS(DB_CONN):
                             WHERE   `user_id` = %s AND `is_like` = 3"
         self.execute(chk_user_sql,[user_unid])
         this_user_obj   = self.fetchall()
-        this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',')
+        print(this_user_obj)
+        this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',') if sum(this_user_obj) > 0 else []
 
         chk_main_sql    =  "SELECT  `id`"
 

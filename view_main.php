@@ -36,6 +36,7 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 
     foreach ($main_data as $key => $value) {
         $main_id    = $value['id'];
+
         // 房間
         $room1 = $room2 = $room3 = $room4 = '';
         if(strchr($value['style'],';')){
@@ -180,6 +181,7 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
                                         // 檢查是否有item紀錄
                                         $get_record2= $db->get_table_value('ex_record_items','id',
                                         "`user_id`= '".$user_unid."' AND `record_id` = '".$get_record[0]['id']."' AND `main_id` = '".$main_id."' ");
+
                                         if(!empty($get_record2)){
                                             // 更新item
                                             $up_record_sql  = "UPDATE `ex_record_items` SET `times` = `times` + 1 WHERE `user_id`= ? AND `record_id` = ? AND `main_id` = ? ";
@@ -189,7 +191,7 @@ echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
                                         }else{
                                             // 儲存item
                                             $add_record_sql = "INSERT INTO `ex_record_items` (`user_id`,`record_id`,`main_id`,`times`,`click_map`,`add_favorite`)  values (?,?,?,?,?,?) ";
-                                            $vals_arr   = array($user_unid,$result,$main_id,1,0,0);
+                                            $vals_arr   = array($user_unid,$get_record[0]['id'],$main_id,1,0,0);
 
                                             $result     = $db->insert_data($add_record_sql,$vals_arr);
                                         }
