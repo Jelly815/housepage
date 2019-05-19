@@ -27,7 +27,7 @@ def make_user_interest_vector(user_interests):
     if unique_interests[i] is in the list, 0 otherwise"""
     return [1 if interest in user_interests else 0
             for interest in unique_interests]
- 
+
 def cosine_similarity(v, w):
     return dot(v, w) / math.sqrt(dot(v, v) * dot(w, w))
 
@@ -77,7 +77,7 @@ interest_user_matrix = [[user_interest_vector[j]
 interest_similarities = [[cosine_similarity(user_vector_i, user_vector_j)
                           for user_vector_j in interest_user_matrix]
                          for user_vector_i in interest_user_matrix]
-    
+
 print(most_similar_interests_to(0))
 #print(most_similar_interests_to(0))
 
@@ -105,8 +105,8 @@ for x in range(len(df)):
 
 print([df_NaN,del_index])
 
-user = [438,598,638]
-other = [315,418,598,578,498]
+user = [23,18,20.4]
+other = [25.5,28,24,23.4,25]
 
 print('Other_mean',np.mean(other))
 print('Other_mean',np.std(other))
@@ -115,4 +115,3 @@ median = [30,60,90,100,150,300]
 new_data    = set(median)
 p_index     = int(0.5 * len(new_data))
 print('median',sorted(new_data)[p_index])
-    

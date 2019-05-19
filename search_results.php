@@ -149,7 +149,7 @@
         }
 
     // 查詢開始
-        $select_arr = array();
+        $select_arr = array(array(0,'is_closed','=',0));
         // 區域
         if($area_str != ''){
             $select_arr[] = array(2,'area','IN ('.rtrim($area_str,',').')','');

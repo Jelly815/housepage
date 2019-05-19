@@ -38,7 +38,10 @@ care_list_max	= ["description","ping"]
 similar_percent = 0.5
 
 # 當推薦物件少於幾筆時，要加入User所在區域熱門的物件
-less_how_num 	= 10
+less_how_num 	= 5
 
 # 隨機取得要推薦的數量
 random_num 		= 5
+
+# 預設區域
+default_area 	= 283

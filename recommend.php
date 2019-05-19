@@ -13,9 +13,6 @@
             $params = 'c'.md5(uniqid(rand()));
             $_SESSION['uid'] = $params;
         }
-
-#        $command    = escapeshellcmd('D:/xampp/htdocs/housepage/python/main.py  '.$params);
-#        $output     = shell_exec($command);
         #$command    = escapeshellcmd('python '.PYTHONPATH.' '.$params);
         $command    = escapeshellcmd(PYTHONPATH.' '.$params);
         $output     = shell_exec($command);

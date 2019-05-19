@@ -70,7 +70,9 @@ $tpl->prepare ();
         $around_arr[$value['id']] = $value['name'];
     }
 
-    $select_arr = array();
+    $select_arr = array(
+        array(0,'is_closed','=',0)
+    );
     // 區域
     if($area != ''){
         $select_arr[] 	= array(2,'area','IN ('.rtrim($area,',').')','');
@@ -181,7 +183,7 @@ $tpl->prepare ();
     }
 
     $main_data  = $db->select_table_data('ex_main',
-        array('unid','number','area','title','road','style','style','ping','around',
+        array('unid','number','area','title','road','room','style','ping','around',
             'age','floor','type','parking','unit','view_num','price','builder','community'),
         $select_arr,
         array('update_time' => 'DESC'));

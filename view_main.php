@@ -3,7 +3,7 @@ $main   = (isset($_GET['main']) && $_GET['main'] != '')?filter_var($_GET['main']
 $main_id = 0;
 
 $tpl->prepare ();
-echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
+#echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
 // 查詢開始
     $type_arr = $around_arr = $direction_arr = $status_arr = array();
     $type_all   = $db->select_table_data('ex_type','id,name');

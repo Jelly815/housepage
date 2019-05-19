@@ -9,13 +9,9 @@ import sys
 import setting
 import random
 
-#user_unid = sys.argv[1]
-user_unid = 'c02135eff500fd10b717b8ed7c6634b04'
-#user_unid = 'm6bb771cd12d1658a7e26b3c63632d8f7'
-#user_unid = '7f16a3540e74b904ed3ee626c79af314' #紀錄只有一筆，且瀏覽次數只有1次未有加入最愛
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
-#[304,1000,30,2,3],[304,1000,30,3,3],[304,1000,40,2,3],[304,1000,40,3,3]
-#user_unid = 'mca3907edc888d46215b3a35c294e73fa'
+user_unid = sys.argv[1]
+#user_unid = 'c49e20683b7419dc02c58a15d1f9540c6'
+
 func = FUNC_CLASS()
 
 user_items_dict = []
@@ -51,23 +47,24 @@ if len(record_data['often_record']) > 1:
                             others_user_items_dict.append(times_range_items)
     #將所有User都加起來(有興趣的物件)
     users_items = user_items_dict + others_user_items_dict
-    #print(users_items)
+    #print('users_items',users_items)
     # 全部可能喜歡的物件
     unique_items = sorted(list({ like_item
                         for user_items in users_items
                         for like_item in user_items }))
-    #print(unique_items)
+
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
     hot_house  = func.get_hot_house(record_data['often_record'][0])
     if len(hot_house) == 0:
         hot_house   = func.get_hot_house(record_data['often_record'][0],1)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
-
+    users_items = [unique_items]
 # 如果筆數等於0，則推薦(User所在區域)熱門的
 else:
     hot_house   = func.get_hot_house([],2,user_unid)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
+    users_items = [unique_items]
 #print('unique_items',unique_items)
 ####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
 times_range_items_not = func.get_this_user_no_search(user_unid)
@@ -95,25 +92,27 @@ items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
 
 # 推薦相似者喜歡的物件給他
 recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items,users_items)
-#print(recommand_items)
+#print('recommand_items',recommand_items)
 # 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)
 recommand_items = list(set(recommand_items))
-
+#print('recommand_items',recommand_items)
 # 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
 if recommand_items:
     recommand_items     = func.check_close(user_unid,recommand_items)
-#print(recommand_items)
-# 當推薦物件少於10筆時，加入User所在區域熱門的物件
-if len(recommand_items) < setting.less_how_num:
+#print('recommand_items',recommand_items)
+# 當推薦物件少於5筆時，加入User所在區域熱門的物件
+if len(recommand_items) > 0 and len(recommand_items) < setting.less_how_num:
     hot_house   = func.get_hot_house([],2,user_unid)
-    for key, val in enumerate(hot_house):
-        recommand_items.append(val['id'])
 
+    hot_house_arr = []
+    for key, val in enumerate(hot_house):
+        hot_house_arr.append(val['id'])
+    less_items = setting.random_num - len(recommand_items)
+    recommand_items.extend(hot_house_arr[:less_items])
+#print('recommand_items',recommand_items)
 # 隨機取5個物件出來
 if len(recommand_items) > 0:
-    #random.sample(recommand_items, setting.random_num)
     print(random.sample(recommand_items, setting.random_num))
-    #json_str = json.dumps(random.sample(recommand_items, setting.random_num));
 else:
-    print('None')
+    print(unique_items)

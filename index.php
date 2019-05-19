@@ -3,7 +3,13 @@ session_start();
 include_once('./lib/handling.php');
 include_once('./lib/lang.php');
 
-#echo "<pre>";print_r($_SERVER['REMOTE_ADDR']);echo "</pre>";
+if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
+    $params = $_SESSION['uid'];
+}else{
+    $params = 'c'.md5(uniqid(rand()));
+    $_SESSION['uid'] = $params;
+}
+#echo "<pre>";print_r($_SESSION['uid']);echo "</pre>";
 $db 	= new db_function();
 $op 	= isset($_GET['op'])?filter_var($_GET['op'], FILTER_SANITIZE_STRING):'';
 $selected 			= 'class="selected first"';
