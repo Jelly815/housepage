@@ -7,8 +7,10 @@ define('ADSEARCH','Keyword');
 define('LOGIN','LOGIN');
 define('SIGNUP','SIGNUP');
 define('TITLEVIEWSEARCH','View All');
+define('TITLEVIEWMAIN','View House');
 define('HI','Welcome！');
 define('LOGOUT','LOGOUT');
+define('TITLESURVEY','問卷調查');
 
 // 共用
 define('PWD','密碼');

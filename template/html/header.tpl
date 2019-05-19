@@ -8,8 +8,8 @@
         </li>
     </ul>
     <div id="log_in_text">{USER_NAME}</div>
-    <a href="index.php" id="logo" title="{HEADERTITLE}">
-        <h1>{HEADERTITLE}</h1>
+    <a href="index.php" id="logo" title="{PAGETITLE}">
+        <h1>{PAGETITLE}</h1>
         <div>{HEADERTITLEDTAIL}</div>
     </a>
     <ul class="navigation">
@@ -19,6 +19,9 @@
         <!--<li>
             <a id="navi_search" href="javascript:;" title="{ADSEARCH}">{ADSEARCH}</a>
         </li>-->
+        <li {SELECTED_SURVEY} {SHOWSURVEY}>
+            <a href="index.php?op=survey" title="{SURVEY}">{SURVEY}</a>
+        </li>
         <li {SELECTED_SIGNUP} id="login_li">
             {LOGIN_URL}
         </li>
@@ -46,7 +49,7 @@
         <div class="first">
             <ul>
                 <li class="selected first">
-                    <a id="first_a" href="featured.html">Search</a>
+                    <a id="first_a" href="javascript:;">Search</a>
 
                     <div id="first_content">
                         <div class="mb20 filter-location-wrap">

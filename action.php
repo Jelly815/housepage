@@ -358,6 +358,29 @@ switch($action){
             }
         }
     break;
+    // 問卷調查
+    case 'survey':
+        $data           = isset($_POST)?$_POST:'';
+
+        $survey_data    = $db->select_table_data('ex_survey',
+            array('id'),array(),array('sort' => 'ASC'));
+
+        $survey_ans_data  = $db->select_table_data('ex_survey_ans',
+            array('user_id'),
+            array(array(0,'user_id','=',$_SESSION['uid'])),
+            array(),2);
+        if(empty($survey_ans_data)){
+            foreach ($survey_data as $key => $value) {
+                if(isset($data['ans_'.$value['id']])){
+                    $add_record_sql =
+                        "INSERT INTO `ex_survey_ans` (`user_id`,`survey_id`,`ans`) VALUES (?,?,?) ";
+                    $vals_arr   = array($_SESSION['uid'],$value['id'],$data['ans_'.$value['id']]);
+                    $db->insert_data($add_record_sql,$vals_arr);
+                }
+            }
+        }
+        echo json_encode(array('status' => true,'msg' => '','data' => array()));
+    break;
 	default:
 
 }

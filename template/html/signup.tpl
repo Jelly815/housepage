@@ -124,9 +124,6 @@ $(document).ready(function(){
             .always(function() {
                 //console.log("complete");
             });
-
-            //changeTab(2, 'complete');
-        //}
     });
 });
 // Tab 切換
@@ -148,7 +145,6 @@ function validate() {
     var error   = 0;
     var pwdLen  = $("#sign_pwd").val().length;
     var reg     = new RegExp(/([\w\-]+\@[\w\-]+\.[\w\-]+)/);
-    //var reg2    = new RegExp(/^[09]{2}[0-9]{8}$/);
     var reg3    = new RegExp(/[^\u4e00-\u9fa5]/);
 
     // name

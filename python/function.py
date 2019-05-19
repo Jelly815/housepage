@@ -134,16 +134,17 @@ class FUNC_CLASS(DB_CONN):
                         'price':[],'description':[],'around':[],
                         'status':[],'community':[]
                 }
-                users_all = []
+
                 if len(user_today_arr) > 0:
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
-
+                        users_all = []
                         # 取得非user有相同記錄的人
                         users   = [val['unid'] for y,val in enumerate(self.get_same_record(user_id,record))]
+
                         if len(users) > 0:
                             users_all.extend(users)
-
+                        #print('users_all',users_all)
                         #本User看過的物件資料
                         user_today_sql = """
                             SELECT  `main_id`
@@ -155,7 +156,7 @@ class FUNC_CLASS(DB_CONN):
                             """
                         self.execute(user_today_sql,[user_id,setting.search_house_days,user_today['id']])
                         this_user_mainid = self.fetchall()
-
+                        #print('this_user_mainid',this_user_mainid)
                         for mainid  in this_user_mainid:
                             user_today_sql = """
                                 SELECT  `community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,
@@ -657,12 +658,13 @@ class FUNC_CLASS(DB_CONN):
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
-
+        #print('user_items_vector',user_items_vector)
         if len(user_items_vector) > 0:
             for item_id, is_like in enumerate(user_items_vector[user_id]):
+                #print(item_id,is_like)
                 if is_like == 1 and len(similarities) > 0:
                     similar_likes = self.most_similar_items_to(item_id,similarities[user_id],unique_items)
-
+                    #print('similar_likes',similar_likes)
                     for item, similarity in similar_likes:
                         if(similarity < 1.0):
                             suggestions[item] += similarity

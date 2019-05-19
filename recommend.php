@@ -10,8 +10,7 @@
         if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
             $params = $_SESSION['uid'];
         }else{
-            $params = 'c'.md5(uniqid(rand()));
-            $_SESSION['uid'] = $params;
+            $_SESSION['uid'] = CUSTOMERID;
         }
         #$command    = escapeshellcmd('python '.PYTHONPATH.' '.$params);
         $command    = escapeshellcmd(PYTHONPATH.' '.$params);

@@ -544,6 +544,7 @@ a.search_key_button {
 	overflow: hidden;
 	border-radius: 5px;
 	width:960px;
+	min-height: 940px;
 }
 .content div#cruises{
 	margin-top: -490px;
@@ -975,11 +976,9 @@ a.search_key_button {
 	border-width: 1px;
 	border-style: solid none none;
 	border-color: #A0A0A0;
-	margin: -5px 0 0;
 	background-color: #fff;
-
+	margin: -5px 0 0;
 	position: relative;
-
 	margin-bottom: -50px;
 }
 .footer div{bottom:0px;

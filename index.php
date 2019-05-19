@@ -3,11 +3,8 @@ session_start();
 include_once('./lib/handling.php');
 include_once('./lib/lang.php');
 
-if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
-    $params = $_SESSION['uid'];
-}else{
-    $params = 'c'.md5(uniqid(rand()));
-    $_SESSION['uid'] = $params;
+if(!isset($_SESSION['uid'])){
+    $_SESSION['uid'] = CUSTOMERID;
 }
 #echo "<pre>";print_r($_SESSION['uid']);echo "</pre>";
 $db 	= new db_function();
@@ -17,6 +14,7 @@ $selected 			= 'class="selected first"';
 $text 	= array(
 	'ADMINMAIL'		=> ADMINMAIL,
 	'HEADERTITLE' 	=> HEADERTITLE,
+	'PAGETITLE' 	=> HEADERTITLE,
 	'INDEXPATH'		=> INDEXPATH,
 	'HOMEPAGE'		=> HOMEPAGE,
 	'ADSEARCH'		=> ADSEARCH,
@@ -32,7 +30,8 @@ $text 	= array(
 	'ALERTXT08'		=> ALERTXT08,
 	'ALERTXT10'		=> ALERTXT10,
 	'ALERTXT11'		=> ALERTXT11,
-	'SIGNPATH'		=> SIGNPATH
+	'SIGNPATH'		=> SIGNPATH,
+	'SURVEY'		=> TITLESURVEY
 );
 
 if(isset($_SESSION['uname'])){
@@ -51,57 +50,38 @@ $text['SELECTED_DEFAULT']= $selected;
 
 $area_arr   = array();
 // 區域
+/*
 $area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
 foreach ($area_all as $key => $value) {
 	$area_arr[$value['id']] = $value['name'];
-}
+}*/
+// 顯示問卷調查按鈕
+$survey_data  = $db->select_table_data('ex_survey_ans',
+    array('user_id'),
+    array(array(0,'user_id','=',$_SESSION['uid'])),
+    array(),2);
+$text['SHOWSURVEY'] = (!empty($survey_data))?'style="display: none"':'';
 
 switch($op){
-	/*
-	case ADDPIC:	//新增作品
-		if(chkLogin($uid)<>''){
-			$headTitle=TITLEADDPIC;
-			$tpl -> assignInclude('themes',_PADDPIC);
-		}else header('location:'.OUTOPATH);
-	  break;
-	case SHOWPIC:	//瀏覽作品
-		if(chkLogin($uid)<>''){
-			$headTitle=TITLEVIEWPIC;
-			$tpl -> assignInclude('themes',_PSHOWPIC);
-		}else header('location:'.OUTOPATH);
-	  break;
-	case EDITPIC:	//編輯作品
-		if(chkLogin($uid)<>''){
-			$headTitle=TITLEEDITPIC;
-			$tpl -> assignInclude('themes',_PEDITPIC);
-		}else header('location:'.OUTOPATH);
-	  break;
-	case DELPIC:	//刪除作品
-		if(chkLogin($uid)<>''){
-
-		}else header('location:'.OUTOPATH);
-	  break;
-
-
-	case ULOGIN:	//登入
-		if(chkLogin($uid)<>'')header('location:'.LOGINTOPATH);
-		else{
-			include_once(_PMAIN);
-		}
-	  break;
-	 */
+	case VIEWSURVEY:		// view main
+		$text['HEADERTITLE']			= TITLESURVEY;
+		$text['SELECTED_SURVEY']	= $selected;
+		$text['SELECTED_DEFAULT']	= $text['SELECTED_SIGNUP'] = '';
+		$tpl->assignInclude('themes',_TSURVEY);
+		include_once(_PSURVEY);
+	break;
 	case VIEWMAIN:		// view main
-		#$text['PAGE_TITLE']			= TITLEVIEWMAIN;
+		$text['HEADERTITLE']			= TITLEVIEWMAIN;
 		$tpl->assignInclude('themes',_TVIEWMAIN);
 		include_once(_PVIEWMAIN);
 	break;
 	case VIEWSEARCH:		// view all
-		$text['PAGE_TITLE']			= TITLEVIEWSEARCH;
+		$text['HEADERTITLE']			= TITLEVIEWSEARCH;
 		$tpl->assignInclude('themes',_TVIEWSEARCH);
 		include_once(_PVIEWSEARCH);
 	break;
 	case SIGN:		//註冊
-		$text['PAGE_TITLE']			= SIGNUP;
+		$text['HEADERTITLE']			= SIGNUP;
 		if(!isset($_SESSION['uname'])){
 			$text['SELECTED_SIGNUP']	= $selected;
 			$text['SELECTED_DEFAULT']	= '';
@@ -112,11 +92,9 @@ switch($op){
 		}
 	break;
 	default:		//首頁
-		//$headTitle = HEADERTITLE;
 		$tpl -> assignInclude('themes',_TINDEX);
 		$tpl->prepare ();
 		$tpl->newBlock("index_header");
-
 }
 
 $tpl->gotoBlock("_ROOT");
@@ -125,9 +103,5 @@ $tpl->assignGlobal(array(
     'JSPATH'  		=> JSPATH
 ));
 $tpl->assign($text);
-if($op == ''){
-
-}
-
 $tpl->printToScreen ();
 ?>

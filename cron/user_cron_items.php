@@ -33,19 +33,18 @@ if (!function_exists('stats_standard_deviation')) {
 
 $db 	= new db_function();
 
-$sql    =   "SELECT items.`record_id`,main.`area`,main.`road`,main.`room`,main.`ping`,".
+$sql    =   "SELECT items.`main_id`,main.`area`,main.`road`,main.`room`,main.`ping`,".
                     "main.`parking`,main.`age`,main.`floor`,main.`type`,".
                     "main.`direction`,main.`fee`,main.`builder`,main.`unit`,".
                     "main.`price`,main.`description`,main.`around`,".
                     "main.`status`,main.`community` ".
-            "FROM   `ex_main` main,`ex_record_items` items,`ex_user` user ".
+            "FROM   `ex_main` main,`ex_record_items` items ".
             "WHERE  items.`main_id` = main.`id` AND ".
-                    "items.`user_id` = user.`unid` AND ".
                     "items.`last_time` >= (NOW() - INTERVAL 180 DAY) ";
 
 $get_user   = $db->select_table_data('ex_record','DISTINCT `user_id`');
 foreach ($get_user as $key => $get_user_value) {
-    $record_id_arr  = array();
+    $main_id_arr    = array();
     $items_arr      = array(
         'area'  => array(),'room' => array(),'parking' => array(),
         'floor' => array(),'direction' => array(),'builder' => array(),
@@ -62,12 +61,12 @@ foreach ($get_user as $key => $get_user_value) {
     $like_sql   =   $sql.
                     " AND items.`times` > 1 ".
                     " AND items.`user_id` = ?";
-
+//$like_sql." AND items.`user_id`='c7ee175b8c1aece957dbbbe4689812a75'";
     $like_sql   = $db->db->Prepare($like_sql);
     $main_res 	= $db->db->Execute($like_sql,array($user_id))->getArray();
-
+//echo "<pre>";print_r($like_sql);echo "</pre>";exit;
     foreach ($main_res as $main_value) {
-        array_push($record_id_arr, (int)$main_value['record_id']);
+        array_push($main_id_arr, (int)$main_value['main_id']);
     	if($main_value['area'] != '')array_push($items_arr['area'], $main_value['area']);
     	if($main_value['road'] != '')array_push($items_arr['road'], $main_value['road']);
     	if($main_value['room'] != '0')array_push($items_arr['room'], $main_value['room']);
@@ -87,7 +86,7 @@ foreach ($get_user as $key => $get_user_value) {
     	if($main_value['community'] != '')array_push($items_arr['community'], $main_value['community']);
     }
 
-    // 儲存至資料庫
+// 儲存至資料庫(1:喜歡)
     $like_data      = array(
         'user_id'   => $user_id,
         'items'     => json_encode($items_arr),
@@ -95,10 +94,11 @@ foreach ($get_user as $key => $get_user_value) {
     );
 
     $db->insert_table_data('ex_record_items_obj',$like_data);
-    $record_id_arr  = array_unique($record_id_arr,SORT_NUMERIC);
+// 儲存至資料庫(2:喜歡物件的main_id)
+    $main_id_arr  = array_unique($main_id_arr,SORT_NUMERIC);
     $like_data      = array(
         'user_id'   => $user_id,
-        'items'     => implode(',',$record_id_arr),
+        'items'     => implode(',',$main_id_arr),
         'is_like'   => 2,
     );
 
@@ -141,7 +141,7 @@ foreach ($get_user as $key => $get_user_value) {
         if($main_value['community'] != '')array_push($items_arr['community'], $main_value['community']);
     }
 
-    // 儲存至資料庫
+// 儲存至資料庫(0:不喜歡)
     $no_like_data   = array(
         'user_id'   => $user_id,
         'items'     => json_encode($items_arr),
@@ -206,7 +206,7 @@ foreach ($get_user as $key => $get_user_value) {
         // 檢查area
         array_push($item_matrix, similar_matrix_value($user_items->area));
 
-        // 寫入喜歡物件(在意的項目)
+// 儲存至資料庫(3:喜歡的在意項目)
         $like_matrix_data   = array(
             'user_id'   => $user_id,
             'items'     => json_encode($item_matrix),
@@ -332,7 +332,7 @@ foreach ($get_user as $key => $get_user_value) {
             array_push($item_matrix2, similar_matrix_value($user_items->area,$user_items2->area));
         }
 
-        // 寫入不喜歡物件(在意的項目)
+// 儲存至資料庫(4:不喜歡的在意項目)
         $like_matrix_data   = array(
             'user_id'   => $user_id,
             'items'     => json_encode($item_matrix2),

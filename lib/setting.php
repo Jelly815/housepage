@@ -20,26 +20,20 @@ define('_TSIGN',THEMES.'signup.tpl');
 define('_TLOGIN',THEMES.'login.tpl');
 define('_TVIEWSEARCH',THEMES.'view_search.tpl');
 define('_TVIEWMAIN',THEMES.'view_main.tpl');
-//define('_TEDITPIC',THEMES.'editPic.tpl');
+define('_TSURVEY',THEMES.'survey.tpl');
 define('_TINDEX',THEMES.'index.tpl');
 define('_TALERT',THEMES.'alert.tpl');
 
 define('INDEXPATH','index.php');
-//define('LOGINPATH','index.php?op=ulogin');
 define('SIGNPATH','index.php?op=signup');
-define('VIEWSEARCHPATH','index.php?op=view_search');
-define('VIEWMAINPATH','index.php?op=view_main');
-//define('EDITPICTOPATH','index.php?op=editPic');
-//define('DELPICTOPATH','index.php?op=delPic');
 define('OUTOPATH','index.php?op=out');
 
 define('MODULES','modules/');
 define('_PVIEWSEARCH','view_search.php');
 define('_PVIEWMAIN','view_main.php');
-//define('_PEDITPIC',MODULES.'editPic.php');
+define('_PSURVEY','survey.php');
 define('_PMAIN','login.php');
 define('_PSIGN','signup.php');
-define('_PINDEX','showAll.php');
 
 // unid
 define('MEMBERID','m'.md5(uniqid(rand())));
@@ -49,7 +43,7 @@ define('CUSTOMERID','c'.md5(uniqid(rand())));
 //define('ADDPIC','addPic');
 define('VIEWSEARCH','view_search');
 define('VIEWMAIN','view_main');
-//define('DELPIC','delPic');
+define('VIEWSURVEY','survey');
 define('SIGN','signup');
 define('OUT','out');
 //define('ULOGIN','ulogin');

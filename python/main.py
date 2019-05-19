@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'c49e20683b7419dc02c58a15d1f9540c6'
+#user_unid = 'c7ee175b8c1aece957dbbbe4689812a75'
 
 func = FUNC_CLASS()
 
@@ -100,11 +100,11 @@ recommand_items = list(set(recommand_items))
 # 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
 if recommand_items:
     recommand_items     = func.check_close(user_unid,recommand_items)
-#print('recommand_items',recommand_items)
-# 當推薦物件少於5筆時，加入User所在區域熱門的物件
-if len(recommand_items) > 0 and len(recommand_items) < setting.less_how_num:
-    hot_house   = func.get_hot_house([],2,user_unid)
 
+# 當推薦物件少於5筆時，加入User所在區域熱門的物件
+if len(recommand_items) < setting.less_how_num:
+    hot_house   = func.get_hot_house([],2,user_unid)
+    #print(hot_house)
     hot_house_arr = []
     for key, val in enumerate(hot_house):
         hot_house_arr.append(val['id'])
