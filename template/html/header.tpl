@@ -49,9 +49,8 @@
         <div class="first">
             <ul>
                 <li class="selected first">
-                    <a id="first_a" href="javascript:;">Search</a>
-
-                    <div id="first_content">
+                    <a class="first_a" id="first_show" href="javascript:;">Search</a>
+                    <div class="first_content" id="first_div">
                         <div class="mb20 filter-location-wrap">
                             <div class="filter-shadow" style="display: none;"></div>
                             <div class="filter-row">
@@ -144,8 +143,9 @@
                                     <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="公寓" class="">公寓</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="電梯大樓" class="">電梯大樓</a></div>
-                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="透天厝" class="">透天厝</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="透天厝" class="">透天</a></div>
                                     <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="別墅" class="">別墅</a></div>
+                                    <div class="filter-items z-multiple"><a href="javascript:;" data-gtm-stat="套房" class="">套房</a></div>
                                 </div>
                                 <div style="display: none" id="option_shape"></div>
                             </div>
@@ -195,6 +195,34 @@
                             <a href="index.php" data-gtm-stat="50坪以上">[重設]</a></div>
                     </div>
                 </li>
+                <li>
+                    <a class="first_a" id="mem_show" href="javascript:;">操作說明(會員)</a>
+                    <div class="first_content" id="mem_div">
+                        <p>
+                            <b>第一階段</b>：<br>
+        1.正常搜尋與瀏覽(搜尋 > 瀏覽列表 > 瀏覽內頁)。<br>
+        2.系統會收集您的操作(停留時間越久代表喜歡，滑過/選取 項目代表在意的項目)。<br>
+        3.喜歡的房子，可以加入最愛。<br>
+        4.若無加入最愛，系統將以瀏覽次數超過1次，判為是您喜歡的房屋。<br>
+        5.若有加入最愛的動作，4.即使瀏覽多次或是只有瀏覽1次，系統都將以加入最愛的房屋為主。<br>
+        6.目的為建立(收集)資料。
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <a class="first_a" id="desc_show" href="javascript:;">操作說明(非會員)</a>
+                    <div class="first_content" id="desc_div">
+                        <p>
+                            <b>第一階段</b>：<br>
+        1.正常搜尋與瀏覽(搜尋 > 瀏覽列表 > 瀏覽內頁)。<br>
+        2.系統會收集您的操作(停留時間越久代表喜歡，滑過/選取 項目代表在意的項目)。<br>
+        3.喜歡的房子，可以加入最愛。<br>
+        4.若無加入最愛，系統將以瀏覽次數超過1次，判為是您喜歡的房屋。<br>
+        5.若有加入最愛的動作，4.即使瀏覽多次或是只有瀏覽1次，系統都將以加入最愛的房屋為主。<br>
+        6.目的為建立(收集)資料。
+                        </p>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -202,6 +230,14 @@
 </div>
 <script>
 $(function () {
+    $('.first_a').click(function(event) {
+        $(this).parents('ul').find('li').attr("class","");
+        $(this).parent('li').attr("class","selected first");
+        $(this).parents('ul').find('.first_content').hide();
+
+        $(this).next().show();
+    });
+
     // 關鍵字搜尋
     $('#search_key').tagsInput({placeholder:'{ALERTXT11}'});
     // 縣市

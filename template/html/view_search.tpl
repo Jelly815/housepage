@@ -93,7 +93,7 @@
 }
 </style>
 <div id="offers">
-	<h2>{PAGE_TITLE}</h2>
+	<h2>{HEADERTITLE}</h2>
 	<ul class="first">
 		<!-- START BLOCK : view_search -->
 		<li>
@@ -111,7 +111,7 @@
 							<p>{search_type} | {search_room} | {search_ping} | {search_age} | {search_floor}</p>
 						</li>
 						<li>
-							<p>{search_builder} | {search_area} | {search_road}</p>
+							<p>{search_area} | {search_road} | {search_builder}</p>
 						</li>
 						<li>
 							<p>{search_arount}</p>

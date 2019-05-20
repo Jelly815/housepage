@@ -50,11 +50,10 @@ $text['SELECTED_DEFAULT']= $selected;
 
 $area_arr   = array();
 // 區域
-/*
 $area_all   = $db->select_table_data('ex_area','id,name',array(array(0,'city_id','=',275)));
 foreach ($area_all as $key => $value) {
 	$area_arr[$value['id']] = $value['name'];
-}*/
+}
 // 顯示問卷調查按鈕
 $survey_data  = $db->select_table_data('ex_survey_ans',
     array('user_id'),

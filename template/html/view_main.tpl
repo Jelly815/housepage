@@ -93,7 +93,7 @@
 }
 </style>
 <div id="featured">
-	<h2>{search_title}</h2>
+	<h2 style="font-size: 25px;">{search_title}</h2>
 	<div>
 		<h3 style="font-size: 25px;color:#ff7921;">
             <label onmouseout="user_mouse('price')">{search_price}</label>
@@ -146,7 +146,7 @@
 					<p onmouseout="user_mouse('around')">生活機能：{search_arount}</p>
 				</li>
 				<li>
-					{search_desc}
+					<p>{search_desc}</p>
 				</li>
 				<li>
 					<!-- START BLOCK : view_img -->

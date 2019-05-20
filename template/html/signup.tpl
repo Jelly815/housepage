@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{CSSPATH}/w3.css">
 <div id="signup">
-    <h2>{PAGE_TITLE}</h2>
+    <h2>{HEADERTITLE}</h2>
 
     <div class="w3-container">
         <div class="w3-row">

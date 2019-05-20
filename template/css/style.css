@@ -121,7 +121,7 @@ form {
 .header div#featured div.first{
 	margin: 0;
 }
-.header div#featured #first_content{
+.header div#featured .first_content{
 	height: auto;
 	width: auto;
 	float: left;
@@ -131,36 +131,36 @@ form {
 	/*overflow: hidden;*/
 	padding: 35px 0 0;
 	margin: 0;
-	width: 630px;
+	width: 680px;
 	list-style: none;
 	height: 525px;
 	position: relative;
 }
 .header div#featured div ul li.first{
-	margin: 0 0 0 20px!important;
-	_margin: 0 0 0 10px!important;
+	/*margin: 0 0 0 20px!important;
+	_margin: 0 0 0 10px!important;*/
 }
 .header div#featured div.first ul li.selected{
 	background: url(../images/bg-feat-menu-selected-left.gif) no-repeat left top;
 	margin: 0 0 0 5px;
 }
 .header div#featured div ul li{
-	background: url(../images/bg-feat-menu-left.gif) no-repeat left top;
+	/*background: url(../images/bg-feat-menu-left.gif) no-repeat left top;*/
 	float: left;
 	height: 37px;
 	line-height: 40px;
 	margin: 0 0 0 4px;
 }
-.header div#featured div.first ul li.selected #first_a{
+.header div#featured div.first ul li.selected .first_a{
 	background: url(../images/bg-feat-menu-selected-right.gif) no-repeat left top;
 	color: #191C21;
-	width:170px;
+	width:141px;
 	/*padding: 0 32px;*/
 }
-.header div#featured div ul li.selected #first_a:hover{
+.header div#featured div ul li.selected .first_a:hover{
 	color: #868686;
 }
-.header div#featured div.first ul li #first_a{
+.header div#featured div.first ul li .first_a{
 	background: url(../images/bg-feat-menu-right.gif) no-repeat left top;
 	display: block;
 	_display: inline-block;
@@ -173,11 +173,12 @@ form {
 	color: #666666;
 	padding: 0 33px;
 	font-weight: bold;
+	width:141px;
 }
-.header div#featured div ul li #first_a:hover{
+.header div#featured div ul li .first_a:hover{
 	color: #191C21;
 }
-.header div#featured div ul li.selected #first_content{
+.header div#featured div ul li.selected .first_content{
 	width: 870px;
 	height: 220px;
 	position: absolute;
@@ -188,7 +189,7 @@ form {
 	background: url(../images/bg-featured-bottom-curve.gif) no-repeat left bottom #fff;
 	margin-left: -20px;
 }
-.header div#featured div ul li.selected #first_content a{
+.header div#featured div ul li.selected .first_content a{
 	color:#061558;
 	/*position: absolute;
 	left: 0;
@@ -196,7 +197,7 @@ form {
 	margin: 0;
     padding: 0!important;*/
 }
-.header div#featured div ul li.selected #first_content a:hover{
+.header div#featured div ul li.selected .first_content a:hover{
 	color:#ff7921;
 }
 .header div#featured div ul li.selected div a img{
@@ -213,7 +214,7 @@ form {
     padding: 0 30px;
     position: absolute;
     text-align: justify;
-    top: 370px;
+    top: 20px;
 	color: #393d42;
 	font-size: 16px;
 	width: auto;

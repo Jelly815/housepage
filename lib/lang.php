@@ -10,7 +10,7 @@ define('TITLEVIEWSEARCH','View All');
 define('TITLEVIEWMAIN','View House');
 define('HI','Welcome！');
 define('LOGOUT','LOGOUT');
-define('TITLESURVEY','問卷調查');
+define('TITLESURVEY','填寫問卷');
 
 // 共用
 define('PWD','密碼');
