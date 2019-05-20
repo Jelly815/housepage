@@ -1,19 +1,17 @@
 import requests
 import json
+from lxml import html
 from bs4 import BeautifulSoup
 from db_connect import DB_CONN
 import uuid
 import hashlib
 import datetime
 import math
+db_conn = DB_CONN()
 
-#url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&firstRow=60&totalRows=14679&timestamp=1548122419382'
-#url = 'https://sale.591.com.tw/home/search/list?type=2&&shType=list&regionid=17&section=268&price=690$_845$&area=29$_36$&timestamp=1556122918428'
-url = 'http://www.twhg.com.tw/damian/turning_over_clouldcall.php?a=0.10517867464733333&city=%E9%AB%98%E9%9B%84%E5%B8%82'
+url = 'https://googleads.g.doubleclick.net/pagead/adview?ai=CLNST8hHiXOLsBpWcqAHG_LDAAt_Q1LBNxsC3lq8BwI23ARABIABgnwGCARdjYS1wdWItNTkzMTMzMTA5NzkwODczMqAB0JTA8wPIAQmoAwGqBK8BT9DTNYSYGL_h4msXaLbzasWWfCpZlDpztf_mXI799v5k4U1k513fZjWFF5gMdGgWHeRdcdcV_rVVcQdkQlS4ndPYDogEByDCQPuwyRCpQsbDqj9pD-RwKmNx0hH5qNAXhVz6RfieJUkEF_LBBbzT1750WuYkXD3MS1FI-CP9BsUqGRsf-AZy2mSwjxTU6BOEyISadPccRkhchDOHo9PZnVDmwXi2T696clI0Rv40YYAGr7mmpfHQ3Lu1AaAGIagHpr4bqAfZyxuoB8_MG9gHANIIBQiAYRAB&sigh=g9gG7euEJ2o&tpd=AGWhJmtLJ0cKK8REt72kKVK4ZdMNAHQMrHztJYKABhjI_zl2Og'
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
-}
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
 
 response = requests.get(url, headers=headers)
 
@@ -22,7 +20,7 @@ json_text = response.text
 json_text = json_text.encode("utf8").decode("cp950", "ignore")
 data = json.loads(json_text)
 print(data)
-house_list = data['data']['house_list']
+#house_list = data['data']['house_list']
 '''
 house_list = [{\
 "address": "建國路三段319巷",\
