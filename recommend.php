@@ -12,7 +12,7 @@
         }else{
             $_SESSION['uid'] = CUSTOMERID;
         }
-        #$command    = escapeshellcmd('python '.PYTHONPATH.' '.$params);
+
         $command    = escapeshellcmd(PYTHONPATH.' '.$params);
         $output     = shell_exec($command);
         $output     = str_replace(']','',str_replace('[', '', $output));
