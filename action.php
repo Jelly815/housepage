@@ -54,8 +54,8 @@ switch($action){
             $pwd        = md5($pwd);
             $email      = filter_var($email, FILTER_SANITIZE_EMAIL);
             $age        = filter_var($age, FILTER_VALIDATE_INT);
-            $sex        = filter_var($sex, FILTER_VALIDATE_INT);
-            $area        = filter_var($area, FILTER_VALIDATE_INT);
+            $sex        = filter_var($sex, FILTER_SANITIZE_STRING);
+            $area       = filter_var($area, FILTER_VALIDATE_INT);
 
             $data       = array($unid,$name,$pwd,$email,$age,$sex,$area);
             $dataArr    = $db->add_user($data);

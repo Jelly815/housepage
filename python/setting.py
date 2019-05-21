@@ -44,4 +44,4 @@ less_how_num 	= 5
 random_num 		= 5
 
 # 預設區域
-default_area 	= 283
+default_area 	= 282

@@ -6,7 +6,7 @@ include_once('./lib/lang.php');
 if(!isset($_SESSION['uid'])){
     $_SESSION['uid'] = CUSTOMERID;
 }
-#echo "<pre>";print_r($_SESSION['uid']);echo "</pre>";
+echo "<pre>";print_r($_SESSION['uid']);echo "</pre>";
 $db 	= new db_function();
 $op 	= isset($_GET['op'])?filter_var($_GET['op'], FILTER_SANITIZE_STRING):'';
 $selected 			= 'class="selected first"';

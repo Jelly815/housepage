@@ -5,13 +5,12 @@ from db_connect import DB_CONN
 import uuid
 import hashlib
 import datetime
-import math
 
 #台灣房屋
 #url = 'http://www.twhg.com.tw/damian/getRandom4objectsWithVR.php?a=0.029526889365504738&city=%E9%AB%98%E9%9B%84%E5%B8%82'
 #東森房屋
-for page in range(21, 27):
-    url = 'https://www.etwarm.com.tw/houses/buy-list-json?area=%E9%AB%98%E9%9B%84%E5%B8%82%E6%96%B0%E8%88%88%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%89%8D%E9%87%91%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E8%8B%93%E9%9B%85%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E9%B9%BD%E5%9F%95%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E4%B8%89%E6%B0%91%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%89%8D%E9%8E%AE%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E9%BC%93%E5%B1%B1%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E6%A5%A0%E6%A2%93%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%B0%8F%E6%B8%AF%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%B7%A6%E7%87%9F%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E4%BB%81%E6%AD%A6%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%B2%A1%E5%B1%B1%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E8%B7%AF%E7%AB%B9%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E9%B3%B3%E5%B1%B1%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E5%A4%A7%E5%AF%AE%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E7%87%95%E5%B7%A2%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E6%A9%8B%E9%A0%AD%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E6%97%97%E6%B4%A5%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E7%BE%8E%E6%BF%83%E5%8D%80-%E9%AB%98%E9%9B%84%E5%B8%82%E6%97%97%E5%B1%B1%E5%8D%80&type=1-2-3-4-5-6&price1=100&price2=1500&ping1=10&ping2=50&sort=DEFAULT&page='+str(page)
+for page in range(21, 30):
+    url = 'https://www.etwarm.com.tw/houses/buy-list-json?area=%E9%AB%98%E9%9B%84%E5%B8%82&type=1-2-3-4-5-6&price1=100&price2=2000&ping1=1&ping2=50&sort=DEFAULT&page='+str(page)
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
 
