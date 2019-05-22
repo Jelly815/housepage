@@ -387,6 +387,7 @@ $(function () {
                     url: 'search_results.php',
                     type: 'POST',
                     dataType: 'text',
+                    async: false,
                     data: {
                         area:   str,
                         price:  $("#option_price").text(),
@@ -435,6 +436,7 @@ $(function () {
                     url: 'search_results.php',
                     type: 'POST',
                     dataType: 'text',
+                    async: false,
                     data: {
                         area:   $("#option_str").text(),
                         price:  str,
@@ -478,6 +480,7 @@ $(function () {
                     url: 'search_results.php',
                     type: 'POST',
                     dataType: 'text',
+                    async: false,
                     data: {
                         area:   $("#option_str").text(),
                         price:  $("#option_price").text(),
@@ -521,6 +524,7 @@ $(function () {
                     url: 'search_results.php',
                     type: 'POST',
                     dataType: 'text',
+                    async: false,
                     data: {
                         area:   $("#option_str").text(),
                         price:  $("#option_price").text(),
@@ -564,6 +568,7 @@ $(function () {
                     url: 'search_results.php',
                     type: 'POST',
                     dataType: 'html',
+                    async: false,
                     data: {
                         area:   $("#option_str").text(),
                         price:  $("#option_price").text(),

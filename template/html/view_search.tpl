@@ -139,6 +139,7 @@
         url: 'recommend.php',
         type: 'POST',
         dataType: 'text',
+        async: false,
         data: {
             area:   '',
             price:  '',

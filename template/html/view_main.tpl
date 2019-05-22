@@ -170,6 +170,7 @@
         url: 'recommend.php',
         type: 'POST',
         dataType: 'text',
+        async: false,
         data: {
             area:   '',
             price:  '',
@@ -253,6 +254,7 @@
                     url: 'action.php?action=stay_time',
                     type: 'POST',
                     dataType: 'text',
+                    async: false,
                     data: {
                         main_id: "{main_id}",
                         stay_time: show_time
@@ -279,6 +281,7 @@
             url: 'action.php?action=user_mouse',
             type: 'POST',
             dataType: 'text',
+            async: false,
             data: {
                 main_id: "{main_id}",
                 mouse: action

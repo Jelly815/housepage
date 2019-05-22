@@ -327,7 +327,7 @@ class FUNC_CLASS(DB_CONN):
                     try:
                         self.execute(user_record_sql,[user[0]])
                         user_record_arr     = self.fetchall()
-                        print('user_record_arr',user_record_arr)
+                        #print('user_record_arr',user_record_arr)
                         user_recommend = [int(x) for x in user_record_arr[0]['items'].split(',')]
                     except:
                         user_record_arr     = {}
