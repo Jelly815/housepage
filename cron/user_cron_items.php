@@ -159,8 +159,9 @@ foreach ($get_user as $key => $get_user_value) {
 
         $user_items = json_decode($value['items']);
 
+        if($user_items){
         // 檢查community
-        array_push($item_matrix, similar_matrix_value($user_items->community));
+        array_push($item_matrix, (!empty($user_items->community)?similar_matrix_value($user_items->community):0));
 
         // 檢查status
         array_push($item_matrix, similar_matrix_value($user_items->status));
@@ -214,6 +215,7 @@ foreach ($get_user as $key => $get_user_value) {
         );
 
         $db->insert_table_data('ex_record_items_obj',$like_matrix_data);
+        }
     }
 
     // User可能不喜歡的物件
@@ -224,112 +226,112 @@ foreach ($get_user as $key => $get_user_value) {
         $item_matrix2 = array();
 
         $user_items2 = json_decode($value['items']);
-
+        if($user_items2){
         // 檢查community
-        if($item_matrix[0] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[0]) && $item_matrix[0] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->community,$user_items2->community));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查status
-        if($item_matrix[1] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[1]) && $item_matrix[1] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->status,$user_items2->status));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查around
 
         // 檢查description
-        if($item_matrix[2] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[2]) && $item_matrix[2] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->description,$user_items2->description));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查price
-        if($item_matrix[3] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[3]) && $item_matrix[3] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->price,$user_items2->price));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查unit
-        if($item_matrix[4] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[4]) && $item_matrix[4] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->unit,$user_items2->unit));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查builder
-        if($item_matrix[5] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[5]) && $item_matrix[5] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->builder,$user_items2->builder));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查fee
-        if($item_matrix[6] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[6]) && $item_matrix[6] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->fee,$user_items2->fee));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查direction
-        if($item_matrix[7] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[7]) && $item_matrix[7] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->direction,$user_items2->direction));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查type
-        if($item_matrix[8] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[8]) && $item_matrix[8] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->type,$user_items2->type));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查floor
-        if($item_matrix[9] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[9]) && $item_matrix[9] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->floor,$user_items2->floor));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查age
-        if($item_matrix[10] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[10]) && $item_matrix[10] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->age,$user_items2->age));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查parking
-        if($item_matrix[11] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[11]) && $item_matrix[11] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->parking,$user_items2->parking));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查ping
-        if($item_matrix[12] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[12]) && $item_matrix[12] != 0){
             array_push($item_matrix2, range_matrix_value_nolike($user_items->ping,$user_items2->ping));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查room
-        if($item_matrix[13] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[13]) && $item_matrix[13] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->room,$user_items2->room));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
         // 檢查area
-        if($item_matrix[14] == 0){
-            array_push($item_matrix2, 0);
-        }else{
+        if(isset($item_matrix[14]) && $item_matrix[14] != 0){
             array_push($item_matrix2, similar_matrix_value($user_items->area,$user_items2->area));
+        }else{
+            array_push($item_matrix2, 0);
         }
 
 // 儲存至資料庫(4:不喜歡的在意項目)
@@ -340,6 +342,7 @@ foreach ($get_user as $key => $get_user_value) {
         );
 
         $db->insert_table_data('ex_record_items_obj',$like_matrix_data);
+        }
     }
 }
 
