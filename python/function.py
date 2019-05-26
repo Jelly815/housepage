@@ -80,7 +80,7 @@ class FUNC_CLASS(DB_CONN):
 
             try:
                 # 取得user [最後]搜尋的條件
-                self.execute(user_sql+" ORDER BY `last_time` DESC LIMIT 1",\
+                self.execute(user_sql+" ORDER BY `last_time` DESC,times DESC LIMIT 1",\
                     [user_id,setting.search_house_days])
                 user_last_arr = self.fetchall()
 
@@ -90,7 +90,7 @@ class FUNC_CLASS(DB_CONN):
 
                 # 取得user [經常]搜尋的條件
                 self.execute(user_sql+" GROUP by  `area`,`price`,`ping`,`style`,`type` \
-                    ORDER BY `times` DESC,`price`,`ping` DESC LIMIT 3",\
+                    ORDER BY `times` DESC,`last_time` DESC,`price`,`ping` DESC LIMIT 3",\
                     [user_id,setting.search_house_days])
                 user_often_arr = self.fetchall()
                 #print('user_often_arr',user_often_arr)
@@ -459,7 +459,7 @@ class FUNC_CLASS(DB_CONN):
         return is_favorite_items
 
     # 取得分類最熱門的房子(no_data=0，有1筆記錄；no_data=1:有1筆記錄，但資料不足；no_data=:完全沒資料)
-    def get_hot_house(self,record,no_data=0,user_id=''):
+    def get_hot_house(self,record,no_data=0,user_id='',items=[]):
         hot_house_vals = []
         hot_house_sql  = """
                 SELECT  `id`
@@ -503,6 +503,9 @@ class FUNC_CLASS(DB_CONN):
                 """
         else:
             hot_house_sql  += " WHERE "
+            if len(items) > 0:
+                hot_house_sql  += " `id` NOT IN ("+','.join(str(e) for e in items)+") AND "
+
             # 價格
             if record[1] == 300:
                 hot_house_sql  += " `price`<= 300 AND "
@@ -537,7 +540,6 @@ class FUNC_CLASS(DB_CONN):
                 LIMIT 5
                 """
             hot_house_vals = [record[0],record[3],record[4]]
-
         try:
             #print(hot_house_sql,hot_house_vals)
             if hot_house_vals:

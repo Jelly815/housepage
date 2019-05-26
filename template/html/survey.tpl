@@ -15,7 +15,7 @@
 }
 #sent_survey{
     position: absolute;
-    margin: -350px 0 0 320px;
+    padding: 500px 0 0 25px;
 }
 #sent_survey button{
     width:100px;
@@ -39,10 +39,11 @@
                 <!-- END BLOCK : view_list -->
 			</ul>
 		</div>
+        <div id="sent_survey"><button>送出</button></div>
         </form>
 	</div>
 </div>
-<div id="sent_survey"><button>送出</button></div>
+
 <script>
 $("#sent_survey button").on('click', function(event) {
     var url         = "action.php?action=survey";

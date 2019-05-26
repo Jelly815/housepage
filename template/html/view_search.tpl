@@ -3,25 +3,26 @@
     background-color: #fff;
     overflow: hidden;
     border-radius: 5px;
-	top: 190px;
-	width: 210px;
-	height:auto;
-	position: absolute;
-	margin: 0 0 0 20px;
+    width: 970px;
+    height:auto;
+    display: block;
+    margin:-50px auto 0px auto;
 }
 #re_list .second{
-	list-style: none;
-	background-color: #FFFFFF;
-	padding: 15px;
-	margin: 0;
-	overflow: hidden;
-	border-radius: 5px;
-	min-height: 450px;
+    list-style: none;
+    background-color: #FFFFFF;
+    padding: 15px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 5px;
+    min-height: 150px;
 }
 #re_list ul li{
-	height: auto;
-	overflow: hidden;
-	margin: 0 0 20px 0;
+    width: 188px;
+    height: auto;
+    overflow: hidden;
+    margin: 0 0 20px 0;
+    float: left;
 }
 #re_list ul li a {
     float: left;
@@ -92,7 +93,13 @@
     padding: 0;
 }
 </style>
-<div id="offers">
+<div id="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">推薦列表 </h2>
+    <ul class="second" style="">
+
+    </ul>
+</div>
+<div id="offers" style="margin: 10px auto 0 auto;">
 	<h2>{HEADERTITLE}</h2>
 	<ul class="first">
 		<!-- START BLOCK : view_search -->
@@ -125,12 +132,6 @@
 		</li>
 		<!-- END BLOCK : view_search -->
 	</ul>
-</div>
-<div id="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 50px;">推薦列表 </h2>
-    <ul class="second" style="">
-
-    </ul>
 </div>
 
 <script type="text/javascript">

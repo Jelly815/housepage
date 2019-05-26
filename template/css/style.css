@@ -982,7 +982,8 @@ a.search_key_button {
 	position: relative;
 	margin-bottom: -50px;
 }
-.footer div{bottom:0px;
+.footer div{
+	bottom:0px;
 	width: 960px;
 	margin: 0 auto;
 	padding: 15px 0 0;

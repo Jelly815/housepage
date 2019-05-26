@@ -55,9 +55,9 @@ if len(record_data['often_record']) > 1:
 
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 elif len(record_data['often_record']) == 1:
-    hot_house  = func.get_hot_house(record_data['often_record'][0])
+    hot_house  = func.get_hot_house(record_data['last_record'][0])
     if len(hot_house) == 0:
-        hot_house   = func.get_hot_house(record_data['often_record'][0],1)
+        hot_house   = func.get_hot_house(record_data['last_record'][0],1)
     unique_items = [(val['id']) for key, val in enumerate(hot_house)]
     users_items = [unique_items]
 # 如果筆數等於0，則推薦(User所在區域)熱門的
@@ -103,13 +103,19 @@ if recommand_items:
 
 # 當推薦物件少於5筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:
-    hot_house   = func.get_hot_house([],2,user_unid)
+    recommand_items.extend(unique_items)
 
-    hot_house_arr = []
-    for key, val in enumerate(hot_house):
-        hot_house_arr.append(val['id'])
-    less_items = setting.random_num - len(recommand_items)
-    recommand_items.extend(hot_house_arr[:less_items])
+    if len(recommand_items) < setting.less_how_num:
+        if len(record_data['last_record']) == 0:
+            hot_house   = func.get_hot_house([],2,user_unid)
+        else:
+            hot_house   = func.get_hot_house(record_data['last_record'][0],0,'',recommand_items)
+
+        hot_house_arr = []
+        for key, val in enumerate(hot_house):
+            hot_house_arr.append(val['id'])
+        recommand_items.extend(hot_house_arr)
+        recommand_items = list(set(recommand_items))
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0:

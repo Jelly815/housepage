@@ -24,6 +24,10 @@ switch($action){
             $_SESSION['umail']  = $re_array[0]['email'];
             $_SESSION['uid']    = $re_array[0]['unid'];
             $log_msg['msg']     = HI.$_SESSION['uname'];
+
+            $up_sql     = "UPDATE `ex_user` SET `login_time` = ? WHERE `unid`= ? ";
+            $vals_arr   = array(date('Y-m-d H:i:s'),$re_array[0]['unid']);
+            $db->update_data($up_sql,$vals_arr);
         }else{
             $log_msg    = array('status' => false,'msg' => ALERTXT05);
         }
@@ -32,6 +36,10 @@ switch($action){
 	break;
     // 登出
     case 'logout':
+        $up_sql     = "UPDATE `ex_user` SET `logout_time` = ? WHERE `unid`= ? ";
+        $vals_arr   = array(date('Y-m-d H:i:s'),$_SESSION['uid']);
+        $db->update_data($up_sql,$vals_arr);
+
         $_SESSION['uname']  = null;
         $_SESSION['umail']  = null;
         $_SESSION['uid']  = null;

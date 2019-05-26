@@ -3,11 +3,10 @@
     background-color: #fff;
     overflow: hidden;
     border-radius: 5px;
-    top: 190px;
-    width: 210px;
+    width: 970px;
     height:auto;
-    position: absolute;
-    margin: 0 0 0 20px;
+    display: block;
+    margin:-50px auto 0px auto;
 }
 #re_list .second{
     list-style: none;
@@ -16,12 +15,14 @@
     margin: 0;
     overflow: hidden;
     border-radius: 5px;
-    min-height: 450px;
+    min-height: 150px;
 }
 #re_list ul li{
+    width: 188px;
     height: auto;
     overflow: hidden;
     margin: 0 0 20px 0;
+    float: left;
 }
 #re_list ul li a {
     float: left;
@@ -92,7 +93,13 @@
     padding: 0;
 }
 </style>
-<div id="featured">
+<div id="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">推薦列表 </h2>
+    <ul class="second" style="">
+
+    </ul>
+</div>
+<div id="featured" style="margin: 10px auto 0 auto;">
 	<h2 style="font-size: 25px;">{search_title}</h2>
 	<div>
 		<h3 style="font-size: 25px;color:#ff7921;">
@@ -158,12 +165,7 @@
 
 	</div>
 </div>
-<div id="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 50px;">推薦列表 </h2>
-    <ul class="second" style="">
 
-    </ul>
-</div>
 <script>
     // personalized recommendation
     $.ajax({
