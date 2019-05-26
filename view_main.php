@@ -213,6 +213,14 @@ $tpl->prepare ();
         }
     }
 
+    // 加入最愛
+    $get_record3= $db->get_table_value('ex_record_items','add_favorite',
+    "`user_id`= '".$_SESSION['uid']."' AND `main_id` = '".$main_id."' ");
+    if(isset($get_record3[0]['add_favorite']) && $get_record3[0]['add_favorite'] == 1){
+        $img = "img/favorite_red.jpg";
+    }else{
+        $img = "img/favorite_gray.jpg";
+    }
     $tpl->gotoBlock("_ROOT");
-    $tpl->assign(array('main_id'=>$main_id));
+    $tpl->assign(array('main_id'=>$main_id,'favorite_src'=>$img));
 ?>

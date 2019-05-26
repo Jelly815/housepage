@@ -11,6 +11,7 @@ define('TITLEVIEWMAIN','View House');
 define('HI','Welcome！');
 define('LOGOUT','LOGOUT');
 define('TITLESURVEY','填寫問卷');
+define('TITLELIKE','我的最愛');
 
 // 共用
 define('PWD','密碼');

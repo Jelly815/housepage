@@ -31,7 +31,8 @@ $text 	= array(
 	'ALERTXT10'		=> ALERTXT10,
 	'ALERTXT11'		=> ALERTXT11,
 	'SIGNPATH'		=> SIGNPATH,
-	'SURVEY'		=> TITLESURVEY
+	'SURVEY'		=> TITLESURVEY,
+	'LIKE'			=> TITLELIKE,
 );
 
 if(isset($_SESSION['uname'])){
@@ -62,10 +63,17 @@ $survey_data  = $db->select_table_data('ex_survey_ans',
 $text['SHOWSURVEY'] = (!empty($survey_data))?'style="display: none"':'';
 
 switch($op){
-	case VIEWSURVEY:		// view main
-		$text['HEADERTITLE']			= TITLESURVEY;
+	case VIEWLIKE:		// view like
+		$text['HEADERTITLE']		= TITLELIKE;
+		$text['SELECTED_LIKE']		= $selected;
+		$text['SELECTED_DEFAULT']	= $text['SELECTED_SIGNUP'] = $text['SELECTED_SURVEY'] = '';
+		$tpl->assignInclude('themes',_TLIKE);
+		include_once(_PLIKE);
+	break;
+	case VIEWSURVEY:		// view survey
+		$text['HEADERTITLE']		= TITLESURVEY;
 		$text['SELECTED_SURVEY']	= $selected;
-		$text['SELECTED_DEFAULT']	= $text['SELECTED_SIGNUP'] = '';
+		$text['SELECTED_DEFAULT']	= $text['SELECTED_SIGNUP'] = $text['SELECTED_LIKE'] = '';
 		$tpl->assignInclude('themes',_TSURVEY);
 		include_once(_PSURVEY);
 	break;
@@ -83,7 +91,7 @@ switch($op){
 		$text['HEADERTITLE']			= SIGNUP;
 		if(!isset($_SESSION['uname'])){
 			$text['SELECTED_SIGNUP']	= $selected;
-			$text['SELECTED_DEFAULT']	= '';
+			$text['SELECTED_DEFAULT']	= $text['SELECTED_SURVEY'] = $text['SELECTED_LIKE'] = '';
 			$tpl->assignInclude('themes',_TSIGN);
 			include_once(_PSIGN);
 		}else{

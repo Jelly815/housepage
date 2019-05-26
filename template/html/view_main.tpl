@@ -105,7 +105,7 @@
 		<h3 style="font-size: 25px;color:#ff7921;">
             <label onmouseout="user_mouse('price')">{search_price}</label>
 			<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">瀏覽人數：{search_view}</label>
-            <label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">加入最愛 <a href="javascript:;" id="add_favorite"><img src="img/favorite_gray.jpg" alt="加入最愛" width="20" height="20" style="cursor: pointer;" /></label>
+            <label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">加入最愛 <a href="javascript:;" id="add_favorite"><img src="{favorite_src}" alt="加入最愛" width="20" height="20" style="cursor: pointer;" /></label>
 		</h3>
 		<a href="javascript:;"><img src="{search_img1}" alt="{search_title}" width="600" /></a>
 		<ul>

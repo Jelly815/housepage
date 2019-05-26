@@ -19,6 +19,9 @@
         <!--<li>
             <a id="navi_search" href="javascript:;" title="{ADSEARCH}">{ADSEARCH}</a>
         </li>-->
+        <li {SELECTED_LIKE}>
+            <a href="index.php?op=like" title="{LIKE}">{LIKE}</a>
+        </li>
         <li {SELECTED_SURVEY} {SHOWSURVEY}>
             <a href="index.php?op=survey" title="{SURVEY}">{SURVEY}</a>
         </li>
