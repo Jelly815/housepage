@@ -109,8 +109,7 @@ $(document).ready(function(){
                 if(re_data['status']){
                     var view_html =
                     "{INPUTNAME}："+re_data['data']['user_name']+"<br>"+
-                    "{EMAIL}："+re_data['data']['user_mail']+"<br>"+
-                    "{AGE}："+re_data['data']['user_age'];
+                    "{EMAIL}："+re_data['data']['user_mail'];
 
                     $("#complete p").html(view_html);
                     changeTab(2, 'complete');

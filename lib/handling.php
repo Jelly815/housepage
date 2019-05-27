@@ -74,8 +74,8 @@ class db_function extends db_connect{
 
 		if($user_id != ''){
 			$re_array 	= array(
-				'user_name' => $data[0],
-				'user_mail' => $data[2]
+				'user_name' => $data[1],
+				'user_mail' => $data[3]
 			);
 		}
 
