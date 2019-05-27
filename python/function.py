@@ -700,7 +700,10 @@ class FUNC_CLASS(DB_CONN):
         self.execute(chk_user_sql,[user_unid])
         this_user_obj   = self.fetchall()
 
-        this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',') if this_user_obj[0]['items'] else []
+        if len(this_user_obj) > 0 and this_user_obj[0]['items']:
+            this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',')
+        else:
+            this_user_obj   = []
 
         chk_main_sql    =  "SELECT  `id`"
 

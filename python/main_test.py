@@ -10,7 +10,7 @@ import setting
 import random
 
 #user_unid = sys.argv[1]
-user_unid = 'c296e4b8a5ccba0c491d4cf063d133b3d'
+user_unid = 'caf25fb90bab5e4273e53fe3687fe84cf'
 
 func = FUNC_CLASS()
 
@@ -42,7 +42,7 @@ if len(record_data['often_record']) > 1:
                     for other_user_id in same_records_user_id:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['unid'],record_val)
-                        
+
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
     #將所有User都加起來(有興趣的物件)
@@ -93,7 +93,7 @@ items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
 
 # 推薦相似者喜歡的物件給他
 recommand_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items,users_items)
-print('recommand_items',recommand_items)
+print('recommand_items1',recommand_items)
 # 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)
 recommand_items = list(set(recommand_items))
@@ -105,7 +105,7 @@ if recommand_items:
 # 當推薦物件少於5筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:
     recommand_items.extend(unique_items)
-    
+
     if len(recommand_items) < setting.less_how_num:
         if len(record_data['last_record']) == 0:
             hot_house   = func.get_hot_house([],2,user_unid)
@@ -118,10 +118,12 @@ if len(recommand_items) < setting.less_how_num:
             hot_house_arr.append(val['id'])
         recommand_items.extend(hot_house_arr)
         recommand_items = list(set(recommand_items))
-        print('recommand_items',recommand_items)
-print('recommand_items',recommand_items)
+        print('recommand_items2',recommand_items)
+print('recommand_items3',recommand_items)
 # 隨機取5個物件出來
-if len(recommand_items) > 0:
+if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
+    print(recommand_items)
+elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:
     print(unique_items)

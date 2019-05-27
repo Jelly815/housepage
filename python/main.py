@@ -118,7 +118,9 @@ if len(recommand_items) < setting.less_how_num:
         recommand_items = list(set(recommand_items))
 
 # 隨機取5個物件出來
-if len(recommand_items) > 0:
+if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
+    print(recommand_items)
+elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:
     print(unique_items)
