@@ -389,6 +389,32 @@ switch($action){
         }
         echo json_encode(array('status' => true,'msg' => '','data' => array()));
     break;
+    // 點擊推薦
+    case 'click_recommend':
+        $user_id    = isset($_POST['user_id'])?filter_var($_POST['user_id'], FILTER_SANITIZE_STRING):'';
+        $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+
+        $re_array   = $db->select_table_data('ex_recommend_times','id',
+            array(
+                array(0,'user_id','=',$user_id),
+                array(0,'main_id','=',$main_id),
+                array(0,'add_date','=',date('Y-m-d'))
+        ));
+
+        if(!empty($re_array)){
+            // 更新map
+            $up_record_sql  = "UPDATE `ex_recommend_times` SET `times` = (`times` + 1) WHERE `user_id`= ? AND `main_id` = ? AND `add_date` = ? ";
+            $vals_arr   = array($user_id,$main_id,date('Y-m-d'));
+            $db->update_data($up_record_sql,$vals_arr);
+        }else{
+            $add_record_sql =
+                "INSERT INTO `ex_recommend_times` (`user_id`,`main_id`,`times`,`add_date`)  values (?,?,?,?) ";
+            $vals_arr   = array($user_id,$main_id,1,date('Y-m-d'));
+            $db->insert_data($add_record_sql,$vals_arr);
+        }
+
+        echo '';
+    break;
 	default:
 
 }

@@ -22,28 +22,14 @@ class FUNC_CLASS(DB_CONN):
         # 項目總數
         self.items_len   = len(setting.similar_list + setting.range_list)
 
-    # 取得user的id
-    def get_user_id(self,user_unid):
-        user_id     = 0
-        user_sql    = "SELECT `id` FROM `ex_user` WHERE `unid` = %s"
-
-        try:
-            self.execute(user_sql,[user_unid])
-            user_id_arr = self.fetchone()
-            user_id = str(user_id_arr['id']) if int(user_id_arr['id']) != 0 else ''
-        except:
-            user_id = 0
-
-        return user_id
-
     # 取得最早的上線時間
     def get_user_login_time(self):
         login_day = 0
 
         login_time_sql      = """
-            SELECT  `login_time`
-            FROM    `ex_user`
-            ORDER BY `login_time`
+            SELECT  `last_time`
+            FROM    `ex_record`
+            ORDER BY `last_time`
             LIMIT 1
             """
 
@@ -342,23 +328,20 @@ class FUNC_CLASS(DB_CONN):
 
         # 取得user record
         record_sql = """
-            SELECT  user.`unid`
-            FROM    `ex_user` user,`ex_record` record
-            WHERE   user.`unid` = record.`user_id` AND
-                    record.`user_id` != %s AND
-                    record.`area`    = %s AND
-                    record.`price`   = %s AND
-                    record.`ping`    = %s AND
-                    record.`style`   = %s AND
-                    record.`type`    = %s AND
-                    user.`login_time` >= (NOW() - INTERVAL %s DAY)
+            SELECT  `user_id`
+            FROM    `ex_record`
+            WHERE   `user_id` != %s AND
+                    `area`    = %s AND
+                    `price`   = %s AND
+                    `ping`    = %s AND
+                    `style`   = %s AND
+                    `type`    = %s
             """
 
         record_vals = [
                 user_id,
                 record[0],record[1],record[2],
-                record[3],record[4],
-                (int)(setting.search_house_days * limit)
+                record[3],record[4]
         ]
 
         try:
@@ -416,6 +399,7 @@ class FUNC_CLASS(DB_CONN):
 
         try:
             if record:
+                #print(record_sql,record_vals)
                 self.execute(record_sql,record_vals)
                 record_arr = self.fetchall()
 

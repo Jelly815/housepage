@@ -10,7 +10,7 @@
         if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
             $params = $_SESSION['uid'];
         }else{
-            $_SESSION['uid'] = CUSTOMERID;
+            $params = $_SESSION['uid'] = CUSTOMERID;
         }
 
         $command    = escapeshellcmd(PYTHONPATH.' '.$params);
@@ -33,7 +33,7 @@
         }
 
         $main_data  = $db->select_table_data('ex_main',
-            array('unid','number','area','title','road','room','style','ping',
+            array('id','unid','number','area','title','road','room','style','ping',
                 'age','floor','type','parking','unit','view_num','price'),
             array(array(2,'id','IN ('.rtrim($main_str,',').')','')),
             array('update_time' => 'DESC'));
@@ -51,7 +51,8 @@
 				'search_room' 	=> $value['room'].'房',
 				'search_ping' 	=> $value['ping'].'坪',
 				'search_view' 	=> $value['view_num'].'人瀏覽',
-				'search_price' 	=> $value['price'].'萬元'
+				'search_price' 	=> $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$params.'\',\''.$value['id'].'\')"'
 			));
         }
 

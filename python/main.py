@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'mdfef0a5faf8377eda852a592f32fc71b'
+#user_unid = 'm185ccab81019a39cba16f666f070bb83'
 
 func = FUNC_CLASS()
 
@@ -41,7 +41,7 @@ if len(record_data['often_record']) > 1:
                     times_range_items   = {}
                     for other_user_id in same_records_user_id:
                         # 取得某位User瀏覽物件的資料
-                        times_range_items   = func.get_times_range_items(other_user_id['unid'],record_val)
+                        times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
 
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
