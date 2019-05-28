@@ -17,7 +17,9 @@
 <script>
 $(function () {
     $('#login_btn').click(function(e) {
-        $('#sign_up').lightbox({
+        $("#mail,#pwd").val("");
+        $(".errorColor").text("");
+        $("#sign_up").lightbox({
             centered: true,
             onLoad: function() {
                 $('#sign_up').find('input:first').focus();

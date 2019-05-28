@@ -10,7 +10,7 @@ $log_msg    = array('status' => true,'msg' => '','data' => array());
 switch($action){
     // 登入
 	case 'login':
-		$user_mail 	= isset($_POST['user'])?filter_var($_POST['user'], FILTER_VALIDATE_EMAIL):'';
+		$user_mail 	= isset($_POST['user'])?filter_var($_POST['user'], FILTER_SANITIZE_STRING):'';
 		$user_psw 	= isset($_POST['pwd'])?filter_var($_POST['pwd'], FILTER_SANITIZE_STRING):'';
 		$user_psw 	= md5($user_psw);
 
