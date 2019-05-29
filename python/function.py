@@ -644,28 +644,31 @@ class FUNC_CLASS(DB_CONN):
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
-        #print('user_items_vector',user_items_vector)
+        
         if len(user_items_vector) > 0:
             for item_id, is_like in enumerate(user_items_vector[user_id]):
-                #print(item_id,is_like)
+                #print('item_id',user_items_vector[user_id])
                 if is_like == 1 and len(similarities) > 0:
                     similar_likes = self.most_similar_items_to(item_id,similarities[user_id],unique_items)
-                    #print('similar_likes',similar_likes)
+                    #print('similarities[user_id]',similarities[user_id])
+                    #print('users_items[user_id]',users_items[user_id])
                     for item, similarity in similar_likes:
-                        if(similarity < 1.0):
-                            suggestions[item] += similarity
+                        #if(similarity < 1.0 and item not in users_items[user_id]):
+                        suggestions[item] += similarity
+                            
 
         # 依據權重進行排序
         suggestions = sorted(suggestions.items(),
                              key=lambda pair: pair[1],
                              reverse=True)
-
+        #print('suggestions',suggestions)
+        
         if include_current_items:
             return suggestions
         else:
             return [suggestion
                     for suggestion, weight in suggestions
-                    if suggestion in users_items[user_id] and float(weight) >= setting.similar_percent]
+                    if suggestion not in users_items[user_id] and float(weight) >= setting.similar_percent]
 
     # 取得主建物的值
     def get_description(self,description):
