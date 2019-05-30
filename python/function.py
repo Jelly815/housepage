@@ -639,7 +639,17 @@ class FUNC_CLASS(DB_CONN):
         return sorted(pairs,
                       key=lambda pair: pair[1],
                       reverse=True)
-
+    
+    def most_similar_users_to(self,user_id,user_similarities):
+        pairs = [(other_user_id, similarity)                      # find other
+                 for other_user_id, similarity in                 # users with
+                    enumerate(user_similarities[user_id])         # nonzero
+                 if user_id != other_user_id and similarity > 0]  # similarity
+    
+        return sorted(pairs,                                      # sort them
+                      key=lambda pair: pair[1],                   # most similar
+                      reverse=True)                               # first
+    
     # 基於項目推薦給User，大於0.5才推薦
     def item_based_to_user(self,user_id,user_items_vector,similarities,unique_items,users_items, include_current_items=False):
         # 把相似的物件累加起來
@@ -661,7 +671,7 @@ class FUNC_CLASS(DB_CONN):
         suggestions = sorted(suggestions.items(),
                              key=lambda pair: pair[1],
                              reverse=True)
-        #print('suggestions',suggestions)
+        
         
         if include_current_items:
             return suggestions
@@ -669,7 +679,27 @@ class FUNC_CLASS(DB_CONN):
             return [suggestion
                     for suggestion, weight in suggestions
                     if suggestion not in users_items[user_id] and float(weight) >= setting.similar_percent]
-
+    
+    # 基於User，大於0.5才推薦
+    def user_based_suggestions(self,user_id, user_similarities,users_items,include_current_interests=False):
+        # 把相似的物件累加起來
+        suggestions = defaultdict(float)
+        for other_user_id, similarity in self.most_similar_users_to(user_id,user_similarities):
+            for interest in users_items[other_user_id]:
+                suggestions[interest] += similarity
+    
+        # 依據權重進行排序
+        suggestions = sorted(suggestions.items(),
+                             key=lambda pair: pair[1],
+                             reverse=True)
+    
+        if include_current_interests:
+            return suggestions
+        else:
+            return [suggestion
+                    for suggestion, weight in suggestions
+                    if suggestion not in users_items[user_id] and float(weight) >= setting.similar_percent]
+        
     # 取得主建物的值
     def get_description(self,description):
         items_str = str(description)
