@@ -94,24 +94,7 @@
 }
 </style>
 <div class="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您位於{area_name}最新推薦 </h2>
-    <ul class="re_ul" style="">
-    <!-- START BLOCK : view_new -->
-        <li>
-            <a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
-            <span><a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank" {search_click}>{search_title}</a></span>
-            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
-            <a href="javascript:;" class="details">{search_price}</a>
-            <a href="javascript:;" class="book">{search_view}</a>
-        </li>
-    <!-- END BLOCK : view_new -->
-    <!-- START BLOCK : view_new_nodata -->
-        <li>{nodata}</li>
-    <!-- END BLOCK : view_new_nodata -->
-    </ul>
-</div>
-<div class="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您位於{area_name}熱門推薦 </h2>
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依位於{area_name}熱門推薦 </h2>
     <ul class="re_ul" style="">
     <!-- START BLOCK : view_hot -->
         <li>
@@ -128,7 +111,24 @@
     </ul>
 </div>
 <div class="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您搜尋條件熱門推薦 </h2>
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依搜尋條件最新推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_new -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_new -->
+    <!-- START BLOCK : view_new_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_new_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依搜尋條件熱門推薦 </h2>
     <ul class="re_ul" style="">
     <!-- START BLOCK : view_search_hot -->
         <li>
@@ -162,7 +162,7 @@
     </ul>
 </div>
 <div class="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依據您喜歡的內容推薦 </h2>
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您喜歡的內容推薦 </h2>
     <ul class="re_ul" style="">
     <!-- START BLOCK : view_content -->
         <li>
@@ -179,7 +179,7 @@
     </ul>
 </div>
 <div class="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依據您不喜歡的推薦 </h2>
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您不喜歡的推薦 </h2>
     <ul class="re_ul" style="">
     <!-- START BLOCK : view_nolike -->
         <li>

@@ -59,12 +59,12 @@ foreach ($get_user as $key => $get_user_value) {
 
     // 可能喜歡的物件
     $like_sql   =   $sql.
-                    " AND items.`times` > 1 ".
-                    " AND items.`user_id` = ?";
-//$like_sql." AND items.`user_id`='c7ee175b8c1aece957dbbbe4689812a75'";
+                    " AND (`items`.`times` > 1 OR `items`.`add_favorite` = 1) ".
+                    " AND `items`.`user_id` = ?";
+
     $like_sql   = $db->db->Prepare($like_sql);
     $main_res 	= $db->db->Execute($like_sql,array($user_id))->getArray();
-//echo "<pre>";print_r($like_sql);echo "</pre>";exit;
+
     foreach ($main_res as $main_value) {
         array_push($main_id_arr, (int)$main_value['main_id']);
     	if($main_value['area'] != '')array_push($items_arr['area'], $main_value['area']);

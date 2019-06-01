@@ -563,6 +563,9 @@ class db_function extends db_connect{
     			$orderby 	= array('view_num' => 'DESC');
     		break;
     		case 'user':
+    		case 'nolike':
+    		case 'content':
+    		case 'like':
     			$where 		= array(array(3,'id IN ('.$main_id.')'));
     			$orderby 	= array('view_num' => 'DESC');
     		break;
