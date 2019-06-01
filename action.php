@@ -415,6 +415,31 @@ switch($action){
 
         echo '';
     break;
+    case 'to_score':
+        $main_id= isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_SANITIZE_STRING):'';
+        $type   = isset($_POST['type'])?filter_var($_POST['type'], FILTER_SANITIZE_STRING):'';
+        $score  = isset($_POST['score'])?filter_var($_POST['score'], FILTER_VALIDATE_INT) + 0:0;
+
+        $re_array   = $db->select_table_data('ex_score','id',
+            array(
+                array(0,'user_id','=',$_SESSION['uid']),
+                array(0,'main_id','=',$main_id),
+                array(0,'type','=',$type)));
+
+        if(!empty($re_array)){
+            // 更新map
+            $up_record_sql  = "UPDATE `ex_score` SET `score` = ?,`update_date` = ? WHERE `user_id`= ? AND `main_id` = ? AND `type` = ? ";
+            $vals_arr   = array($score,date('Y-m-d H:i:s'),$_SESSION['uid'],$main_id,$type);
+            $db->update_data($up_record_sql,$vals_arr);
+        }else{
+            $add_record_sql =
+                "INSERT INTO `ex_score` (`user_id`,`main_id`,`type`,`score`,`update_date`)  values (?,?,?,?,?) ";
+            $vals_arr   = array($_SESSION['uid'],$main_id,$type,$score,date('Y-m-d H:i:s'));
+            $db->insert_data($add_record_sql,$vals_arr);
+        }
+
+        echo '';
+    break;
 	default:
 
 }

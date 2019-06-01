@@ -540,5 +540,43 @@ class db_function extends db_connect{
     function tableField($field,$left = '`',$right = '`'){
     	return ($left.$field.$right);
     }
+
+    // 取得user 地區熱門
+    function get_hot($user_id,$type,$main_id=''){
+    	$area_id 	= $this->select_table_data('ex_user',
+    		array('area_id'),
+    		array(array(0,'unid','=',$user_id)),
+    		array(),2);
+
+    	if($area_id == ''){
+    		$area_id 	= default_area;
+    	}
+
+    	$area 	= $this->select_table_data('ex_area',
+    		array('name'),
+    		array(array(0,'id','=',$area_id)),
+    		array(),2);
+
+    	switch ($type) {
+    		case 'hot':
+    			$where 		= array(array(0,'area','=',$area_id));
+    			$orderby 	= array('view_num' => 'DESC');
+    		break;
+    		case 'user':
+    			$where 		= array(array(3,'id IN ('.$main_id.')'));
+    			$orderby 	= array('view_num' => 'DESC');
+    		break;
+    		default:
+    			$where 		= array(array(0,'area','=',$area_id));
+    			$orderby 	= array('add_time' => 'DESC');
+    		break;
+    	}
+
+    	$get_hot 		= $this->select_table_data('ex_main',
+        	array('unid','number','area','title','road','room','style','ping','around',
+            'age','floor','type','parking','unit','view_num','price','builder','community'),
+        	$where,$orderby,1,5,0);
+    	return array($area,$get_hot);
+    }
 }
 ?>

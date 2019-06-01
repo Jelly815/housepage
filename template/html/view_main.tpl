@@ -92,6 +92,19 @@
     position: static;
     padding: 0;
 }
+.score_div {
+    font-weight:normal;font-size: 20px;color:#555555;
+}
+.score_div label{
+    float: left;
+}
+.score_div input[type="radio"] {
+    display: block;
+    padding: 2px 8px;
+    line-height: 31px;
+    width: 27px;
+    float: left;
+}
 </style>
 <div id="re_list">
     <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">推薦列表 </h2>
@@ -105,8 +118,23 @@
 		<h3 style="font-size: 25px;color:#ff7921;">
             <label onmouseout="user_mouse('price')">{search_price}</label>
 			<label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">瀏覽人數：{search_view}</label>
-            <label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">加入最愛 <a href="javascript:;" id="add_favorite"><img src="{favorite_src}" alt="加入最愛" width="20" height="20" style="cursor: pointer;" /></label>
+            <label style="font-weight:normal;margin-left:20px;font-size: 16px;color:#555555;">加入最愛 <a href="javascript:;" id="add_favorite"><img src="{favorite_src}" alt="加入最愛" width="20" height="20" style="cursor: pointer;" /></a></label>
 		</h3>
+        <!-- START BLOCK : show_score -->
+        <div class="score_div" style="">
+            <label style="margin-left:25px;color:red">為此物件評分：</label>
+            <input type="radio" name="{type}" class="score_input" value="5">
+            <label for="5" style="float: left">非常喜歡</label>
+            <input type="radio" name="{type}" class="score_input" value="4">
+            <label for="4">喜歡</label>
+            <input type="radio" name="{type}" class="score_input" value="3">
+            <label for="3">普通</label>
+            <input type="radio" name="{type}" class="score_input" value="2">
+            <label for="2">尚可</label>
+            <input type="radio" name="{type}" class="score_input" value="1">
+            <label for="1">不喜歡</label>
+        </div><br><br>
+        <!-- END BLOCK : show_score -->
 		<a href="javascript:;"><img src="{search_img1}" alt="{search_title}" width="600" /></a>
 		<ul>
 			<li><a href="javascript:;"><img src="{search_img2}" alt="{search_title}" width="270" height="230" /></a></li>
@@ -295,4 +323,27 @@
             console.log("error");
         });
     }
+
+    // 為此物件評分
+    $(".score_input").click(function(){ // 依您所在xx區熱門推薦
+        var this_val    = $(this).val();
+        var this_type   = $(this).attr('name');
+
+        $.ajax({
+            url: 'action.php?action=to_score',
+            type: 'POST',
+            dataType: 'text',
+            async:false,
+            data: {
+                main_id: "{main_id}",
+                type: this_type,
+                score: this_val
+            }
+        })
+        .done(function(like) {
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    });
 </script>

@@ -6,14 +6,15 @@ define('USERPWD','root');
 define('DATANAME','myweb');
 define('DATATYPE','mysqli');
 define('ADMINMAIL',"jellyandjar@yahoo.com.tw");
+define('default_area',282);
 
 // PATH
 define('THEMES','./template/html/');
 define('CSSPATH','./template/css/');
 define('JSPATH','./js/');
-define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main.py');
-#define('PYTHONPATH','python F:/xampp/htdocs/housepage/python/main.py');
-#define('PYTHONPATH','python3 /var/www/html/homepage/python/main.py');
+define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main');
+#define('PYTHONPATH','python F:/xampp/htdocs/housepage/python/main');
+#define('PYTHONPATH','python3 /var/www/html/homepage/python/main');
 define('_TMAIN',THEMES.'main.tpl');
 define('_THEADER',THEMES.'header.tpl');
 define('_TFOOTER',THEMES.'footer.tpl');
@@ -105,4 +106,7 @@ $direction_arr	= array(
 	'7'			=> '坐東北朝西南',
 	'8'			=> '坐西南朝東北',
 );
+
+// 評分類別
+$scord_type = array('hot','user','content','nolike','new','search','like');
 ?>

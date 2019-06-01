@@ -53,6 +53,96 @@ $tpl->prepare ();
 		}
 	}
 
+// 取得最新
+    $main_data = $db->get_hot($_SESSION['uid'],'new');
+    $tpl->assign('area_name',$main_data[0]);
+    if(!empty($main_data[1])){
+        foreach ($main_data[1] as $key => $value) {
+            $tpl->newBlock('view_new');
+
+            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+            $tpl->assign(array(
+                'search_uuid'   => $value['unid'],
+                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+                'search_title'  => $value['title'],
+                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+                'search_room'   => $value['room'].'房',
+                'search_ping'   => $value['ping'].'坪',
+                'search_view'   => $value['view_num'].'人瀏覽',
+                'search_price'  => $value['price'].'萬元'
+            ));
+        }
+    }else{
+        $tpl->newBlock('view_new_nodata');
+        $tpl->assign('nodata',NODATA);
+    }
+
+// 取得熱門
+    $main_data = $db->get_hot($_SESSION['uid'],'hot');
+    $tpl->assign('area_name',$main_data[0]);
+    if(!empty($main_data[1])){
+        foreach ($main_data[1] as $key => $value) {
+            $tpl->newBlock('view_hot');
+
+            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+            $tpl->assign(array(
+                'search_uuid'   => $value['unid'],
+                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+                'search_title'  => $value['title'],
+                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+                'search_room'   => $value['room'].'房',
+                'search_ping'   => $value['ping'].'坪',
+                'search_view'   => $value['view_num'].'人瀏覽',
+                'search_price'  => $value['price'].'萬元'
+            ));
+        }
+    }else{
+        $tpl->newBlock('view_hot_nodata');
+        $tpl->assign('nodata',NODATA);
+    }
+
+// 別人喜歡的
+    // 呼叫推薦引擎
+    if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
+        $params = $_SESSION['uid'];
+    }else{
+        $params = $_SESSION['uid'] = CUSTOMERID;
+    }
+
+    $command    = escapeshellcmd(PYTHONPATH.'_user.py '.$params);
+    $output     = shell_exec($command);
+    $output     = str_replace(']','',str_replace('[', '', $output));
+    $output     = explode(',', $output);
+
+    $main_str   = '';
+    foreach ($output as $key => $value) {
+        $main_str .= trim($value).',';
+    }
+
+    $main_data = $db->get_hot($_SESSION['uid'],'user',rtrim($main_str,','));
+    if(!empty($main_data[1])){
+        foreach ($main_data[1] as $key => $value) {
+            $tpl->newBlock('view_user');
+
+            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+            $tpl->assign(array(
+                'search_uuid'   => $value['unid'],
+                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+                'search_title'  => $value['title'],
+                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+                'search_room'   => $value['room'].'房',
+                'search_ping'   => $value['ping'].'坪',
+                'search_view'   => $value['view_num'].'人瀏覽',
+                'search_price'  => $value['price'].'萬元'
+            ));
+        }
+    }else{
+        $tpl->newBlock('view_user_nodata');
+        $tpl->assign('nodata',NODATA);
+    }
 
 // 查詢開始
 	$type_arr = $around_arr = array();
@@ -180,6 +270,35 @@ $tpl->prepare ();
             $ping_str = ($max != 0)?"`ping` >= {$max} ":$ping_str;
         }
         $select_arr[] = array(3,$ping_str);
+    }
+
+    // 依您搜尋條件熱門推薦
+    $main_data  = $db->select_table_data('ex_main',
+        array('unid','number','area','title','road','room','style','ping','around',
+            'age','floor','type','parking','unit','view_num','price','builder','community'),
+        $select_arr,
+        array('view_num' => 'DESC'),1,5,0);
+
+    if(!empty($main_data)){
+        foreach ($main_data as $key => $value) {
+            $tpl->newBlock('view_search_hot');
+
+            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+            $tpl->assign(array(
+                'search_uuid'   => $value['unid'],
+                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+                'search_title'  => $value['title'],
+                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+                'search_room'   => $value['room'].'房',
+                'search_ping'   => $value['ping'].'坪',
+                'search_view'   => $value['view_num'].'人瀏覽',
+                'search_price'  => $value['price'].'萬元'
+            ));
+        }
+    }else{
+        $tpl->newBlock('view_search_nodata');
+        $tpl->assign('nodata',NODATA);
     }
 
     $main_data  = $db->select_table_data('ex_main',

@@ -176,7 +176,7 @@
                 'age','floor','type','parking','unit','view_num','price'),
             $select_arr,
             array('update_time' => 'DESC'),
-            0,5,1);
+            1,5,0);
 
         if(!empty($main_data)){
             foreach ($main_data as $key => $value) {

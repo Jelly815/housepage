@@ -1,14 +1,14 @@
 <style>
-#re_list{
+.re_list{
     background-color: #fff;
     overflow: hidden;
     border-radius: 5px;
     width: 970px;
     height:auto;
     display: block;
-    margin:-50px auto 0px auto;
+    margin:-50px auto 60px auto;
 }
-#re_list .second{
+.re_list .re_ul{
     list-style: none;
     background-color: #FFFFFF;
     padding: 15px;
@@ -17,14 +17,14 @@
     border-radius: 5px;
     min-height: 150px;
 }
-#re_list ul li{
+.re_list ul li{
     width: 188px;
     height: auto;
     overflow: hidden;
     margin: 0 0 20px 0;
     float: left;
 }
-#re_list ul li a {
+.re_list ul li a {
     float: left;
     display: block;
     position: static;
@@ -35,7 +35,7 @@
     color: #4d4d4d;
     text-decoration: none;
 }
-#re_list ul li span {
+.re_list ul li span {
     width: 158px;
     display: block;
     clear: none;
@@ -43,7 +43,7 @@
     text-align: justify;
     margin: 0 0 0 11px;
 }
-#re_list ul li span a {
+.re_list ul li span a {
     text-decoration: none;
     font-size: 14px;
     font-family: arial;
@@ -55,7 +55,7 @@
     float: left;
     display: block;
 }
-#re_list ul li p {
+.re_list ul li p {
     clear: none;
     float: left;
     text-align: justify;
@@ -65,7 +65,7 @@
     font-size: 8.5pt;
     margin: 0 0 0 11px;
 }
-#re_list ul li a.details {
+.re_list ul li a.details {
     font-size: 12px;
     color: #674900;
     text-decoration: none;
@@ -79,7 +79,7 @@
     position: static;
     padding: 0;
 }
-#re_list ul li a.book {
+.re_list ul li a.book {
     color: #d4ffff;
     text-decoration: none;
     font-family: arial;
@@ -93,9 +93,111 @@
     padding: 0;
 }
 </style>
-<div id="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">推薦列表 </h2>
-    <ul class="second" style="">
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您位於{area_name}最新推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_new -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=new" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_new -->
+    <!-- START BLOCK : view_new_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_new_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您位於{area_name}熱門推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_hot -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=hot" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=hot" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_hot -->
+    <!-- START BLOCK : view_hot_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_hot_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依您搜尋條件熱門推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_search_hot -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=search" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=search" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_search_hot -->
+    <!-- START BLOCK : view_search_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_search_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">別人喜歡的 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_user -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=user" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=user" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_user -->
+    <!-- START BLOCK : view_user_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_user_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依據您喜歡的內容推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_content -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=content" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=content" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_content -->
+    <!-- START BLOCK : view_content_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_content_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依據您不喜歡的推薦 </h2>
+    <ul class="re_ul" style="">
+    <!-- START BLOCK : view_nolike -->
+        <li>
+            <a href="index.php?op=view_main&main={search_uuid}&page=nolike" target="_blank"><img src="{search_img}" alt="" width="140" {search_click} /></a>
+            <span><a href="index.php?op=view_main&main={search_uuid}&page=nolike" target="_blank" {search_click}>{search_title}</a></span>
+            <p>{search_area}|{search_type}|{search_room}|{search_ping}</p>
+            <a href="javascript:;" class="details">{search_price}</a>
+            <a href="javascript:;" class="book">{search_view}</a>
+        </li>
+    <!-- END BLOCK : view_nolike -->
+    <!-- START BLOCK : view_nolike_nodata -->
+        <li>{nodata}</li>
+    <!-- END BLOCK : view_nolike_nodata -->
+    </ul>
+</div>
+<div class="re_list">
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">預測您喜歡的 </h2>
+    <ul class="re_ul second" style="">
 
     </ul>
 </div>

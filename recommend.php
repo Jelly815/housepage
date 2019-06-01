@@ -13,7 +13,7 @@
             $params = $_SESSION['uid'] = CUSTOMERID;
         }
 
-        $command    = escapeshellcmd(PYTHONPATH.' '.$params);
+        $command    = escapeshellcmd(PYTHONPATH.'.py '.$params);
         $output     = shell_exec($command);
         $output     = str_replace(']','',str_replace('[', '', $output));
         $output     = explode(',', $output);

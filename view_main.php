@@ -1,9 +1,16 @@
 <?php
 $main   = (isset($_GET['main']) && $_GET['main'] != '')?filter_var($_GET['main'], FILTER_SANITIZE_STRING):'';
+$page   = (isset($_GET['page']) && $_GET['page'] != '' && in_array($_GET['page'], $scord_type))?filter_var($_GET['page'], FILTER_SANITIZE_STRING):'';
 $main_id = 0;
 
 $tpl->prepare ();
-#echo '<pre>';print_r($_SESSION['uid']);echo '</pre>';
+
+// 顯示評分區
+if($page != ''){
+    $tpl->newBlock('show_score');
+    $tpl->assign('type',$page);
+}
+$tpl->gotoBlock('_ROOT');
 // 查詢開始
     $type_arr = $around_arr = $direction_arr = $status_arr = array();
     $type_all   = $db->select_table_data('ex_type','id,name');
