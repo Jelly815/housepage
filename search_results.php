@@ -176,7 +176,8 @@
                 'age','floor','type','parking','unit','view_num','price'),
             $select_arr,
             array('update_time' => 'DESC'),
-            1,5,1);
+            0,5,1);
+
         if(!empty($main_data)){
             foreach ($main_data as $key => $value) {
             	$tpl->newBlock('search_row');
