@@ -52,7 +52,8 @@
 				'search_ping' 	=> $value['ping'].'坪',
 				'search_view' 	=> $value['view_num'].'人瀏覽',
 				'search_price' 	=> $value['price'].'萬元',
-                'search_click'  => 'onclick="click_recommend(\''.$params.'\',\''.$value['id'].'\')"'
+                'search_click'  => 'onclick="click_recommend(\''.$params.'\',\''.$value['id'].'\',\'like\')"',
+                'search_page'   => '&page=like'
 			));
         }
 

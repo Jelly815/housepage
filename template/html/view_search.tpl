@@ -1,98 +1,3 @@
-<style>
-.re_list{
-    background-color: #fff;
-    overflow: hidden;
-    border-radius: 5px;
-    width: 970px;
-    height:auto;
-    display: block;
-    margin:-50px auto 60px auto;
-}
-.re_list .re_ul{
-    list-style: none;
-    background-color: #FFFFFF;
-    padding: 15px;
-    margin: 0;
-    overflow: hidden;
-    border-radius: 5px;
-    min-height: 150px;
-}
-.re_list ul li{
-    width: 188px;
-    height: auto;
-    overflow: hidden;
-    margin: 0 0 20px 0;
-    float: left;
-}
-.re_list ul li a {
-    float: left;
-    display: block;
-    position: static;
-    background: none;
-    padding: 0 0 0 11px;
-    font-family: arial;
-    font-size: 14px;
-    color: #4d4d4d;
-    text-decoration: none;
-}
-.re_list ul li span {
-    width: 158px;
-    display: block;
-    clear: none;
-    float: left;
-    text-align: justify;
-    margin: 0 0 0 11px;
-}
-.re_list ul li span a {
-    text-decoration: none;
-    font-size: 14px;
-    font-family: arial;
-    color: #105272;
-    font-weight: bold;
-    background: none;
-    position: static;
-    padding: 0;
-    float: left;
-    display: block;
-}
-.re_list ul li p {
-    clear: none;
-    float: left;
-    text-align: justify;
-    width: 158px;
-    color: #393D42;
-    font-family: arial;
-    font-size: 8.5pt;
-    margin: 0 0 0 11px;
-}
-.re_list ul li a.details {
-    font-size: 12px;
-    color: #674900;
-    text-decoration: none;
-    font-family: arial;
-    background: url(template/images/icons.gif) no-repeat 0 -155px;
-    width: 74px;
-    height: 18px;
-    text-align: center;
-    line-height: 18px;
-    margin: 0 5px 0 11px;
-    position: static;
-    padding: 0;
-}
-.re_list ul li a.book {
-    color: #d4ffff;
-    text-decoration: none;
-    font-family: arial;
-    background: url(template/images/interface.gif) no-repeat;
-    width: 70px;
-    height: 18px;
-    text-align: center;
-    line-height: 18px;
-    font-size: 12px;
-    position: static;
-    padding: 0;
-}
-</style>
 <div class="re_list">
     <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">依位於{area_name}熱門推薦 </h2>
     <ul class="re_ul" style="">
@@ -257,4 +162,23 @@
     .fail(function() {
         console.log("error");
     });
+
+    function click_recommend(uid,mid,type){
+        $.ajax({
+            url: 'action.php?action=click_recommend',
+            type: 'POST',
+            dataType: 'text',
+            async: false,
+            data: {
+                user_id: uid,
+                main_id: mid,
+                re_type: type
+            }
+        })
+        .done(function(data) {
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
 </script>

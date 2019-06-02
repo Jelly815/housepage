@@ -576,7 +576,7 @@ class db_function extends db_connect{
     	}
 
     	$get_hot 		= $this->select_table_data('ex_main',
-        	array('unid','number','area','title','road','room','style','ping','around',
+        	array('id','unid','number','area','title','road','room','style','ping','around',
             'age','floor','type','parking','unit','view_num','price','builder','community'),
         	$where,$orderby,1,5,0);
     	return array($area,$get_hot);

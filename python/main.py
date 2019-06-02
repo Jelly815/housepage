@@ -31,7 +31,7 @@ if len(record_data['often_record']) > 1:
                 others_user_items_dict = []
                 times_range_items = []
                 users_items2 = []
-                
+
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items       = func.get_times_range_items(user_unid,record_val)
 
@@ -39,7 +39,7 @@ if len(record_data['often_record']) > 1:
                     #user_items_dict.append(times_range_items)
                     user_items_dict = times_range_items
                     users_items.extend(times_range_items)
-  
+
                 # 取得非user的相同紀錄
                 same_records_user_id    = func.get_same_record(user_unid,record_val)
 
@@ -48,7 +48,7 @@ if len(record_data['often_record']) > 1:
                     for other_user_id in same_records_user_id:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
-                       
+
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
 
@@ -63,11 +63,10 @@ if len(record_data['often_record']) > 1:
                 others_user_items_dict2 = sorted(list({ like_item
                                     for user_items in others_user_items_dict
                                     for like_item in user_items }))
-                
-                """            
+
                 #如果毫無交集
                 ret = list(set(user_items_dict).intersection(set(others_user_items_dict2)))
-                
+
                 if len(ret) == 0:
                     continue
                 else:
@@ -75,18 +74,20 @@ if len(record_data['often_record']) > 1:
                     #檢查是否user的是否有在others
                     for user_items in others_user_items_dict:
                         ret = set(user_items_dict).intersection(set(user_items))
-                        
+
                         if len(ret) > 0 and \
-                            (len(user_items_dict) != len(user_items)):
+                            (len(user_items_dict) == len(user_items) and \
+                             len(user_items_dict) == len(ret)):
                             chk += 1
-                    if chk == 0:
+
+                    if chk > 0:
                         continue
-                    
+                """
                 # 對於該物件是否有興趣，是:1,否:0
                 def make_user_items_matrix(others_user_items_dict):
                     return [1 if items in others_user_items_dict else 0
                             for items in unique_items2]
-                
+
                 # 使用者可能對某個物件喜歡1,否:0
                 user_items_matrix = list(map(make_user_items_matrix, users_items2))
 
@@ -99,7 +100,7 @@ if len(record_data['often_record']) > 1:
                 items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
                                     for user_vector_j in items_user_matrix]
                                     for user_vector_i in items_user_matrix]
-            
+
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items2,users_items2)
                 recommand_items.extend(all_items)
@@ -111,11 +112,11 @@ if len(record_data['often_record']) > 1:
                     return [1 if interest in user_interests else 0
                             for interest in unique_items2]
                 user_interest_matrix = list(map(make_user_interest_vector, users_items2))
-                
+
                 user_similarities = [[func.cosine_similarity(interest_vector_i, interest_vector_j)
                       for interest_vector_j in user_interest_matrix]
                      for interest_vector_i in user_interest_matrix]
-                
+
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.user_based_suggestions(0, user_similarities,users_items2)
                 recommand_items.extend(all_items)

@@ -11,7 +11,7 @@ import random
 from collections import defaultdict
 
 user_unid = sys.argv[1]
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#user_unid = 'mc741ce94208d215dc1a80e40c5456cf1'
 
 func = FUNC_CLASS()
 
@@ -19,11 +19,11 @@ users_items = []
 recommand_items = []
 unique_items = []
 
-####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
-times_range_items_not = func.get_this_user_no_search(user_unid)
+####### 取得A(喜愛)的物件，找到相似內容的房子 #######
+times_range_items_not = func.get_this_user_content(user_unid)
 
-# 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)
+recommand_items = list(set(recommand_items))
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換
 if recommand_items:

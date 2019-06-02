@@ -5,6 +5,17 @@ $type   = (isset($_GET['type']) && $_GET['type'] != '')?filter_var($_GET['type']
 $room   = (isset($_GET['room']) && $_GET['room'] != '')?explode(',', filter_var($_GET['room'], FILTER_SANITIZE_STRING)):array();
 $ping   = (isset($_GET['ping']) && $_GET['ping'] != '')?explode(',', filter_var($_GET['ping'], FILTER_SANITIZE_STRING)):array();
 
+$type_arr   = $around_arr = array();
+
+$type_all   = $db->select_table_data('ex_type','id,name');
+foreach ($type_all as $key => $value) {
+    $type_arr[$value['id']] = $value['name'];
+}
+$around_all = $db->select_table_data('ex_around','id,name');
+foreach ($around_all as $key => $value) {
+    $around_arr[$value['id']] = $value['name'];
+}
+
 $tpl->prepare ();
 
 // 儲存搜尋紀錄
@@ -70,7 +81,8 @@ $tpl->prepare ();
                 'search_room'   => $value['room'].'房',
                 'search_ping'   => $value['ping'].'坪',
                 'search_view'   => $value['view_num'].'人瀏覽',
-                'search_price'  => $value['price'].'萬元'
+                'search_price'  => $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$_SESSION['uid'].'\',\''.$value['id'].'\',\'hot\')"',
             ));
         }
     }else{
@@ -80,54 +92,7 @@ $tpl->prepare ();
 
 // 別人喜歡的
     // 呼叫推薦引擎
-    if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
-        $params = $_SESSION['uid'];
-    }else{
-        $params = $_SESSION['uid'] = CUSTOMERID;
-    }
-
-    $command    = escapeshellcmd(PYTHONPATH.'_nolike.py '.$params);
-    $output     = shell_exec($command);
-    $output     = str_replace(']','',str_replace('[', '', $output));
-    $output     = explode(',', $output);
-
-    $main_str   = '';
-    foreach ($output as $key => $value) {
-        $main_str .= trim($value).',';
-    }
-
-    $main_data = $db->get_hot($_SESSION['uid'],'nolike',rtrim($main_str,','));
-    if(!empty($main_data[1])){
-        foreach ($main_data[1] as $key => $value) {
-            $tpl->newBlock('view_nolike');
-
-            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
-            $tpl->assign(array(
-                'search_uuid'   => $value['unid'],
-                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
-                'search_title'  => $value['title'],
-                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
-                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
-                'search_room'   => $value['room'].'房',
-                'search_ping'   => $value['ping'].'坪',
-                'search_view'   => $value['view_num'].'人瀏覽',
-                'search_price'  => $value['price'].'萬元'
-            ));
-        }
-    }else{
-        $tpl->newBlock('view_nolike_nodata');
-        $tpl->assign('nodata',NODATA);
-    }
-
-// 依據不喜歡的
-    // 呼叫推薦引擎
-    if(isset($_SESSION['uid']) && $_SESSION['uid'] != ''){
-        $params = $_SESSION['uid'];
-    }else{
-        $params = $_SESSION['uid'] = CUSTOMERID;
-    }
-
-    $command    = escapeshellcmd(PYTHONPATH.'_user.py '.$params);
+    $command    = escapeshellcmd(PYTHONPATH.'_user.py '.$_SESSION['uid']);
     $output     = shell_exec($command);
     $output     = str_replace(']','',str_replace('[', '', $output));
     $output     = explode(',', $output);
@@ -152,7 +117,8 @@ $tpl->prepare ();
                 'search_room'   => $value['room'].'房',
                 'search_ping'   => $value['ping'].'坪',
                 'search_view'   => $value['view_num'].'人瀏覽',
-                'search_price'  => $value['price'].'萬元'
+                'search_price'  => $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$_SESSION['uid'].'\',\''.$value['id'].'\',\'user\')"',
             ));
         }
     }else{
@@ -160,19 +126,44 @@ $tpl->prepare ();
         $tpl->assign('nodata',NODATA);
     }
 
+// 依不喜歡的
+    // 呼叫推薦引擎
+    $command    = escapeshellcmd(PYTHONPATH.'_nolike.py '.$_SESSION['uid']);
+    $output     = shell_exec($command);
+    $output     = str_replace(']','',str_replace('[', '', $output));
+    $output     = explode(',', $output);
+
+    $main_str   = '';
+    foreach ($output as $key => $value) {
+        $main_str .= trim($value).',';
+    }
+
+    $main_data = $db->get_hot($_SESSION['uid'],'nolike',rtrim($main_str,','));
+    if(!empty($main_data[1])){
+        foreach ($main_data[1] as $key => $value) {
+            $tpl->newBlock('view_nolike');
+
+            $house_img  = $db->select_table_data('ex_images','img_url',array(array(0,'number','=',$value['number'])),array(),2);
+            $tpl->assign(array(
+                'search_uuid'   => $value['unid'],
+                'search_img'    => ($house_img != '')?$house_img:"img/EdPhoto.jpg",
+                'search_title'  => $value['title'],
+                'search_area'   => isset($area_arr[$value['area']])?$area_arr[$value['area']]:'',
+                'search_type'   => isset($type_arr[$value['type']])?$type_arr[$value['type']]:'',
+                'search_room'   => $value['room'].'房',
+                'search_ping'   => $value['ping'].'坪',
+                'search_view'   => $value['view_num'].'人瀏覽',
+                'search_price'  => $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$_SESSION['uid'].'\',\''.$value['id'].'\',\'nolike\')"',
+            ));
+        }
+    }else{
+        $tpl->newBlock('view_nolike_nodata');
+        $tpl->assign('nodata',NODATA);
+    }
+
 
 // 查詢開始
-	$type_arr = $around_arr = array();
-
-    $type_all   = $db->select_table_data('ex_type','id,name');
-    foreach ($type_all as $key => $value) {
-    	$type_arr[$value['id']] = $value['name'];
-    }
-    $around_all = $db->select_table_data('ex_around','id,name');
-    foreach ($around_all as $key => $value) {
-        $around_arr[$value['id']] = $value['name'];
-    }
-
     $select_arr = array(
         array(0,'is_closed','=',0)
     );
@@ -287,7 +278,7 @@ $tpl->prepare ();
 
     // 依搜尋條件最新推薦
     $main_data  = $db->select_table_data('ex_main',
-        array('unid','number','area','title','road','room','style','ping','around',
+        array('id','unid','number','area','title','road','room','style','ping','around',
             'age','floor','type','parking','unit','view_num','price','builder','community'),
         $select_arr,
         array('add_time' => 'DESC'),1,5,0);
@@ -306,7 +297,8 @@ $tpl->prepare ();
                 'search_room'   => $value['room'].'房',
                 'search_ping'   => $value['ping'].'坪',
                 'search_view'   => $value['view_num'].'人瀏覽',
-                'search_price'  => $value['price'].'萬元'
+                'search_price'  => $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$_SESSION['uid'].'\',\''.$value['id'].'\',\'new\')"',
             ));
         }
     }else{
@@ -316,7 +308,7 @@ $tpl->prepare ();
 
     // 依搜尋條件熱門推薦
     $main_data  = $db->select_table_data('ex_main',
-        array('unid','number','area','title','road','room','style','ping','around',
+        array('id','unid','number','area','title','road','room','style','ping','around',
             'age','floor','type','parking','unit','view_num','price','builder','community'),
         $select_arr,
         array('view_num' => 'DESC'),1,5,0);
@@ -335,7 +327,8 @@ $tpl->prepare ();
                 'search_room'   => $value['room'].'房',
                 'search_ping'   => $value['ping'].'坪',
                 'search_view'   => $value['view_num'].'人瀏覽',
-                'search_price'  => $value['price'].'萬元'
+                'search_price'  => $value['price'].'萬元',
+                'search_click'  => 'onclick="click_recommend(\''.$_SESSION['uid'].'\',\''.$value['id'].'\',\'search\')"',
             ));
         }
     }else{
@@ -397,7 +390,7 @@ $tpl->prepare ();
 			'search_price' 	=> $value['price'].'萬元',
             'search_road'   => $value['road'],
             'search_age'    => $value['age'].'年',
-            'search_floor'  => $value['floor'],
+            'search_floor'  => $value['floor'].'樓',
             'search_builder'=> ($value['builder'] != '')?$value['builder']:$value['community'],
             'search_arount' => ($value['parking'] == 1)?'有車位 | '.$arount_str:$arount_str
 		));

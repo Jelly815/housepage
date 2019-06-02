@@ -393,23 +393,24 @@ switch($action){
     case 'click_recommend':
         $user_id    = isset($_POST['user_id'])?filter_var($_POST['user_id'], FILTER_SANITIZE_STRING):'';
         $main_id    = isset($_POST['main_id'])?filter_var($_POST['main_id'], FILTER_VALIDATE_INT) + 0:'';
+        $type       = isset($_POST['re_type'])?filter_var($_POST['re_type'], FILTER_SANITIZE_STRING):'';
 
         $re_array   = $db->select_table_data('ex_recommend_times','id',
             array(
                 array(0,'user_id','=',$user_id),
                 array(0,'main_id','=',$main_id),
+                array(0,'type','=',$type),
                 array(0,'add_date','=',date('Y-m-d'))
         ));
 
         if(!empty($re_array)){
-            // 更新map
-            $up_record_sql  = "UPDATE `ex_recommend_times` SET `times` = (`times` + 1) WHERE `user_id`= ? AND `main_id` = ? AND `add_date` = ? ";
+            $up_record_sql  = "UPDATE `ex_recommend_times` SET `times` = (`times` + 1) WHERE `user_id`= ? AND `main_id` = ? AND `add_date` = ? AND `type` = ? ";
             $vals_arr   = array($user_id,$main_id,date('Y-m-d'));
-            $db->update_data($up_record_sql,$vals_arr);
+            $db->update_data($up_record_sql,$vals_arr,$type);
         }else{
             $add_record_sql =
-                "INSERT INTO `ex_recommend_times` (`user_id`,`main_id`,`times`,`add_date`)  values (?,?,?,?) ";
-            $vals_arr   = array($user_id,$main_id,1,date('Y-m-d'));
+                "INSERT INTO `ex_recommend_times` (`user_id`,`main_id`,`times`,`type`,`add_date`)  values (?,?,?,?,?) ";
+            $vals_arr   = array($user_id,$main_id,1,$type,date('Y-m-d'));
             $db->insert_data($add_record_sql,$vals_arr);
         }
 

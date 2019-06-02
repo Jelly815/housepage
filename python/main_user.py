@@ -11,7 +11,7 @@ import random
 from collections import defaultdict
 
 user_unid = sys.argv[1]
-#user_unid = 'cca0a53df7abc791c9e61742a7acc8333'
+#user_unid = 'm185ccab81019a39cba16f666f070bb83'
 
 func = FUNC_CLASS()
 
@@ -34,7 +34,7 @@ if len(record_data['often_record']) > 1:
 
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items       = func.get_times_range_items(user_unid,record_val)
-
+                #print('user_items',times_range_items)
                 if times_range_items:
                     #user_items_dict.append(times_range_items)
                     user_items_dict = times_range_items
@@ -51,7 +51,7 @@ if len(record_data['often_record']) > 1:
 
                         if times_range_items:
                             others_user_items_dict.append(times_range_items)
-
+                            #print('others_user_items',others_user_items_dict)
                 #將所有User都加起來(有興趣的物件)
                 users_items2 = [user_items_dict] + others_user_items_dict
 
@@ -63,6 +63,25 @@ if len(record_data['often_record']) > 1:
                 others_user_items_dict2 = sorted(list({ like_item
                                     for user_items in others_user_items_dict
                                     for like_item in user_items }))
+
+                #如果毫無交集
+                ret = list(set(user_items_dict).intersection(set(others_user_items_dict2)))
+
+                if len(ret) == 0:
+                    continue
+                else:
+                    chk = 0;
+                    #檢查是否user的是否有在others
+                    for user_items in others_user_items_dict:
+                        ret = set(user_items_dict).intersection(set(user_items))
+
+                        if len(ret) > 0 and \
+                            (len(user_items_dict) == len(user_items) and \
+                             len(user_items_dict) == len(ret)):
+                            chk += 1
+
+                    if chk > 0:
+                        continue
 
                 def make_user_interest_vector(user_interests):
                     return [1 if interest in user_interests else 0
@@ -87,4 +106,4 @@ if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
 elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:
-    print(users_items)
+    print([])
