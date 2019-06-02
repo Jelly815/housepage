@@ -34,7 +34,7 @@ if len(record_data['often_record']) > 1:
 
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items       = func.get_times_range_items(user_unid,record_val)
-
+                #print('user_items',times_range_items)
                 if times_range_items:
                     #user_items_dict.append(times_range_items)
                     user_items_dict = times_range_items
@@ -49,9 +49,10 @@ if len(record_data['often_record']) > 1:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
 
-                        if times_range_items:
+                        ret = list(set(user_items_dict).intersection(set(times_range_items)))
+                        if times_range_items and len(ret) > 0:
                             others_user_items_dict.append(times_range_items)
-
+                #print('others_user_items',others_user_items_dict)
                 #將所有User都加起來(有興趣的物件)
                 users_items2 = [user_items_dict] + others_user_items_dict
 
@@ -82,33 +83,8 @@ if len(record_data['often_record']) > 1:
 
                     if chk > 0:
                         continue
-                """
-                # 對於該物件是否有興趣，是:1,否:0
-                def make_user_items_matrix(others_user_items_dict):
-                    return [1 if items in others_user_items_dict else 0
-                            for items in unique_items2]
 
-                # 使用者可能對某個物件喜歡1,否:0
-                user_items_matrix = list(map(make_user_items_matrix, users_items2))
-
-                # 在某個物件那一列元素中，1代表每個對此可能喜歡的使用者,0表示，代表可能不喜歡
-                items_user_matrix = [[user_items_vector[j]
-                                    for user_items_vector in user_items_matrix]
-                                    for j, _ in enumerate(unique_items2)]
-
-                # 使用餘弦相似度
-                items_similarities = [[func.cosine_similarity(user_vector_i, user_vector_j)
-                                    for user_vector_j in items_user_matrix]
-                                    for user_vector_i in items_user_matrix]
-
-                # 推薦相似者喜歡的物件給他
-                all_items     = func.item_based_to_user(0,user_items_matrix,items_similarities,unique_items2,users_items2)
-                recommand_items.extend(all_items)
-                print('suggestions',recommand_items)
-                """
                 def make_user_interest_vector(user_interests):
-                    """given a list of interests, produce a vector whose i-th element is 1
-                    if unique_interests[i] is in the list, 0 otherwise"""
                     return [1 if interest in user_interests else 0
                             for interest in unique_items2]
                 user_interest_matrix = list(map(make_user_interest_vector, users_items2))
@@ -116,7 +92,7 @@ if len(record_data['often_record']) > 1:
                 user_similarities = [[func.cosine_similarity(interest_vector_i, interest_vector_j)
                       for interest_vector_j in user_interest_matrix]
                      for interest_vector_i in user_interest_matrix]
-
+                #print('user_similarities',user_similarities)
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.user_based_suggestions(0, user_similarities,users_items2)
                 recommand_items.extend(all_items)
@@ -137,6 +113,12 @@ else:
 times_range_items_not = func.get_this_user_no_search(user_unid)
 
 # 找到相似記錄相似者喜歡的物件給他
+recommand_items.extend(times_range_items_not)
+recommand_items = list(set(recommand_items))
+
+####### 取得A(喜愛)的物件，找到相似內容的房子 #######
+times_range_items_not = func.get_this_user_content(user_unid)
+
 recommand_items.extend(times_range_items_not)
 recommand_items = list(set(recommand_items))
 
@@ -162,7 +144,7 @@ if len(recommand_items) < setting.less_how_num:
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
-    print(recommand_items)
+    print(random.sample(recommand_items, len(recommand_items)))
 elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:

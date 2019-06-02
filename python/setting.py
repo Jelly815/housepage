@@ -34,6 +34,8 @@ care_list_small	= ["price","unit","fee","age"]
 # 在意項目越大越好
 care_list_max	= ["description","ping"]
 
+out_items   	= ['around','road','description','floor','community','builder']
+
 # 相似度百分比
 similar_percent = 0.5
 

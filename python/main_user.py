@@ -11,7 +11,7 @@ import random
 from collections import defaultdict
 
 user_unid = sys.argv[1]
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#user_unid = 'mc741ce94208d215dc1a80e40c5456cf1'
 
 func = FUNC_CLASS()
 
@@ -49,9 +49,10 @@ if len(record_data['often_record']) > 1:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
 
-                        if times_range_items:
+                        ret = list(set(user_items_dict).intersection(set(times_range_items)))
+                        if times_range_items and len(ret) > 0:
                             others_user_items_dict.append(times_range_items)
-                            #print('others_user_items',others_user_items_dict)
+                #print('others_user_items',others_user_items_dict)
                 #將所有User都加起來(有興趣的物件)
                 users_items2 = [user_items_dict] + others_user_items_dict
 
@@ -91,7 +92,7 @@ if len(record_data['often_record']) > 1:
                 user_similarities = [[func.cosine_similarity(interest_vector_i, interest_vector_j)
                       for interest_vector_j in user_interest_matrix]
                      for interest_vector_i in user_interest_matrix]
-
+                #print('user_similarities',user_similarities)
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.user_based_suggestions(0, user_similarities,users_items2)
                 recommand_items.extend(all_items)
@@ -102,7 +103,7 @@ if recommand_items:
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
-    print(recommand_items)
+    print(random.sample(recommand_items, len(recommand_items)))
 elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:

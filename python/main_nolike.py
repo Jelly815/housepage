@@ -31,7 +31,7 @@ if recommand_items:
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:
-    print(recommand_items)
+    print(random.sample(recommand_items, len(recommand_items)))
 elif len(recommand_items) > 0:
     print(random.sample(recommand_items, setting.random_num))
 else:
