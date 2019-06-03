@@ -381,8 +381,8 @@ switch($action){
             foreach ($survey_data as $key => $value) {
                 if(isset($data['ans_'.$value['id']])){
                     $add_record_sql =
-                        "INSERT INTO `ex_survey_ans` (`user_id`,`survey_id`,`ans`) VALUES (?,?,?) ";
-                    $vals_arr   = array($_SESSION['uid'],$value['id'],$data['ans_'.$value['id']]);
+                        "INSERT INTO `ex_survey_ans` (`user_id`,`survey_id`,`ans`,`add_date`) VALUES (?,?,?,?) ";
+                    $vals_arr   = array($_SESSION['uid'],$value['id'],$data['ans_'.$value['id']],date('Y-m-d H:i:s'));
                     $db->insert_data($add_record_sql,$vals_arr);
                 }
             }

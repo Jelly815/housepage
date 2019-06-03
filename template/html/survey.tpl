@@ -13,14 +13,11 @@
 #featured label textarea {
     border: 1px #AAAAAA solid;
 }
-#sent_survey{
-    position: absolute;
-    padding: 500px 0 0 25px;
-}
 #sent_survey button{
     width:100px;
     height: 40px;
     cursor: pointer;
+    margin: 20px 0 0 30px;
 }
 </style>
 <div id="featured">
@@ -30,6 +27,7 @@
 		<div id="right">
 			<ul>
                 <!-- START BLOCK : view_list -->
+                {top_title}
                 <li>
                     <p>
                         <label style="width: 460px;">{list_num}、{title}</label>
@@ -37,11 +35,12 @@
                     </p>
                 </li>
                 <!-- END BLOCK : view_list -->
+                <li><div id="sent_survey"><button>送出</button></div></li>
 			</ul>
 		</div>
-        <div id="sent_survey"><button>送出</button></div>
         </form>
 	</div>
+
 </div>
 
 <script>

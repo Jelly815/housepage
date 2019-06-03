@@ -167,13 +167,13 @@ form {
     height: 37px;
     margin: 0 0 0 5px;
 	font-family: Times New Roman;
-	font-size: 18px;
+	font-size: 15px;
 	text-decoration: none;
 	text-align: center;
 	color: #666666;
-	padding: 0 33px;
+	padding: 0 17px;
 	font-weight: bold;
-	width:141px;
+	width:122px;
 }
 .header div#featured div ul li .first_a:hover{
 	color: #191C21;

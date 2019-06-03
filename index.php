@@ -32,7 +32,7 @@ $text 	= array(
 	'ALERTXT11'		=> ALERTXT11,
 	'SIGNPATH'		=> SIGNPATH,
 	'SURVEY'		=> TITLESURVEY,
-	'LIKE'			=> TITLELIKE,
+	'LIKE'			=> TITLELIKE
 );
 
 if(isset($_SESSION['uname'])){
@@ -102,6 +102,11 @@ switch($op){
 		$tpl -> assignInclude('themes',_TINDEX);
 		$tpl->prepare ();
 		$tpl->newBlock("index_header");
+		$tpl->assign(array(
+			'mem_txt'		=> $mem_1,
+			'nomem_txt'		=> $nomem_1,
+			'mem_txt2'		=> $mem_2,
+		));
 }
 
 $tpl->gotoBlock("_ROOT");
