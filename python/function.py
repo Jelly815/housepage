@@ -165,7 +165,7 @@ class FUNC_CLASS(DB_CONN):
                         'price':[],'description':[],'around':[],
                         'status':[],'community':[]
                 }
-
+                #print(user_today_arr)
                 if len(user_today_arr) > 0:
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
@@ -179,7 +179,7 @@ class FUNC_CLASS(DB_CONN):
 
                         self.execute(user_today_sql,[user_today['main_id']])
                         this_user_mains = self.fetchall()
-
+                        #print(this_user_mains)
                         for x,val in enumerate(this_user_mains):
                             new_row = list(val)
                             for i in new_row:
@@ -187,7 +187,7 @@ class FUNC_CLASS(DB_CONN):
                                     user_items_arr[i].append("")
                                 elif val[i] is not None:
                                     user_items_arr[i].append(val[i])
-
+                    #print(user_items_arr)
                     new_val = {}
                     if len(user_items_arr['area']) > 0:
 
@@ -214,11 +214,11 @@ class FUNC_CLASS(DB_CONN):
                                 suggestions = sorted(chk.items(),
                                                 key=lambda pair: pair[1],
                                                 reverse=True)
-
+                                #print(suggestions)
                                 suggestion = [x[0]
                                         for x in suggestions
                                         if int(x[1]) >= int(item_len / len(suggestions))]
-
+                                #print(suggestions)
                                 new_val[item_type].extend(suggestion)
                             # 比對是否在範圍內
                             elif item_type in setting.range_list and len(record_items) > 0:
@@ -260,13 +260,16 @@ class FUNC_CLASS(DB_CONN):
                                 else:
                                     # 計算標準差
                                     std_num     = np.std(record_items)
+                                    # 如果只有一筆資料
+                                    if std_num == 0:
+                                        std_num = int(record_items[0] * setting.range_percent)
 
                                     # 計算範圍值
                                     star_num    = int(mean_num_user - std_num)
                                     end_num     = int(mean_num_user + std_num)
 
                                     new_val[item_type].extend([star_num,end_num])
-
+                #print(new_val)
                 # 依照內容，找到喜愛的物件
                 where_sql   = ''
                 length      = 1

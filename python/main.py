@@ -114,7 +114,6 @@ times_range_items_not = func.get_this_user_no_search(user_unid)
 
 # 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)
-recommand_items = list(set(recommand_items))
 
 ####### 取得A(喜愛)的物件，找到相似內容的房子 #######
 times_range_items_not = func.get_this_user_content(user_unid)

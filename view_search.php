@@ -126,7 +126,7 @@ $tpl->prepare ();
         $tpl->assign('nodata',NODATA);
     }
 
-// 依不喜歡的
+// 依喜歡的內容
     // 呼叫推薦引擎
     $command    = escapeshellcmd(PYTHONPATH.'_content.py '.$_SESSION['uid']);
     $output     = shell_exec($command);
