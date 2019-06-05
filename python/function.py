@@ -144,7 +144,7 @@ class FUNC_CLASS(DB_CONN):
         user_recommend  = []
 
         if user_id != '':
-            # 取得useritems_str 半年內的搜尋紀錄
+            # 取得ex_user_record_view半年內的搜尋紀錄
             user_today_sql = """
                 SELECT  `area`,`price`,`ping`,`style`,`type`,`main_id`
                 FROM    `ex_user_record_view`
@@ -153,40 +153,84 @@ class FUNC_CLASS(DB_CONN):
                 ORDER BY `last_time` DESC
                 """
 
+            # ex_record_items_stay 半年內的搜尋紀錄
+            user_stay_sql = """
+                SELECT `type_key`,`type_value`
+                FROM `ex_record_items` items,`ex_record_items_stay` stay
+                WHERE `items`.`id` = `stay`.`record_items_id` and
+                      `items`.`user_id` = %s AND
+                      `stay`.`type_key` != 'stay_time' AND
+                      `items`.`last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                """
+
             try:
                 self.execute(user_today_sql,[user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
+                #print(user_today_arr)
 
-                user_items_arr   = {
+                self.execute(user_stay_sql,[user_id,setting.search_house_days])
+                user_stay_arr   = self.fetchall()
+
+                stay_count_arr  = {}
+                stay_count      = 0
+                for _,x in enumerate(user_stay_arr):
+                    stay_count += x['type_value']
+                    if stay_count_arr.get(x['type_key']):
+                        stay_count_arr[x['type_key']] += x['type_value']
+                    else:
+                        stay_count_arr[x['type_key']] = x['type_value']
+
+                stay_count_arr  = sorted(stay_count_arr.items(),
+                                                key=lambda pair: pair[1],
+                                                reverse=True)
+
+                # 計算平均數
+                user_items_arr  = {}
+                if len(stay_count_arr) > 0:
+                    stay_avg    = math.ceil(stay_count/len(stay_count_arr))
+                    # 取得在意項目
+                    stay_count_arr      = [x[0] for _,x in enumerate(stay_count_arr) if x[1] >= stay_avg]
+                    # 加上基本搜尋項目
+                    stay_count_arr      = set(stay_count_arr+setting.basic_list)
+
+                    for x in stay_count_arr:
+                        user_items_arr[x] = []
+                else:
+                    stay_avg    = 0
+                    user_items_arr      = {
                         'area':[],'road':[],'room':[],
                         'ping':[],'parking':[],'age':[],
                         'floor':[],'type':[],'direction':[],
                         'fee':[],'builder':[],'unit':[],
                         'price':[],'description':[],'around':[],
                         'status':[],'community':[]
-                }
-                #print(user_today_arr)
+                    }
+
                 if len(user_today_arr) > 0:
+                    user_today_sql  = 'SELECT  '
+
+                    if len(stay_count_arr) > 0:
+                        for x in stay_count_arr:
+                            user_today_sql += '`'+x+'`,'
+                    else:
+                        user_today_sql += '`community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,`direction`,`type`,`floor`,`age`,`parking`,`ping`,`room`,`road`,`area`'
+                    user_today_sql  = user_today_sql.rstrip(',') + ' FROM `ex_main` WHERE `id` = %s'
+                    #print(user_today_sql)
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
-
-                        user_today_sql = """
-                            SELECT  `community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,
-                                    `direction`,`type`,`floor`,`age`,`parking`,`ping`,`room`,`road`,`area`
-                            FROM    `ex_main`
-                            WHERE   `id` = %s
-                            """
 
                         self.execute(user_today_sql,[user_today['main_id']])
                         this_user_mains = self.fetchall()
                         #print(this_user_mains)
                         for x,val in enumerate(this_user_mains):
                             new_row = list(val)
+
                             for i in new_row:
-                                if i == 'description':  #主建物坪數
-                                    user_items_arr[i].append("")
-                                elif val[i] is not None:
-                                    user_items_arr[i].append(val[i])
+                                    if i == 'description':  #主建物坪數
+                                        user_items_arr[i].append("")
+                                    elif val[i] is not None:
+                                        user_items_arr[i].append(val[i])
+
                     #print(user_items_arr)
                     new_val = {}
                     if len(user_items_arr['area']) > 0:
@@ -681,7 +725,7 @@ class FUNC_CLASS(DB_CONN):
                              key=lambda pair: pair[1],
                              reverse=True)
 
-        sug_len     = int(len(suggestions) / 2)
+        sug_len     = int(len(suggestions) * setting.similar_percent)
         suggestions = suggestions[:sug_len]
 
         if include_current_interests:
