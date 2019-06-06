@@ -8,15 +8,15 @@ import datetime
 import random
 import time
 
-for page in range(1, 20):
+for page in range(61, 100):
     time.sleep(5)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
     payload = {
-            'q': '2^1^18^821_825_830_831_843^1_1300^10_50^1^2_3_4^^^^^^^^^^^9^1^'+str(page)+'^0',
+            'q': '2^1^18^802_806_807_830^1_2000^^1^2_3_4_5^^1_6^^^^^^^^^9^1^'+str(page)+'^0',
             'rlg': '1'
     }
     #住商不動產
-    response = requests.post('http://www.hbhousing.com.tw/ajax/dataService.aspx?job=search&path=house', data = payload, headers=headers)
+    response = requests.post('https://www.hbhousing.com.tw/ajax/dataService.aspx?job=search&path=house', data = payload, headers=headers)
     
     #print(response.text)
     json_text = response.text

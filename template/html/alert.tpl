@@ -22,9 +22,9 @@ $(function () {
         e.preventDefault();
     });
     $('#alert_yes').click(function(e) {
-        $.get("action.php?action=logout");
-
-        window.location.reload();
+        $.get("action.php?action=logout",function(res){
+            window.location.reload();
+        });
     });
 });
 </script>
