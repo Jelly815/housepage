@@ -8,19 +8,18 @@ from function import FUNC_CLASS
 import sys
 import setting
 import random
-from collections import defaultdict
 
 user_unid = sys.argv[1]
-#user_unid = 'm185ccab81019a39cba16f666f070bb83'
+#user_unid = 'm8456fba48ba8c14bdd683e92c7414dc8'
 
-func = FUNC_CLASS()
+func = FUNC_CLASS(user_unid)
 
 users_items = []
 recommand_items = []
 unique_items = []
 
 ####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
-times_range_items_not = func.get_this_user_no_search(user_unid)
+times_range_items_not = func.get_this_user_no_search()
 
 # 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)

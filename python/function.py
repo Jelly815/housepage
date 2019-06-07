@@ -13,14 +13,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 from collections import defaultdict
-import json
 
 class FUNC_CLASS(DB_CONN):
 
-    def __init__(self):
+    def __init__(self,user_id):
         super().__init__()
         # 項目總數
         self.items_len   = len(setting.similar_list + setting.range_list)
+        self.user_id     = user_id
+        # 取得A曾經評價低於普通的房子
+        get_bad_houses  = self.get_bad_houses()
+        self.bad_houses  = ','.join((str(num) for num in get_bad_houses))
 
     # 取得最早的上線時間
     def get_user_login_time(self):
@@ -50,13 +53,34 @@ class FUNC_CLASS(DB_CONN):
 
         return login_day
 
+    # 取得A曾經評價低於普通的房子
+    def get_bad_houses(self):
+        re_main     = []
+        user_sql    = """
+                SELECT  `main_id`
+                FROM    `ex_score`
+                WHERE   `user_id` = %s AND
+                        `score` < 3
+                """
+
+        try:
+            self.execute(user_sql,[self.user_id])
+            user_main_arr = self.fetchall()
+
+            re_main = [x['main_id'] for x in user_main_arr]
+
+        except:
+            re_main = []
+
+        return re_main
+
     # 取得user的搜尋紀錄(喜歡)
-    def get_this_user_search(self,user_id):
+    def get_this_user_search(self):
         user_record = {}
         user_record['last_record']  = []
         user_record['often_record'] = []
 
-        if user_id != '':
+        if self.user_id != '':
             user_sql    = """
                 SELECT  `area`,`price`,`ping`,`style`,`type`
                 FROM    `ex_record`
@@ -67,7 +91,7 @@ class FUNC_CLASS(DB_CONN):
             try:
                 # 取得user [最後]搜尋的條件
                 self.execute(user_sql+" ORDER BY `last_time` DESC,times DESC LIMIT 1",\
-                    [user_id,setting.search_house_days])
+                    [self.user_id,setting.search_house_days])
                 user_last_arr = self.fetchall()
 
                 if(user_last_arr is not None):
@@ -77,7 +101,7 @@ class FUNC_CLASS(DB_CONN):
                 # 取得user [經常]搜尋的條件
                 self.execute(user_sql+" GROUP by  `area`,`price`,`ping`,`style`,`type` \
                     ORDER BY `times` DESC,`last_time` DESC,`price`,`ping` DESC LIMIT 3",\
-                    [user_id,setting.search_house_days])
+                    [self.user_id,setting.search_house_days])
                 user_often_arr = self.fetchall()
                 #print('user_often_arr',user_often_arr)
                 if user_often_arr is not None:
@@ -92,38 +116,29 @@ class FUNC_CLASS(DB_CONN):
         return user_record
 
     # 取得user的搜尋紀錄(不喜歡)
-    def get_this_user_no_search(self,user_id):
+    def get_this_user_no_search(self):
         user_recommend  = []
 
-        if user_id != '':
+        if self.user_id != '':
             # 取得user半年內的搜尋紀錄
             user_today_sql = """
-                SELECT  `area`,`price`,`ping`,`style`,`type`,`main_id`
+                SELECT  `area`,`price`,`ping`,`style`,`type`
                 FROM    `ex_user_record_view_not`
                 WHERE   `user_id` = %s AND
                         `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                GROUP BY `area`,`price`,`ping`,`style`,`type`
                 ORDER BY `last_time` DESC
                 """
-
             try:
-                self.execute(user_today_sql,[user_id,setting.search_house_days])
+                self.execute(user_today_sql,[self.user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
-
-                user_items_arr   = {
-                        'area':[],'road':[],'room':[],
-                        'ping':[],'parking':[],'age':[],
-                        'floor':[],'type':[],'direction':[],
-                        'fee':[],'builder':[],'unit':[],
-                        'price':[],'description':[],'around':[],
-                        'status':[],'community':[]
-                }
 
                 if len(user_today_arr) > 0:
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
 
                         # 取得非user有相同記錄的人
-                        users   = [val['user_id'] for y,val in enumerate(self.get_same_record(user_id,record))]
+                        users   = [val['user_id'] for y,val in enumerate(self.get_same_record(self.user_id,record))]
 
                         if len(users) > 0:
                             for unid in users:
@@ -137,21 +152,21 @@ class FUNC_CLASS(DB_CONN):
 
         return list(set(user_recommend))
 
-    # 依內容比對(喜歡)
-    def get_this_user_content(self,user_id):
-        user_record = {}
-        user_range  = {}
+    # 依內容比對(喜歡)(排除評價不好的)
+    def get_this_user_content(self,users_items):
         user_recommend  = []
+        users_items     = ','.join(str(num) for num in users_items) if users_items != '' else '0'
 
-        if user_id != '':
+        if self.user_id != '':
             # 取得ex_user_record_view半年內的搜尋紀錄
             user_today_sql = """
                 SELECT  `area`,`price`,`ping`,`style`,`type`,`main_id`
                 FROM    `ex_user_record_view`
                 WHERE   `user_id` = %s AND
                         `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
-                ORDER BY `last_time` DESC
                 """
+            user_today_sql += ' AND `main_id` IN ('+users_items+')'+\
+                                ' ORDER BY `last_time` DESC'
 
             # ex_record_items_stay 半年內的搜尋紀錄
             user_stay_sql = """
@@ -164,11 +179,10 @@ class FUNC_CLASS(DB_CONN):
                 """
 
             try:
-                self.execute(user_today_sql,[user_id,setting.search_house_days])
+                self.execute(user_today_sql,[self.user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
-                #print(user_today_arr)
 
-                self.execute(user_stay_sql,[user_id,setting.search_house_days])
+                self.execute(user_stay_sql,[self.user_id,setting.search_house_days])
                 user_stay_arr   = self.fetchall()
 
                 stay_count_arr  = {}
@@ -183,10 +197,10 @@ class FUNC_CLASS(DB_CONN):
                 stay_count_arr  = sorted(stay_count_arr.items(),
                                                 key=lambda pair: pair[1],
                                                 reverse=True)
-
-                # 計算平均數
                 user_items_arr  = {}
-                if len(stay_count_arr) > 0:
+                # 如果在意項目大於0 和 大於瀏覽房子數，才列入他有此習慣
+                if len(stay_count_arr) > 0 and stay_count >= len(user_today_arr):
+                    # 計算平均數
                     stay_avg    = math.ceil(stay_count/len(stay_count_arr))
                     # 取得在意項目
                     stay_count_arr      = [x[0] for _,x in enumerate(stay_count_arr) if x[1] >= stay_avg]
@@ -214,11 +228,10 @@ class FUNC_CLASS(DB_CONN):
                             user_today_sql += '`'+x+'`,'
                     else:
                         user_today_sql += '`community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,`direction`,`type`,`floor`,`age`,`parking`,`ping`,`room`,`road`,`area`'
-                    user_today_sql  = user_today_sql.rstrip(',') + ' FROM `ex_main` WHERE `id` = %s'
-                    #print(user_today_sql)
-                    for x, user_today in enumerate(user_today_arr):
-                        record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
 
+                    user_today_sql  = user_today_sql.rstrip(',') + ' FROM `ex_main` WHERE `id` = %s'
+
+                    for x, user_today in enumerate(user_today_arr):
                         self.execute(user_today_sql,[user_today['main_id']])
                         this_user_mains = self.fetchall()
                         #print(this_user_mains)
@@ -329,8 +342,7 @@ class FUNC_CLASS(DB_CONN):
                 # 尋找相似的房子
                 user_record_sql =   'SELECT  `id` '+\
                                     'FROM    `ex_main` '+\
-                                    'WHERE '+where_sql
-
+                                    'WHERE '+where_sql+(' AND `id` NOT IN ('+self.bad_houses+')' if self.bad_houses != '' else '')
                 try:
                     self.execute(user_record_sql,[])
                     user_record_arr     = self.fetchall()
@@ -385,7 +397,7 @@ class FUNC_CLASS(DB_CONN):
 
         return record_arr
 
-    # 取得某位User瀏覽物件的資料
+    # 取得某位User瀏覽物件的資料(排除評價不好的)
     def get_times_range_items(self,user_id,record):
         record_arr = {}
         is_favorite_items = []
@@ -399,33 +411,14 @@ class FUNC_CLASS(DB_CONN):
                     'item_stay_time':[]
                 }
 
-        # 取得user record
-        '''
-        record_sql = """
-            SELECT  `user_id`,`record_times`,`main_id`,`items_times`,`click_map`,
-                    `add_favorite`,`item_stay_time`
-            FROM    `ex_user_record_view`
-            WHERE   `user_id` = %s AND
-                    `area`    = %s AND
-                    `price`   = %s AND
-                    `ping`    = %s AND
-                    `style`   = %s AND
-                    `type`    = %s
-            ORDER BY `item_stay_time`
-            """
-
-        record_vals = [
-                user_id,record[0],
-                record[1],record[2],record[3],
-                record[4]]
-        '''
         record_sql = """
             SELECT  `user_id`,`record_times`,`main_id`,`items_times`,`click_map`,
                     `add_favorite`,`item_stay_time`
             FROM    `ex_user_record_view`
             WHERE   `user_id` = %s
-            ORDER BY `item_stay_time`
             """
+        record_sql += (' AND `main_id` NOT IN ('+self.bad_houses+')' if self.bad_houses != '' else '') +\
+            ' ORDER BY `item_stay_time`'
 
         record_vals = [user_id]
         try:
@@ -461,10 +454,6 @@ class FUNC_CLASS(DB_CONN):
                     if new_arr['item_stay_time']:
                         # 取得該User瀏覽區間
                         user_time_range = self.get_user_time_range(list(set(new_arr['item_stay_time'])))
-
-                        # 某user喜歡物件的時間圓餅圖
-                        #if new_arr['item_stay_time']:
-                        #    self.plt_pie(new_arr)
 
                 # 取得該範圍內，User的物件
                 is_favorite_items = self.get_is_favorite(new_arr,['main_id','add_favorite','item_stay_time'],user_time_range,is_like)

@@ -8,18 +8,18 @@ from function import FUNC_CLASS
 import sys
 import setting
 import random
-from collections import defaultdict
 
 user_unid = sys.argv[1]
-#user_unid = 'mc741ce94208d215dc1a80e40c5456cf1'
+#user_unid = 'm8456fba48ba8c14bdd683e92c7414dc8'
 
-func = FUNC_CLASS()
+func = FUNC_CLASS(user_unid)
 
 users_items = []
 recommand_items = []
 unique_items = []
+
 # 取得A的搜尋紀錄
-record_data = func.get_this_user_search(user_unid)
+record_data = func.get_this_user_search()
 
 if len(record_data['often_record']) > 1:
     for key,record in record_data.items():
@@ -49,6 +49,7 @@ if len(record_data['often_record']) > 1:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
 
+                        # 取得交集
                         ret = list(set(user_items_dict).intersection(set(times_range_items)))
                         if times_range_items and len(ret) > 0:
                             others_user_items_dict.append(times_range_items)
@@ -110,18 +111,15 @@ else:
     users_items = [(val['id']) for key, val in enumerate(hot_house)]
 
 ####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
-times_range_items_not = func.get_this_user_no_search(user_unid)
-
-# 找到相似記錄相似者喜歡的物件給他
+times_range_items_not = func.get_this_user_no_search()
 recommand_items.extend(times_range_items_not)
 
 ####### 取得A(喜愛)的物件，找到相似內容的房子 #######
-times_range_items_not = func.get_this_user_content(user_unid)
-
+times_range_items_not = func.get_this_user_content(users_items)
 recommand_items.extend(times_range_items_not)
-recommand_items = list(set(recommand_items))
 
-# 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
+# 檢查是否有已經close的物件，若有則取相似的物件替換
+recommand_items = list(set(recommand_items))
 if recommand_items:
     recommand_items     = func.check_close(user_unid,recommand_items)
 
