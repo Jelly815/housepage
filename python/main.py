@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'm8456fba48ba8c14bdd683e92c7414dc8'
+#user_unid = 'm185ccab81019a39cba16f666f070bb83'
 
 func = FUNC_CLASS(user_unid)
 
@@ -34,7 +34,7 @@ if len(record_data['often_record']) > 1:
 
                 # 取得A(喜愛)的物件(瀏覽時間大於5秒,瀏覽次數大於1or有加入最愛)
                 times_range_items       = func.get_times_range_items(user_unid,record_val)
-                #print('user_items',times_range_items)
+                #print('A_itmes',times_range_items)
                 if times_range_items:
                     #user_items_dict.append(times_range_items)
                     user_items_dict = times_range_items
@@ -49,41 +49,40 @@ if len(record_data['often_record']) > 1:
                         # 取得某位User瀏覽物件的資料
                         times_range_items   = func.get_times_range_items(other_user_id['user_id'],record_val)
 
-                        # 取得交集
                         ret = list(set(user_items_dict).intersection(set(times_range_items)))
                         if times_range_items and len(ret) > 0:
                             others_user_items_dict.append(times_range_items)
                 #print('others_user_items',others_user_items_dict)
-                #將所有User都加起來(有興趣的物件)
-                users_items2 = [user_items_dict] + others_user_items_dict
-
-                # 全部可能喜歡的物件
-                unique_items2 = sorted(list({ like_item
-                                    for user_items in users_items2
-                                    for like_item in user_items }))
 
                 others_user_items_dict2 = sorted(list({ like_item
                                     for user_items in others_user_items_dict
                                     for like_item in user_items }))
+                #print(record_val,'others_user_items_dict',others_user_items_dict)
+                #print(record_val,'others_user_items_dict2',others_user_items_dict2)
 
-                #如果毫無交集
+                #如果毫無交集就跳過
                 ret = list(set(user_items_dict).intersection(set(others_user_items_dict2)))
 
                 if len(ret) == 0:
                     continue
                 else:
-                    chk = 0;
+                    others_user_items_dict2 = []
                     #檢查是否user的是否有在others
                     for user_items in others_user_items_dict:
                         ret = set(user_items_dict).intersection(set(user_items))
-
+                        # 如果低於或是等於就不列入
                         if len(ret) > 0 and \
-                            (len(user_items_dict) == len(user_items) and \
-                             len(user_items_dict) == len(ret)):
-                            chk += 1
-
-                    if chk > 0:
-                        continue
+                            len(user_items) > len(ret):
+                            others_user_items_dict2.append(user_items)
+            
+                #將所有User都加起來(有興趣的物件)
+                users_items2 = [user_items_dict] + others_user_items_dict2
+                #users_items2 = [user_items_dict] + [user_items]
+                #print('users_items2',users_items2)
+                # 全部可能喜歡的物件
+                unique_items2 = sorted(list({ like_item
+                                    for user_items in users_items2
+                                    for like_item in user_items }))
 
                 def make_user_interest_vector(user_interests):
                     return [1 if interest in user_interests else 0
@@ -93,7 +92,7 @@ if len(record_data['often_record']) > 1:
                 user_similarities = [[func.cosine_similarity(interest_vector_i, interest_vector_j)
                       for interest_vector_j in user_interest_matrix]
                      for interest_vector_i in user_interest_matrix]
-                #print('user_similarities',user_similarities)
+                
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.user_based_suggestions(0, user_similarities,users_items2)
                 recommand_items.extend(all_items)
@@ -113,6 +112,9 @@ else:
 ####### 取得A(不喜愛)的物件，找到相同記錄、相同在意項目的人 #######
 times_range_items_not = func.get_this_user_no_search()
 recommand_items.extend(times_range_items_not)
+# 取得A曾經搜尋過的條件
+user_all_record = func.get_user_all_record()
+recommand_items = func.get_user_all_record_items(user_all_record,recommand_items)
 
 ####### 取得A(喜愛)的物件，找到相似內容的房子 #######
 times_range_items_not = func.get_this_user_content(users_items)

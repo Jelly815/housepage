@@ -20,10 +20,10 @@ $tpl->prepare ();
 
 // 儲存搜尋紀錄
     $add_record_sql =
-	"INSERT INTO `ex_record` (`user_id`,`area`,`price`,`ping`,`style`,`type`,`times`)  values (?,?,?,?,?,?,?) ";
+	"INSERT INTO `ex_record` (`user_id`,`area`,`price`,`ping`,`style`,`type`,`times`,`last_time`)  values (?,?,?,?,?,?,?,?) ";
 
 	$up_record_sql 	=
-		"UPDATE `ex_record` SET `times` = `times` + 1 WHERE `user_id`= ? AND `area` = ? AND `price` = ? AND `ping` = ? AND `style` = ? AND `type` = ? ";
+		"UPDATE `ex_record` SET `times` = `times` + 1,`last_time` = ? WHERE `user_id`= ? AND `area` = ? AND `price` = ? AND `ping` = ? AND `style` = ? AND `type` = ? ";
 
 	$add_record_arr = array(
         $_SESSION['uid'] => array(
@@ -50,11 +50,10 @@ $tpl->prepare ();
 							"`style` = '{$style_value}' AND `type` = '{$type_value}' ");
 
 							if(!empty($get_record)){
-								$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value);
-
+								$vals_arr 	= array(date('Y-m-d H:i:s'),$user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value);
 								$result 	= $db->update_data($up_record_sql,$vals_arr);
 							}else{
-								$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value,1);
+								$vals_arr 	= array($user_unid,$area_value,$money_value,$ping_value,$style_value,$type_value,1,date('Y-m-d H:i:s'));
 								$result 	= $db->insert_data($add_record_sql,$vals_arr);
 							}
 						}

@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'm8456fba48ba8c14bdd683e92c7414dc8'
+#user_unid = 'm185ccab81019a39cba16f666f070bb83'
 
 func = FUNC_CLASS(user_unid)
 
@@ -23,6 +23,10 @@ times_range_items_not = func.get_this_user_no_search()
 
 # 找到相似記錄相似者喜歡的物件給他
 recommand_items.extend(times_range_items_not)
+
+# 取得A曾經搜尋過的條件
+user_all_record = func.get_user_all_record()
+recommand_items = func.get_user_all_record_items(user_all_record,recommand_items)
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換
 if recommand_items:

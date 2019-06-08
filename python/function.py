@@ -74,6 +74,69 @@ class FUNC_CLASS(DB_CONN):
 
         return re_main
 
+    # 取得A曾經搜尋過的條件
+    def get_user_all_record(self):
+        user_record = []
+
+        if self.user_id != '':
+            try:
+                where = [self.user_id,setting.search_house_days]
+                record_sql  = """
+                    SELECT  DISTINCT `area`
+                    FROM    `ex_record`
+                    WHERE   `user_id` = %s AND
+                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                    """
+                self.execute(record_sql,where)
+                area_arr    = self.fetchall()
+                area_arr    = [x['area'] for x in area_arr]
+
+                record_sql  = """
+                    SELECT  DISTINCT `price`
+                    FROM    `ex_record`
+                    WHERE   `user_id` = %s AND
+                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                    """
+                self.execute(record_sql,where)
+                price_arr   = self.fetchall()
+                price_arr   = [x['price'] for x in price_arr]
+
+                record_sql  = """
+                    SELECT  DISTINCT `ping`
+                    FROM    `ex_record`
+                    WHERE   `user_id` = %s AND
+                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                    """
+                self.execute(record_sql,where)
+                ping_arr    = self.fetchall()
+                ping_arr    = [x['ping'] for x in ping_arr]
+
+                record_sql  = """
+                    SELECT  DISTINCT `style`
+                    FROM    `ex_record`
+                    WHERE   `user_id` = %s AND
+                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                    """
+                self.execute(record_sql,where)
+                style_arr   = self.fetchall()
+                style_arr   = [x['style'] for x in style_arr]
+
+                record_sql  = """
+                    SELECT  DISTINCT `type`
+                    FROM    `ex_record`
+                    WHERE   `user_id` = %s AND
+                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+                    """
+                self.execute(record_sql,where)
+                type_arr    = self.fetchall()
+                type_arr    = [x['type'] for x in type_arr]
+
+                user_record = [area_arr,price_arr,ping_arr,style_arr,type_arr]
+            except:
+                user_record = []
+
+        return user_record
+
     # 取得user的搜尋紀錄(喜歡)
     def get_this_user_search(self):
         user_record = {}
@@ -132,26 +195,73 @@ class FUNC_CLASS(DB_CONN):
             try:
                 self.execute(user_today_sql,[self.user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
-
+                users   = []
                 if len(user_today_arr) > 0:
                     for x, user_today in enumerate(user_today_arr):
                         record  = [user_today['area'],user_today['price'],user_today['ping'],user_today['style'],user_today['type']]
 
-                        # 取得非user有相同記錄的人
-                        users   = [val['user_id'] for y,val in enumerate(self.get_same_record(self.user_id,record))]
+                        # 取得非user有一樣不喜歡記錄的人
+                        users.extend(val['user_id'] for y,val in enumerate(self.get_same_record(self.user_id,record,1,1)))
 
-                        if len(users) > 0:
-                            for unid in users:
-                                times_range_items   = self.get_times_range_items(unid,record)
+                    users       = list(set(users))
+                    if len(users) > 0:
+                        for unid in users:
+                            # 取得非user喜歡的房子
+                            times_range_items   = self.get_times_range_items(unid,record)
 
-                                if times_range_items:
-                                    user_recommend.extend(times_range_items)
-
+                            if times_range_items:
+                                user_recommend.extend(times_range_items)
             except:
                 user_recommend = []
 
         return list(set(user_recommend))
 
+    def get_user_all_record_items(self,user_all_record,recommand_items):
+        area_str    = ','.join(str(num) for num in user_all_record[0]) if len(user_all_record[0]) > 0 else ''
+        #ping_str    = ','.join(str(num) for num in user_all_record[2]) if len(user_all_record[2]) > 0 else ''
+        style_str   = ','.join(str(num) for num in user_all_record[3]) if len(user_all_record[3]) > 0 else ''
+        type_str    = ','.join(str(num) for num in user_all_record[4]) if len(user_all_record[4]) > 0 else ''
+        id_str      = ','.join(str(num) for num in recommand_items) if len(recommand_items) > 0 else ''
+
+        hot_house_sql  = "SELECT  `id` FROM `ex_main` WHERE `is_closed` = 0 AND "
+
+        hot_house_sql += '`area` IN ('+area_str+') AND ' if area_str != '' else ''
+        #價格
+        num     = 0
+        num2    = 0
+        for x in user_all_record[1]:
+            if num == 0 and num2 == 0:
+                num  = x
+                num2 = x
+            elif x > num2:
+                num2 = x
+            else:
+                num  = x
+        hot_house_sql += '`price` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[1]) > 0 else ''
+
+        #坪數
+        num     = 0
+        num2    = 0
+        for x in user_all_record[2]:
+            if num == 0 and num2 == 0:
+                num  = x
+                num2 = x
+            elif x > num2:
+                num2 = x
+            else:
+                num  = x
+        hot_house_sql += '`ping` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[2]) > 0 else ''
+
+        hot_house_sql += '`room` IN ('+style_str+') AND ' if style_str != '' else ''
+        hot_house_sql += '`type` IN ('+type_str+') AND ' if type_str != '' else ''
+        hot_house_sql += '`id` IN ('+id_str+') AND ' if id_str != '' else ''
+        hot_house_sql  = hot_house_sql.rstrip('AND ')
+
+        self.execute(hot_house_sql,[])
+        result  = self.fetchall()
+        result  = [x['id'] for x in result]
+
+        return result
     # 依內容比對(喜歡)(排除評價不好的)
     def get_this_user_content(self,users_items):
         user_recommend  = []
@@ -356,20 +466,17 @@ class FUNC_CLASS(DB_CONN):
         return list(set(user_recommend))
 
     # 取得非user有相同記錄的人
-    def get_same_record(self,user_id,record,limit=1):
-        record_arr = {}
+    def get_same_record(self,user_id,record,limit=1,notlike = 0):
+        record_arr  = {}
 
+        db_str      = '`ex_user_record_view_not`' if notlike == 1 else '`ex_record`'
         # 取得user record
-        record_sql = """
-            SELECT  `user_id`
-            FROM    `ex_record`
-            WHERE   `user_id` != %s AND
-                    `area`    = %s AND
-                    `price`   = %s AND
-                    `ping`    = %s AND
-                    `style`   = %s AND
-                    `type`    = %s
-            """
+        record_sql  = "SELECT  `user_id` FROM "+ db_str+ " WHERE   `user_id` != %s AND "+\
+                        "`area`    = %s AND "+\
+                        "`price`   = %s AND "+\
+                        "`ping`    = %s AND "+\
+                        "`style`   = %s AND "+\
+                        "`type`    = %s"
 
         record_vals = [
                 user_id,
@@ -700,7 +807,7 @@ class FUNC_CLASS(DB_CONN):
                     for suggestion, weight in suggestions
                     if suggestion not in users_items[user_id] and float(weight) >= setting.similar_percent]
 
-    # 基於User，大於一半才推薦
+    # 基於User，大於0.5才推薦
     def user_based_suggestions(self,user_id, user_similarities,users_items,include_current_interests=False):
         # 把相似的物件累加起來
         suggestions = defaultdict(float)
@@ -714,15 +821,14 @@ class FUNC_CLASS(DB_CONN):
                              key=lambda pair: pair[1],
                              reverse=True)
 
-        sug_len     = int(len(suggestions) * setting.similar_percent)
-        suggestions = suggestions[:sug_len]
-
-        if include_current_interests:
-            return suggestions
-        else:
-            return [suggestion
-                    for suggestion, weight in suggestions
-                    if suggestion not in users_items[user_id]]
+        #sug_len     = int(len(suggestions) * setting.similar_percent)
+        #suggestions = suggestions[:sug_len]
+        #if include_current_interests:
+        #    return suggestions
+        #else:
+        return [suggestion
+                for suggestion, weight in suggestions
+                if suggestion not in users_items[user_id] and weight > setting.similar_percent]
 
     # 取得主建物的值
     def get_description(self,description):
