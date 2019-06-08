@@ -61,5 +61,12 @@ $(function () {
             e.preventDefault();
         }
     });
+
+    $("#mail,#pwd").keypress(function(e){
+        if(e.keyCode == 13)
+        {
+            $('#log_in').click();
+        }
+    });
 });
 </script>
