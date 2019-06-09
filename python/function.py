@@ -53,14 +53,75 @@ class FUNC_CLASS(DB_CONN):
 
         return login_day
 
-    # 取得A曾經評價低於普通的房子
+    # 取得評分推薦權重
+    def get_weight(self):
+        re_main     = {}
+
+        default_sql = """
+            SELECT  (CASE WHEN  ROUND(SUM(`math_`), 2) > 1 THEN 1
+                    ELSE ROUND(SUM(`math_`), 2) END) AS 'weight'
+            FROM   `ex_score_analysis`
+            WHERE """
+
+        #like_sql    = default_sql + " `type_` = 'like' AND `value_` >= 3"
+
+        user_sql    = default_sql + " `type_` = 'user' AND `value_` >= 3"
+
+        nolike_sql  = default_sql + " `type_` = 'nolike' AND `value_` >= 3"
+
+        content_sql = default_sql + " `type_` = 'content' AND `value_` >= 3"
+
+        hot_sql     = default_sql + " `type_` = 'hot' AND `value_` >= 3"
+
+        new_sql     = default_sql + " `type_` = 'new' AND `value_` >= 3"
+
+        search_sql  = default_sql + " `type_` = 'search' AND `value_` >= 3"
+
+        try:
+            #self.execute(like_sql,[])
+            #like_sql_arr = self.fetchall()
+            #re_main['like'] = like_sql_arr[0]['weight'] if like_sql_arr[0]['weight'] else 0
+
+            self.execute(user_sql,[])
+            user_sql_arr = self.fetchall()
+            re_main['user'] = user_sql_arr[0]['weight'] if user_sql_arr[0]['weight'] else 0
+
+            self.execute(nolike_sql,[])
+            nolike_sql_arr = self.fetchall()
+            re_main['nolike'] = nolike_sql_arr[0]['weight'] if nolike_sql_arr[0]['weight'] else 0
+
+            self.execute(content_sql,[])
+            content_sql_arr = self.fetchall()
+            re_main['content'] = content_sql_arr[0]['weight'] if content_sql_arr[0]['weight'] else 0
+
+            self.execute(hot_sql,[])
+            hot_sql_arr = self.fetchall()
+            re_main['hot'] = hot_sql_arr[0]['weight'] if hot_sql_arr[0]['weight'] else 0
+
+            self.execute(new_sql,[])
+            new_sql_arr = self.fetchall()
+            re_main['new'] = new_sql_arr[0]['weight'] if new_sql_arr[0]['weight'] else 0
+
+            self.execute(search_sql,[])
+            search_sql_arr = self.fetchall()
+            re_main['search'] = search_sql_arr[0]['weight'] if search_sql_arr[0]['weight'] else 0
+
+            re_main     = sorted(re_main.items(),
+                            key=lambda pair: pair[1],
+                            reverse=True)
+        except:
+            re_main = []
+
+        return re_main
+
+    # 取得A曾經評價不喜歡的房子
     def get_bad_houses(self):
         re_main     = []
         user_sql    = """
                 SELECT  `main_id`
                 FROM    `ex_score`
                 WHERE   `user_id` = %s AND
-                        `score` < 3
+                        `score` = 1
                 """
 
         try:
@@ -75,18 +136,29 @@ class FUNC_CLASS(DB_CONN):
         return re_main
 
     # 取得A曾經搜尋過的條件
-    def get_user_all_record(self):
+    def get_user_all_record(self,date_time=0):
         user_record = []
-
+        time_str    = ''
         if self.user_id != '':
             try:
-                where = [self.user_id,setting.search_house_days]
+                where       = [self.user_id]
+
+                if date_time == 1:
+                    time_sql=   "SELECT `last_time` "+\
+                                "FROM `ex_record` "+\
+                                "WHERE `user_id`= %s "+\
+                                "ORDER BY `last_time` DESC LIMIT 1"
+                    self.execute(time_sql,[self.user_id])
+                    time_arr    = self.fetchall()
+                    time_str    = time_arr[0]['last_time']
+
                 record_sql  = """
                     SELECT  DISTINCT `area`
                     FROM    `ex_record`
                     WHERE   `user_id` = %s AND
-                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                     """
+
+                record_sql  += " `last_time` = '"+str(time_str)+"'" if str(time_str) != '' else " `last_time` BETWEEN (NOW() - INTERVAL "+str(setting.search_house_days)+" DAY) AND NOW()"
                 self.execute(record_sql,where)
                 area_arr    = self.fetchall()
                 area_arr    = [x['area'] for x in area_arr]
@@ -95,8 +167,8 @@ class FUNC_CLASS(DB_CONN):
                     SELECT  DISTINCT `price`
                     FROM    `ex_record`
                     WHERE   `user_id` = %s AND
-                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                     """
+                record_sql  += " `last_time` = '"+str(time_str)+"'" if str(time_str) != '' else " `last_time` BETWEEN (NOW() - INTERVAL "+str(setting.search_house_days)+" DAY) AND NOW()"
                 self.execute(record_sql,where)
                 price_arr   = self.fetchall()
                 price_arr   = [x['price'] for x in price_arr]
@@ -105,8 +177,8 @@ class FUNC_CLASS(DB_CONN):
                     SELECT  DISTINCT `ping`
                     FROM    `ex_record`
                     WHERE   `user_id` = %s AND
-                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                     """
+                record_sql  += " `last_time` = '"+str(time_str)+"'" if str(time_str) != '' else " `last_time` BETWEEN (NOW() - INTERVAL "+str(setting.search_house_days)+" DAY) AND NOW()"
                 self.execute(record_sql,where)
                 ping_arr    = self.fetchall()
                 ping_arr    = [x['ping'] for x in ping_arr]
@@ -115,8 +187,8 @@ class FUNC_CLASS(DB_CONN):
                     SELECT  DISTINCT `style`
                     FROM    `ex_record`
                     WHERE   `user_id` = %s AND
-                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                     """
+                record_sql  += " `last_time` = '"+str(time_str)+"'" if str(time_str) != '' else " `last_time` BETWEEN (NOW() - INTERVAL "+str(setting.search_house_days)+" DAY) AND NOW()"
                 self.execute(record_sql,where)
                 style_arr   = self.fetchall()
                 style_arr   = [x['style'] for x in style_arr]
@@ -125,8 +197,8 @@ class FUNC_CLASS(DB_CONN):
                     SELECT  DISTINCT `type`
                     FROM    `ex_record`
                     WHERE   `user_id` = %s AND
-                            `last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
                     """
+                record_sql  += " `last_time` = '"+str(time_str)+"'" if str(time_str) != '' else " `last_time` BETWEEN (NOW() - INTERVAL "+str(setting.search_house_days)+" DAY) AND NOW()"
                 self.execute(record_sql,where)
                 type_arr    = self.fetchall()
                 type_arr    = [x['type'] for x in type_arr]
@@ -136,6 +208,73 @@ class FUNC_CLASS(DB_CONN):
                 user_record = []
 
         return user_record
+
+    def get_user_all_record_items(self,user_all_record,recommand_items,orderby=''):
+        area_str    = ','.join(str(num) for num in user_all_record[0]) if len(user_all_record) > 0 else ''
+        style_str   = ','.join(str(num) for num in user_all_record[3]) if len(user_all_record[3]) > 0 else ''
+        type_str    = ','.join(str(num) for num in user_all_record[4]) if len(user_all_record[4]) > 0 else ''
+        id_str      = ','.join(str(num) for num in recommand_items) if len(recommand_items) > 0 else ''
+
+        hot_house_sql  = "SELECT  `id` FROM `ex_main` WHERE `is_closed` = 0 AND "
+
+        hot_house_sql += '`area` IN ('+area_str+') AND ' if area_str != '' else ''
+        #價格
+        num     = 0
+        num2    = 0
+        price_arr   = {'300':'0','600':'300','1000':'600','1500':'1000','2000':'1500','2001':''}
+        if len(user_all_record[1]) == 1:
+            if user_all_record[1][0] == '2001':
+                num  = user_all_record[1][0]
+                num2 = '5000'
+            else:
+                num  = price_arr[str(user_all_record[1][0])]
+                num2 = user_all_record[1][0]
+        else:
+            for x in user_all_record[1]:
+                if num == 0 and num2 == 0:
+                    num  = x
+                    num2 = x
+                elif x > num2:
+                    num2 = x
+                else:
+                    num  = x
+        hot_house_sql += '`price` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[1]) > 0 else ''
+
+        #坪數
+        num     = 0
+        num2    = 0
+        ping_arr    = {'20':'0','30':'20','40':'30','50':'40','51':''}
+        if len(user_all_record[2]) == 1:
+            if user_all_record[2][0] == '51':
+                num  = user_all_record[2][0]
+                num2 = '100'
+            else:
+                num  = ping_arr[str(user_all_record[2][0])]
+                num2 = user_all_record[2][0]
+        else:
+            for x in user_all_record[2]:
+                if num == 0 and num2 == 0:
+                    num  = x
+                    num2 = x
+                elif x > num2:
+                    num2 = x
+                else:
+                    num  = x
+        hot_house_sql += '`ping` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[2]) > 0 else ''
+
+        hot_house_sql += '`room` IN ('+style_str+') AND ' if style_str != '' else ''
+        hot_house_sql += '`type` IN ('+type_str+') AND ' if type_str != '' else ''
+        hot_house_sql += '`id` IN ('+id_str+') AND ' if id_str != '' else ''
+        hot_house_sql  = hot_house_sql.rstrip('AND ')
+
+        if orderby != '':
+            hot_house_sql  += orderby
+
+        self.execute(hot_house_sql,[])
+        result  = self.fetchall()
+        result  = [x['id'] for x in result]
+
+        return result
 
     # 取得user的搜尋紀錄(喜歡)
     def get_this_user_search(self):
@@ -216,52 +355,6 @@ class FUNC_CLASS(DB_CONN):
 
         return list(set(user_recommend))
 
-    def get_user_all_record_items(self,user_all_record,recommand_items):
-        area_str    = ','.join(str(num) for num in user_all_record[0]) if len(user_all_record[0]) > 0 else ''
-        #ping_str    = ','.join(str(num) for num in user_all_record[2]) if len(user_all_record[2]) > 0 else ''
-        style_str   = ','.join(str(num) for num in user_all_record[3]) if len(user_all_record[3]) > 0 else ''
-        type_str    = ','.join(str(num) for num in user_all_record[4]) if len(user_all_record[4]) > 0 else ''
-        id_str      = ','.join(str(num) for num in recommand_items) if len(recommand_items) > 0 else ''
-
-        hot_house_sql  = "SELECT  `id` FROM `ex_main` WHERE `is_closed` = 0 AND "
-
-        hot_house_sql += '`area` IN ('+area_str+') AND ' if area_str != '' else ''
-        #價格
-        num     = 0
-        num2    = 0
-        for x in user_all_record[1]:
-            if num == 0 and num2 == 0:
-                num  = x
-                num2 = x
-            elif x > num2:
-                num2 = x
-            else:
-                num  = x
-        hot_house_sql += '`price` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[1]) > 0 else ''
-
-        #坪數
-        num     = 0
-        num2    = 0
-        for x in user_all_record[2]:
-            if num == 0 and num2 == 0:
-                num  = x
-                num2 = x
-            elif x > num2:
-                num2 = x
-            else:
-                num  = x
-        hot_house_sql += '`ping` BETWEEN '+str(num)+' AND '+str(num2)+' AND ' if len(user_all_record[2]) > 0 else ''
-
-        hot_house_sql += '`room` IN ('+style_str+') AND ' if style_str != '' else ''
-        hot_house_sql += '`type` IN ('+type_str+') AND ' if type_str != '' else ''
-        hot_house_sql += '`id` IN ('+id_str+') AND ' if id_str != '' else ''
-        hot_house_sql  = hot_house_sql.rstrip('AND ')
-
-        self.execute(hot_house_sql,[])
-        result  = self.fetchall()
-        result  = [x['id'] for x in result]
-
-        return result
     # 依內容比對(喜歡)(排除評價不好的)
     def get_this_user_content(self,users_items):
         user_recommend  = []
@@ -291,10 +384,10 @@ class FUNC_CLASS(DB_CONN):
             try:
                 self.execute(user_today_sql,[self.user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
-
+                #print(user_today_arr)
                 self.execute(user_stay_sql,[self.user_id,setting.search_house_days])
                 user_stay_arr   = self.fetchall()
-
+                #print(user_stay_arr)
                 stay_count_arr  = {}
                 stay_count      = 0
                 for _,x in enumerate(user_stay_arr):
@@ -307,6 +400,7 @@ class FUNC_CLASS(DB_CONN):
                 stay_count_arr  = sorted(stay_count_arr.items(),
                                                 key=lambda pair: pair[1],
                                                 reverse=True)
+
                 user_items_arr  = {}
                 # 如果在意項目大於0 和 大於瀏覽房子數，才列入他有此習慣
                 if len(stay_count_arr) > 0 and stay_count >= len(user_today_arr):
@@ -320,34 +414,29 @@ class FUNC_CLASS(DB_CONN):
                     for x in stay_count_arr:
                         user_items_arr[x] = []
                 else:
-                    stay_avg    = 0
                     user_items_arr      = {
                         'area':[],'road':[],'room':[],
-                        'ping':[],'parking':[],'age':[],
-                        'floor':[],'type':[],'direction':[],
-                        'fee':[],'builder':[],'unit':[],
-                        'price':[],'description':[],'around':[],
-                        'status':[],'community':[]
+                        'ping':[],'parking':[],
+                        'type':[],'direction':[],
+                        'price':[],'status':[]
                     }
 
                 if len(user_today_arr) > 0:
                     user_today_sql  = 'SELECT  '
 
-                    if len(stay_count_arr) > 0:
-                        for x in stay_count_arr:
+                    if len(user_items_arr.keys()) > 0:
+                        for x in user_items_arr.keys():
                             user_today_sql += '`'+x+'`,'
-                    else:
-                        user_today_sql += '`community`,`status`,`around`,`description`,`price`,`unit`,`builder`,`fee`,`direction`,`type`,`floor`,`age`,`parking`,`ping`,`room`,`road`,`area`'
 
                     user_today_sql  = user_today_sql.rstrip(',') + ' FROM `ex_main` WHERE `id` = %s'
-
+                    #print('user_today_sql',user_today_sql)
                     for x, user_today in enumerate(user_today_arr):
                         self.execute(user_today_sql,[user_today['main_id']])
                         this_user_mains = self.fetchall()
-                        #print(this_user_mains)
+
                         for x,val in enumerate(this_user_mains):
                             new_row = list(val)
-
+                            #print(new_row)
                             for i in new_row:
                                     if i == 'description':  #主建物坪數
                                         user_items_arr[i].append("")
@@ -370,7 +459,8 @@ class FUNC_CLASS(DB_CONN):
                             if item_type in setting.similar_list and len(record_items) > 0:
                                 chk = {}
                                 item_len = len(record_items)
-
+                                #print(record_items)
+                                # 計算項目的次數
                                 for x in record_items:
                                     if chk.get(x):
                                         chk[x] += 1
@@ -452,7 +542,8 @@ class FUNC_CLASS(DB_CONN):
                 # 尋找相似的房子
                 user_record_sql =   'SELECT  `id` '+\
                                     'FROM    `ex_main` '+\
-                                    'WHERE '+where_sql+(' AND `id` NOT IN ('+self.bad_houses+')' if self.bad_houses != '' else '')
+                                    'WHERE '+where_sql+' AND `id` NOT IN ('+(self.bad_houses+','+users_items if self.bad_houses != '' else users_items)+')'+\
+                                    ' AND `is_closed` = 0'
                 try:
                     self.execute(user_record_sql,[])
                     user_record_arr     = self.fetchall()
@@ -840,119 +931,17 @@ class FUNC_CLASS(DB_CONN):
 
     # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
     def check_close(self,user_unid,items):
-        # 該User是否有ex_record_items_obj紀錄
-        chk_user_sql    =  "SELECT  `items` \
-                            FROM    `ex_record_items_obj` \
-                            WHERE   `user_id` = %s AND `is_like` = 3"
-        self.execute(chk_user_sql,[user_unid])
-        this_user_obj   = self.fetchall()
+        user_today_sql = "SELECT `id` FROM `ex_main` WHERE `id` IN "+\
+                        "("+','.join(str(i) for i in items)+") AND `is_closed` = 1"
 
-        if len(this_user_obj) > 0 and this_user_obj[0]['items']:
-            this_user_obj   = this_user_obj[0]['items'].lstrip('[').rstrip(']').split(',')
-        else:
-            this_user_obj   = []
+        try:
+            self.execute(user_today_sql,[])
+            user_today_arr      = self.fetchall()
+            close_id    = [x['id'] for x in user_today_arr]
 
-        chk_main_sql    =  "SELECT  `id`"
-
-        this_user_obj   = list(map(lambda x: int(x), this_user_obj))
-
-        # 該User有被記錄到有興趣的項目
-        if sum(this_user_obj) > 0:
-            key = 0
-            for item in setting.care_list:
-                # 檢查各個項目
-                if item != 'description' and item != 'floor':
-                    if item in setting.basic_list:
-                        chk_main_sql   += ",`"+item+"`"
-                    else:
-                        chk_main_sql   += ",`"+item+"`" if this_user_obj[key] == 1 else ''
-                    key += 1
-                else:
-                    key += 1
-                    continue
-
-        # 該User完全沒有有興趣的項目
-        else:
-            chk_main_sql   += ",`area`,`price`,`ping`,`type`,`room`"
-
-        chk_main_sql   +=  ",`direction` FROM   `ex_main` "+\
-                            "WHERE   `id` IN (" + ','.join(str(i) for i in items) + ") AND "+\
-                                    "`is_closed` = 1"
-
-        self.execute(chk_main_sql)
-        this_user_mains = self.fetchall()
-
-        for _,mains in enumerate(this_user_mains):
-            fields_arr  = {}
-            other_sql   = ''
-            for x,key in enumerate(mains):
-                if mains[key]:
-                    # 固定值
-                    if key in setting.similar_list:
-                        if mains[key]:
-                            if key == 'direction' and mains[key] in setting.care_list_direction:
-                                fields_arr[key] = ' IN ('+','.join(setting.care_list_direction)+')'
-                            else:
-                                fields_arr[key] = '='+str(mains[key])
-
-                    # 價格
-                    elif key == 'price':
-                        # 價格
-                        if mains[key] <= 300:
-                            other_sql += " AND `price` <= 300 "
-                        elif 300 < mains[key] <= 600:
-                            other_sql += " AND `price` BETWEEN 300 AND 600 "
-                        elif 600 < mains[key] <= 1000:
-                            other_sql += " AND `price` BETWEEN 600 AND 1000 "
-                        elif 1000 < mains[key] <= 1500:
-                            other_sql += " AND `price` BETWEEN 1000 AND 1500 "
-                        elif 1500 < mains[key] <= 2000:
-                            other_sql += " AND `price` BETWEEN 1500 AND 2000 "
-                        elif mains[key] > 2000:
-                            other_sql += " AND `price` > 2000 "
-                    # 坪數
-                    elif key == 'ping':
-                        if mains[key] <= 20:
-                            other_sql += " AND `ping` <= 20 "
-                        elif 20 < mains[key] <= 30:
-                            other_sql += " AND `ping` BETWEEN 20 AND 30 "
-                        elif 30 < mains[key] <= 40:
-                            other_sql += " AND `ping` BETWEEN 30 AND 40 "
-                        elif 40 < mains[key] <= 50:
-                            other_sql += " AND `ping` BETWEEN 40 AND 50 "
-                        elif mains[key] > 50:
-                            other_sql += " AND `ping` > 50 "
-                    elif key in setting.range_list:
-                        mains[key]  = float(mains[key])
-                        diff        = (mains[key] * setting.range_percent)
-                        start_val   = math.floor(mains[key] - diff) if (mains[key] - diff) >= 0 else 0
-                        end_val     = math.ceil(mains[key] + diff) if (mains[key] + diff) >= 0 else 0
-
-                        # 在意項目越小越好
-                        if key in setting.care_list_small:
-                            fields_arr[key] = " <= "+str(end_val)
-
-                        # 在意項目越大越好
-                        elif key in setting.care_list_max:
-                            fields_arr[key] = " >= "+ str(start_val)
-
-            # 取得相似的物件
-            get_similar_sql     =  "SELECT  `id` "+\
-                                   "FROM    `ex_main` "+\
-                                   "WHERE   `is_closed` = 0 "
-
-            for key,val in fields_arr.items():
-                get_similar_sql+= ' AND `'+key+'`'+str(val)
-
-            get_similar_sql    +=  ' AND `id` != '+str(mains['id']) + (other_sql if other_sql != '' else '')
-
-            self.execute(get_similar_sql)
-            get_similar = self.fetchall()
-
-            for x in get_similar:
-                    items.append(x['id'])
-
-            items.remove(mains['id']);
+            for x in close_id:
+                items.remove(x);
+        except:
+            user_recommend = []
 
         return list(set(items))
-

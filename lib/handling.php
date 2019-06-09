@@ -275,7 +275,7 @@ class db_function extends db_connect{
 			// TABLE
 			if(is_array($table)){
 				foreach ($table as $tb_key => $tb_val) {
-					$table_str		   .= "[$tb_val] {$tb_val},";
+					$table_str		   .= "{$tb_val} {$tb_val},";
 				}
 				$table_str 				= rtrim($table_str,',');
 			}else{
@@ -349,6 +349,7 @@ class db_function extends db_connect{
 				$sql   .= " ORDER BY $orderby_str ";
 			}
 			$sql        = $this->db->Prepare($sql);
+
 			if($type == 1){
 				$rs     = $this->db->SelectLimit($sql,$page_limit,$page_num,$arr);
 	            if(!empty($rs)){

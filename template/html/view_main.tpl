@@ -123,15 +123,15 @@
         <!-- START BLOCK : show_score -->
         <div class="score_div" style="">
             <label style="margin-left:25px;color:red">為此物件評分：</label>
-            <input type="radio" name="{type}" class="score_input" value="5">
+            <input type="radio" name="{type}" class="score_input" value="5" {checked_5}>
             <label for="5" style="float: left">非常喜歡</label>
-            <input type="radio" name="{type}" class="score_input" value="4">
+            <input type="radio" name="{type}" class="score_input" value="4" {checked_4}>
             <label for="4">喜歡</label>
-            <input type="radio" name="{type}" class="score_input" value="3">
+            <input type="radio" name="{type}" class="score_input" value="3" {checked_3}>
             <label for="3">普通</label>
-            <input type="radio" name="{type}" class="score_input" value="2">
+            <input type="radio" name="{type}" class="score_input" value="2" {checked_2}>
             <label for="2">尚可</label>
-            <input type="radio" name="{type}" class="score_input" value="1">
+            <input type="radio" name="{type}" class="score_input" value="1" {checked_1}>
             <label for="1">不喜歡</label>
         </div><br><br>
         <!-- END BLOCK : show_score -->

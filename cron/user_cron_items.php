@@ -6,6 +6,276 @@ session_start();
 include_once(__DIR__.'/../lib/handling.php');
 include_once(__DIR__.'/../lib/lang.php');
 
+$db         = new db_function();
+
+$default_sql=   "SELECT SUM(score = 1) AS 'one',SUM(score = 2) AS 'two',SUM(score = 3) AS 'three',".
+                    "SUM(score = 4) AS 'four',SUM(score = 5) AS 'five', ".
+                    "(SUM(score = 1) +SUM(score = 2)+SUM(score = 3)+SUM(score = 4)+SUM(score = 5)) AS 'total'".
+                "FROM   `ex_score` ";
+
+$default_into   = "REPLACE INTO `ex_score_analysis` (`id`,`type_`,`value_`,`math_`) VALUES ";
+
+// 預測喜歡
+$sql_key    = 'like';
+$sql_arr    = array();
+$like_sql   = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$like_sql   = $db->db->Prepare($like_sql);
+$like_res   = $db->db->Execute($like_sql)->getArray();
+
+foreach ($like_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 別人喜歡
+$sql_key    = 'user';
+$user_sql   = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$user_sql   = $db->db->Prepare($user_sql);
+$user_res   = $db->db->Execute($user_sql)->getArray();
+foreach ($user_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 不喜歡
+$sql_key    = 'nolike';
+$nolike_sql = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$nolike_sql = $db->db->Prepare($nolike_sql);
+$nolike_res = $db->db->Execute($nolike_sql)->getArray();
+foreach ($nolike_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 內容
+$sql_key    = 'content';
+$content_sql= $default_sql."WHERE  `type` = '{$sql_key}' ";
+$content_sql= $db->db->Prepare($content_sql);
+$content_res= $db->db->Execute($content_sql)->getArray();
+foreach ($content_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 熱門
+$sql_key    = 'hot';
+$hot_sql    = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$hot_sql    = $db->db->Prepare($hot_sql);
+$hot_res    = $db->db->Execute($hot_sql)->getArray();
+foreach ($hot_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 最新
+$sql_key    = 'new';
+$new_sql    = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$new_sql    = $db->db->Prepare($new_sql);
+$new_res    = $db->db->Execute($new_sql)->getArray();
+foreach ($new_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+
+// 搜尋
+$sql_key    = 'search';
+$search_sql = $default_sql."WHERE  `type` = '{$sql_key}' ";
+$search_sql = $db->db->Prepare($search_sql);
+$search_res = $db->db->Execute($search_sql)->getArray();
+foreach ($search_res as $key => $value) {
+    if(isset($value['one'])){
+        $math   = round(($value['one'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '1','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['two'])){
+        $math   = round(($value['two'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '2','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['three'])){
+        $math   = round(($value['three'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '3','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['four'])){
+        $math   = round(($value['four'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '4','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+
+    if(isset($value['five'])){
+        $math   = round(($value['five'] / $value['total']),2);
+        $sql_arr= array('type_' => $sql_key,'value_' => '5','math_' => $math);
+        $db->insert_table_data('ex_score_analysis',$sql_arr);
+    }
+}
+/*
 // 計算標準差
 if (!function_exists('stats_standard_deviation')) {
     function stats_standard_deviation(array $val_arr, $sample = false) {
@@ -30,8 +300,6 @@ if (!function_exists('stats_standard_deviation')) {
         return sqrt($carry / $n);
     }
 }
-
-$db 	= new db_function();
 
 $sql    =   "SELECT items.`main_id`,main.`area`,main.`road`,main.`room`,main.`ping`,".
                     "main.`parking`,main.`age`,main.`floor`,main.`type`,".
@@ -426,4 +694,5 @@ function get_range($arr){
 
     return $return_val;
 }
+*/
 ?>

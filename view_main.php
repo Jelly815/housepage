@@ -7,7 +7,36 @@ $tpl->prepare ();
 
 // 顯示評分區
 if($page != ''){
+    $score_data  = $db->select_table_data_join(
+        array('ex_main','ex_score'),
+        array('ex_score'   => array('score')),
+        array(
+            array(3,'ex_main.id = ex_score.main_id'),
+            array(0,'user_id','=',$_SESSION['uid'],'ex_score'),
+            array(0,'type','=',$page,'ex_score'),
+            array(0,'unid','=',$main,'ex_main')));
+
     $tpl->newBlock('show_score');
+    if(!empty($score_data) && isset($score_data[0]['score'])){
+        switch ($score_data[0]['score']) {
+            case '5':
+                $tpl->assign('checked_5','checked');
+                break;
+            case '4':
+                $tpl->assign('checked_4','checked');
+                break;
+            case '3':
+                $tpl->assign('checked_3','checked');
+                break;
+            case '2':
+                $tpl->assign('checked_2','checked');
+                break;
+            case '1':
+                $tpl->assign('checked_1','checked');
+                break;
+            default:
+        }
+    }
     $tpl->assign('type',$page);
 }
 $tpl->gotoBlock('_ROOT');

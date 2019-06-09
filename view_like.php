@@ -18,7 +18,7 @@ $tpl->prepare ();
     $main_data  = $db->select_table_data('ex_main',
         array('unid','number','area','title','road','room','style','ping','around',
             'age','floor','type','parking','unit','view_num','price','builder','community'),
-        array(array(3,'`id` IN ('.$like_str.')')),
+        array(array(3,'`id` IN ('.$like_str.')'),array(0,'is_closed','=',0)),
         array('update_time' => 'DESC'));
 
     foreach ($main_data as $key => $value) {
