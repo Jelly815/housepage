@@ -2,7 +2,7 @@
 // DATABASE
 define('SERVERNAME','127.0.0.1');
 define('USERNAME','root');
-define('USERPWD','root');
+define('USERPWD','11q2a3z4@1W2S3X4');
 define('DATANAME','myweb');
 define('DATATYPE','mysqli');
 define('ADMINMAIL',"jellyandjar@yahoo.com.tw");
@@ -12,9 +12,9 @@ define('default_area',282);
 define('THEMES','./template/html/');
 define('CSSPATH','./template/css/');
 define('JSPATH','./js/');
-#define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main');
+define('PYTHONPATH','D:/xampp/htdocs/housepage/python/main');
 #define('PYTHONPATH','python F:/xampp/htdocs/housepage/python/main');
-define('PYTHONPATH','python3 /var/www/html/homepage/python/main');
+#define('PYTHONPATH','python3 /var/www/html/homepage/python/main');
 define('_TMAIN',THEMES.'main.tpl');
 define('_THEADER',THEMES.'header.tpl');
 define('_TFOOTER',THEMES.'footer.tpl');
