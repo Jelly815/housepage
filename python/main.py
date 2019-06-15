@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'c231ce2a2eee34897307c1301cd54181d'
+#user_unid = 'ce7f43ca808292ce77a4ab6aea63ff5f6'
 
 func = FUNC_CLASS(user_unid)
 
@@ -161,12 +161,16 @@ recommand_items.extend(area_hot_arr)
 
 ####### 取得搜尋條件熱門 #######
 search_hot_record = func.get_user_all_record(1);
+if len(search_hot_record) == 0:
+    search_hot_record   = [[setting.default_area],[],[],[],[]]
 search_hot_arr    = func.get_user_all_record_items(search_hot_record,[],bad_houses+' ORDER BY `view_num` DESC LIMIT '+str(search_num))
 recommand_items.extend(search_hot_arr)
 #print('search_hot_arr',search_hot_arr)
 
 ####### 取得搜尋條件最新 #######
 new_hot_record = func.get_user_all_record(1);
+if len(new_hot_record) == 0:
+    new_hot_record   = [[setting.default_area],[],[],[],[]]
 new_hot_arr = func.get_user_all_record_items(new_hot_record,[],bad_houses+' ORDER BY `add_time` DESC, `view_num` DESC LIMIT '+str(new_num))
 recommand_items.extend(new_hot_arr)
 #print('new_hot_arr',new_hot_arr)

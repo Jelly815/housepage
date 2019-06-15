@@ -414,11 +414,16 @@ class FUNC_CLASS(DB_CONN):
                     for x in stay_count_arr:
                         user_items_arr[x] = []
                 else:
+                    '''
                     user_items_arr      = {
                         'area':[],'road':[],'room':[],
                         'ping':[],'parking':[],
                         'type':[],'direction':[],
                         'price':[],'status':[]
+                    }'''
+                    user_items_arr      = {
+                        'area':[],'room':[],'ping':[],
+                        'type':[],'price':[]
                     }
 
                 if len(user_today_arr) > 0:

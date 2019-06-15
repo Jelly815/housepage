@@ -22,6 +22,10 @@ def dot(v, w):
     return sum(v_i * w_i for v_i, w_i in zip(v, w))
 
 
+unique_interests = sorted(list({ interest
+                                 for user_interests in users_interests
+                                 for interest in user_interests }))
+    
 def make_user_interest_vector(user_interests):
     """given a list of interests, produce a vector whose i-th element is 1
     if unique_interests[i] is in the list, 0 otherwise"""
@@ -96,9 +100,7 @@ def user_based_suggestions(user_id, include_current_interests=False):
                 for suggestion, weight in suggestions
                 if suggestion not in users_interests[user_id]]
 
-unique_interests = sorted(list({ interest
-                                 for user_interests in users_interests
-                                 for interest in user_interests }))
+
 #print(unique_interests)
 # user_interest_matrix[0]:使用者對36項是否有興趣，是:1,否:0
 
@@ -140,11 +142,11 @@ for x in range(len(df)):
 
 print([df_NaN,del_index])
 
-user = [23,18,20.4]
+user = [ 21, 17, 17, 20, 19, 17, 20, 20, 22, 20 ]
 other = [25.5,28,24,23.4,25]
 
-print('Other_mean',np.mean(other))
-print('Other_mean',np.std(other))
+print('user_std',np.std(user))
+print('user_mean',np.mean(user))
 
 median = [30,60,90,100,150,300]
 new_data    = set(median)
