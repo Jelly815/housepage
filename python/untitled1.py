@@ -7,7 +7,7 @@ Created on Mon Dec 10 23:57:35 2018
 
 import math, random
 from collections import defaultdict, Counter
-
+'''
 users_interests = [
     ["Hadoop", "Big Data", "HBase", "Java", "Spark", "Storm", "Cassandra"],
     ["NoSQL", "MongoDB", "Cassandra", "HBase", "Postgres"],
@@ -24,6 +24,13 @@ users_interests = [
     ["pandas", "R", "Python"],
     ["databases", "HBase", "Postgres", "MySQL", "MongoDB"],
     ["libsvm", "regression", "support vector machines"]
+]
+'''
+users_interests = [
+    ['01','02','03'],
+    ['01','02','04'],
+    ['01','02','05'],
+    ['01','05','06']
 ]
 
 def dot(v, w):
@@ -42,7 +49,7 @@ def cosine_similarity(v, w):
 
 def most_similar_interests_to(interest_id):
     similarities = interest_similarities[interest_id]
-    print(similarities)
+    #print(similarities)
     pairs = [(unique_interests[other_interest_id], similarity)
              for other_interest_id, similarity in enumerate(similarities)
              if interest_id != other_interest_id and similarity > 0]
@@ -86,5 +93,41 @@ interest_user_matrix = [[user_interest_vector[j]
 interest_similarities = [[cosine_similarity(user_vector_i, user_vector_j)
                           for user_vector_j in interest_user_matrix]
                          for user_vector_i in interest_user_matrix]
-print(interest_similarities[0])
+    
+    
+user_similarities = [[cosine_similarity(interest_vector_i, interest_vector_j)
+                      for interest_vector_j in user_interest_matrix]
+                     for interest_vector_i in user_interest_matrix]
+    
+def most_similar_users_to(user_id):
+    pairs = [(other_user_id, similarity)                      # find other
+             for other_user_id, similarity in                 # users with
+                enumerate(user_similarities[user_id])         # nonzero
+             if user_id != other_user_id and similarity > 0]  # similarity
+
+    return sorted(pairs,                                      # sort them
+                  key=lambda pair: pair[1],                   # most similar
+                  reverse=True)                               # first
+
+def user_based_suggestions(user_id, include_current_interests=False):
+    # sum up the similarities
+    suggestions = defaultdict(float)
+    for other_user_id, similarity in most_similar_users_to(user_id):
+        for interest in users_interests[other_user_id]:
+            suggestions[interest] += similarity
+
+    # convert them to a sorted list
+    suggestions = sorted(suggestions.items(),
+                         key=lambda pair: pair[1],
+                         reverse=True)
+
+    # and (maybe) exclude already-interests
+    if include_current_interests:
+        return suggestions
+    else:
+        return [(suggestion, weight)
+                for suggestion, weight in suggestions
+                if suggestion not in users_interests[user_id]]
+
+print(most_similar_users_to(0))
 #print(most_similar_interests_to(0))

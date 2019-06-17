@@ -124,7 +124,7 @@
                         </div>
                         <div class="filter-saleprice-wrap">
                             <div class="filter-row clearfix">
-                                <div class="filter-name">金額</div>
+                                <div class="filter-name">總價</div>
                                 <div class="filter-body clearfix relative">
                                     <div class="filter-saleprice-options clearfix oh">
                                         <!--<div class="filter-items z-small"><a href="javascript:;" data-gtm-stat="不限" class="">不限</a></div>-->

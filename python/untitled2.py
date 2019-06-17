@@ -142,7 +142,7 @@ for x in range(len(df)):
 
 print([df_NaN,del_index])
 
-user = [ 21, 17, 17, 20, 19, 17, 20, 20, 22, 20 ]
+user = [ 22, 20 ]
 other = [25.5,28,24,23.4,25]
 
 print('user_std',np.std(user))

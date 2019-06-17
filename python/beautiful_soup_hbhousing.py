@@ -8,11 +8,11 @@ import datetime
 import random
 import time
 
-for page in range(61, 100):
+for page in range(1, 30):
     time.sleep(5)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
     payload = {
-            'q': '2^1^18^802_806_807_830^1_2000^^1^2_3_4_5^^1_6^^^^^^^^^9^1^'+str(page)+'^0',
+            'q': '2^1^18^802_806_807_830^0_1000^1_50^1^2_3_4_5^^^^^^^^^^^9^1^'+str(page)+'^0',
             'rlg': '1'
     }
     #住商不動產
