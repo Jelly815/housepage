@@ -15,7 +15,7 @@
             <li><a href="#">Hot Deals</a></li>
             <li><a href="#">Special Recommend</a></li>
         </ul>
-        <form action="">
+        <form>
             <span>Always Get Updated for</span>
             <h2>Hot Deals &amp; <br>Special Recommend</h2>
             <input type="text" value="Enter email address" id="email" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';" />

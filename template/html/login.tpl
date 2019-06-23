@@ -1,4 +1,4 @@
-<form action="" method="post" id="loginFrom" name="loginFrom">
+<form method="post" id="loginFrom" name="loginFrom">
 <div class="light_box" id="sign_up" style="display: none; left: 50%; margin-left: -223px; z-index: 1002; position: absolute; top: 840px; margin-top: 0px;">
     <h3 id="see_id">{LOGIN}</h3>
     <div id="sign_up_form">

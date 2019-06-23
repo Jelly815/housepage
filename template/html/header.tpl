@@ -4,7 +4,7 @@
             <a href="index.php" id="home" title="Home">Home</a>
         </li>
         <li>
-            <a href="mailto:{ADMINMAIL}" id="email" title="Email">Email</a>
+            <a href="mailto:{ADMINMAIL}" id="mailto" title="Email">Email</a>
         </li>
     </ul>
     <div id="log_in_text">{USER_NAME}</div>
@@ -75,44 +75,44 @@
                                                 <div class="section-list clearfix">
                                                     <!--<div class="section-list-unlimited section-list-item pull-left" style="width:40px">不限</div>-->
                                                     <div class="section-list-options clearfix">
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">三民區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳳山區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">左營區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鼓山區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">苓雅區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">楠梓區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前鎮區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">仁武區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大寮區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">小港區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鳥松區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">新興區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">前金區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">岡山區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大社區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">橋頭區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">大樹區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">鹽埕區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">美濃區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">林園區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">燕巢區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">湖內區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗山區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">路竹區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">梓官區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茄萣區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">六龜區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">杉林區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">阿蓮區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">甲仙區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">旗津區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">彌陀區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">田寮區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">內門區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">永安區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">桃源區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">那瑪夏區</a></div>
-                                                        <div class="section-list-item"><a href="javascript:;" j-tips-txt="您最多可選擇5個鄉鎮" class="section-list-item-link">茂林區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">三民區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">鳳山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">左營區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">鼓山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">苓雅區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">楠梓區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">前鎮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">仁武區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">大寮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">小港區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">鳥松區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">新興區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">前金區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">岡山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">大社區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">橋頭區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">大樹區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">鹽埕區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">美濃區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">林園區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">燕巢區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">湖內區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">旗山區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">路竹區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">梓官區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">茄萣區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">六龜區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">杉林區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">阿蓮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">甲仙區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">旗津區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">彌陀區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">田寮區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">內門區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">永安區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">桃源區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">那瑪夏區</a></div>
+                                                        <div class="section-list-item"><a href="javascript:;"  class="section-list-item-link">茂林區</a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -409,7 +409,7 @@ $(function () {
             }else{
                 var rule_area = str.match("您最多可選擇5個鄉鎮");
                 if(rule_area == null){
-                    $("#option_str").html(str+"<font color='#393D42'> ["+$(this).children().attr("j-tips-txt")+"]</font>");
+                    $("#option_str").html(str+"<label style='color:#393D42'> [您最多可選擇5個鄉鎮]</label>");
                 }
             }
         }

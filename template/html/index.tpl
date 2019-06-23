@@ -14,10 +14,10 @@
     </div>
     <div id="news">
         <h2>Get Updated</h2>
-        <a href="#">Follow us <font>Twitter</font></a>
-        <a href="#">Like us in <font>Facebook</font></a>
-        <a href="#">Visit our <font>Blog</font></a>
-        <a href="#">Watch us in <font>YouTube</font></a>
+        <a href="#">Follow us Twitter</a>
+        <a href="#">Like us in Facebook</a>
+        <a href="#">Visit our Blog</a>
+        <a href="#">Watch us in YouTube</a>
 
         <div>
             <h3>Brochure</h3>

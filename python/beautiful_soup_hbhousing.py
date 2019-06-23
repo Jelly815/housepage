@@ -16,7 +16,7 @@ for page in range(1, 30):
             'rlg': '1'
     }
     #住商不動產
-    response = requests.post('https://www.hbhousing.com.tw/ajax/dataService.aspx?job=search&path=house', data = payload, headers=headers)
+    response = requests.post('http://www.hbhousing.com.tw/ajax/dataService.aspx?job=search&path=house', data = payload, headers=headers)
     
     #print(response.text)
     json_text = response.text
@@ -158,8 +158,9 @@ for page in range(1, 30):
             if insert_vals:
                 insert_sql = insert_sql.rstrip(',')
                 insert_imgs = (insert_imgs+insert_imgs_sql).rstrip(',')
-            
+                #print(insert_imgs,insert_imgs_vals)
                 db_conn.execute(insert_sql,insert_vals)
                 db_conn.execute(insert_imgs,insert_imgs_vals)
+                
             else:
                 print(this_data['number'])

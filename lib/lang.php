@@ -1,7 +1,7 @@
 <?php
 // head
-define('HEADERTITLE','Jelly website');
-define('HEADERTITLEDTAIL','Welcome to my word');
+define('HEADERTITLE','房屋推薦行銷網');
+define('HEADERTITLEDTAIL','Welcome to Recommender Systems');
 define('HOMEPAGE','Homepage');
 define('ADSEARCH','Keyword');
 define('LOGIN','LOGIN');
@@ -67,5 +67,5 @@ define('ALERTXT11','請輸入關鍵字');
 define('NODATA','無資料');
 
 // FOOTER
-define('COPYRIGHT','Welcome to Jelly.Chang website '.date('Y'));
+define('COPYRIGHT','Welcome to Chiu-Wen Chang website '.date('Y'));
 ?>
