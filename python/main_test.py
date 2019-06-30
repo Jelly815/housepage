@@ -124,7 +124,7 @@ recommand_items = list(set(recommand_items))
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換  461,470
 if recommand_items:
-    recommand_items     = func.check_close(user_unid,recommand_items)
+    recommand_items     = func.check_close(recommand_items)
 
 # 當推薦物件少於5筆時，加入User所在區域熱門的物件
 if len(recommand_items) < setting.less_how_num:

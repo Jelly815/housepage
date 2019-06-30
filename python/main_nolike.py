@@ -30,7 +30,7 @@ recommand_items = func.get_user_all_record_items(user_all_record,recommand_items
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換
 if recommand_items:
-    recommand_items     = func.check_close(user_unid,recommand_items)
+    recommand_items     = func.check_close(recommand_items)
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:

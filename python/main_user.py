@@ -74,7 +74,7 @@ if len(record_data['often_record']) > 1:
                         if len(ret) > 0 and \
                             len(user_items) > len(ret):
                             others_user_items_dict2.append(user_items)
-            
+
                 #將所有User都加起來(有興趣的物件)
                 users_items2 = [user_items_dict] + others_user_items_dict2
                 #users_items2 = [user_items_dict] + [user_items]
@@ -92,14 +92,14 @@ if len(record_data['often_record']) > 1:
                 user_similarities = [[func.cosine_similarity(interest_vector_i, interest_vector_j)
                       for interest_vector_j in user_interest_matrix]
                      for interest_vector_i in user_interest_matrix]
-                
+
                 # 推薦相似者喜歡的物件給他
                 all_items     = func.user_based_suggestions(0, user_similarities,users_items2)
                 recommand_items.extend(all_items)
 
 # 檢查是否有已經close的物件，若有則取相似的物件替換
 if recommand_items:
-    recommand_items     = func.check_close(user_unid,recommand_items)
+    recommand_items     = func.check_close(recommand_items)
 
 # 隨機取5個物件出來
 if len(recommand_items) > 0 and len(recommand_items) < setting.random_num:

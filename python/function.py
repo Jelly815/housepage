@@ -370,61 +370,11 @@ class FUNC_CLASS(DB_CONN):
                 """
             user_today_sql += ' AND `main_id` IN ('+users_items+')'+\
                                 ' ORDER BY `last_time` DESC'
-
-            # ex_record_items_stay 半年內的搜尋紀錄
-            user_stay_sql = """
-                SELECT `type_key`,`type_value`
-                FROM `ex_record_items` items,`ex_record_items_stay` stay
-                WHERE `items`.`id` = `stay`.`record_items_id` and
-                      `items`.`user_id` = %s AND
-                      `stay`.`type_key` != 'stay_time' AND
-                      `items`.`last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
-                """
-
             try:
                 self.execute(user_today_sql,[self.user_id,setting.search_house_days])
                 user_today_arr  = self.fetchall()
-                #print(user_today_arr)
-                self.execute(user_stay_sql,[self.user_id,setting.search_house_days])
-                user_stay_arr   = self.fetchall()
-                #print(user_stay_arr)
-                stay_count_arr  = {}
-                stay_count      = 0
-                for _,x in enumerate(user_stay_arr):
-                    stay_count += x['type_value']
-                    if stay_count_arr.get(x['type_key']):
-                        stay_count_arr[x['type_key']] += x['type_value']
-                    else:
-                        stay_count_arr[x['type_key']] = x['type_value']
 
-                stay_count_arr  = sorted(stay_count_arr.items(),
-                                                key=lambda pair: pair[1],
-                                                reverse=True)
-
-                user_items_arr  = {}
-                # 如果在意項目大於0 和 大於瀏覽房子數，才列入他有此習慣
-                if len(stay_count_arr) > 0 and stay_count >= len(user_today_arr):
-                    # 計算平均數
-                    stay_avg    = math.ceil(stay_count/len(stay_count_arr))
-                    # 取得在意項目
-                    stay_count_arr      = [x[0] for _,x in enumerate(stay_count_arr) if x[1] >= stay_avg]
-                    # 加上基本搜尋項目
-                    stay_count_arr      = set(stay_count_arr+setting.basic_list)
-
-                    for x in stay_count_arr:
-                        user_items_arr[x] = []
-                else:
-                    '''
-                    user_items_arr      = {
-                        'area':[],'road':[],'room':[],
-                        'ping':[],'parking':[],
-                        'type':[],'direction':[],
-                        'price':[],'status':[]
-                    }'''
-                    user_items_arr      = {
-                        'area':[],'room':[],'ping':[],
-                        'type':[],'price':[]
-                    }
+                user_items_arr = self.get_stay_items(user_today_arr)
 
                 if len(user_today_arr) > 0:
                     user_today_sql  = 'SELECT  '
@@ -532,26 +482,10 @@ class FUNC_CLASS(DB_CONN):
 
                                     new_val[item_type].extend([star_num,end_num])
                 #print(new_val)
-                # 依照內容，找到喜愛的物件
-                where_sql   = ''
-                length      = 1
-                for x,items in new_val.items():
-                    if x in setting.similar_list:
-                        where_sql += ' `'+x+'` IN ('+','.join(str(e) for e in items)+') '
-                    elif x in setting.range_list:
-                        where_sql += ' `'+x+'` BETWEEN '+str(items[0])+' AND '+str(items[1])
 
-                    where_sql += ' AND ' if length < len(new_val) else ''
-                    length += 1
-
-                # 尋找相似的房子
-                user_record_sql =   'SELECT  `id` '+\
-                                    'FROM    `ex_main` '+\
-                                    'WHERE '+where_sql+' AND `id` NOT IN ('+(self.bad_houses+','+users_items if self.bad_houses != '' else users_items)+')'+\
-                                    ' AND `is_closed` = 0'
                 try:
-                    self.execute(user_record_sql,[])
-                    user_record_arr     = self.fetchall()
+                    # 依照內容，找到喜愛的物件
+                    user_record_arr = self.get_stay_items_houses(new_val,users_items)
 
                     user_recommend = [int(x['id']) for x in user_record_arr]
                 except:
@@ -560,6 +494,89 @@ class FUNC_CLASS(DB_CONN):
                 user_recommend = []
 
         return list(set(user_recommend))
+
+    # 取得User在意項目
+    def get_stay_items(self,user_today_arr):
+        # ex_record_items_stay 半年內的搜尋紀錄
+        user_stay_sql = """
+            SELECT `type_key`,`type_value`
+            FROM `ex_record_items` items,`ex_record_items_stay` stay
+            WHERE `items`.`id` = `stay`.`record_items_id` and
+                  `items`.`user_id` = %s AND
+                  `stay`.`type_key` != 'stay_time' AND
+                  `items`.`last_time` BETWEEN (NOW() - INTERVAL %s DAY) AND NOW()
+            """
+        try:
+            self.execute(user_stay_sql,[self.user_id,setting.search_house_days])
+            user_stay_arr   = self.fetchall()
+
+            stay_count_arr  = {}
+            stay_count      = 0
+            for _,x in enumerate(user_stay_arr):
+                stay_count += x['type_value']
+                if stay_count_arr.get(x['type_key']):
+                    stay_count_arr[x['type_key']] += x['type_value']
+                else:
+                    stay_count_arr[x['type_key']] = x['type_value']
+
+            stay_count_arr  = sorted(stay_count_arr.items(),
+                                            key=lambda pair: pair[1],
+                                            reverse=True)
+            user_items_arr  = {}
+            # 如果在意項目大於0 和 大於瀏覽房子數，才列入他有此習慣
+            if len(stay_count_arr) > 0 and stay_count >= len(user_today_arr):
+                # 計算平均數
+                stay_avg    = math.ceil(stay_count/len(stay_count_arr))
+
+                # 取得在意項目
+                stay_count_arr      = [x[0] for _,x in enumerate(stay_count_arr) if x[1] >= stay_avg]
+
+                # 加上基本搜尋項目
+                stay_count_arr      = set(stay_count_arr+setting.basic_list)
+
+                for x in stay_count_arr:
+                    user_items_arr[x] = []
+            else:
+                '''
+                user_items_arr      = {
+                    'area':[],'road':[],'room':[],
+                    'ping':[],'parking':[],
+                    'type':[],'direction':[],
+                    'price':[],'status':[]
+                }'''
+                user_items_arr      = {
+                    'area':[],'room':[],'ping':[],
+                    'type':[],'price':[]
+                }
+        except:
+            user_items_arr = []
+
+        return user_items_arr
+
+    # 取得在意項目的搜尋結果(獲得房屋ID)
+    def get_stay_items_houses(self,new_val,users_items):
+        where_sql   = ''
+        length      = 1
+
+        for x,items in new_val.items():
+            if x in setting.similar_list:
+                where_sql += ' `'+x+'` IN ('+','.join(str(e) for e in items)+') '
+            elif x in setting.range_list:
+                where_sql += ' `'+x+'` BETWEEN '+str(items[0])+' AND '+str(items[1])
+
+            where_sql += ' AND ' if length < len(new_val) else ''
+            length += 1
+
+        # 尋找相似的房子
+        user_record_sql =   'SELECT  `id` '+\
+                            'FROM    `ex_main` '+\
+                            'WHERE '+where_sql+' AND `id` NOT IN ('+(self.bad_houses+','+users_items if self.bad_houses != '' else users_items)+')'+\
+                            ' AND `is_closed` = 0'
+
+        self.execute(user_record_sql,[])
+        user_record_arr     = self.fetchall()
+
+        return user_record_arr
 
     # 取得非user有相同記錄的人
     def get_same_record(self,user_id,record,limit=1,notlike = 0):
@@ -935,18 +952,81 @@ class FUNC_CLASS(DB_CONN):
         return (items_str[1] if items_str[1] else '')
 
     # 檢查是否有已經close的物件，若有則取相似度最高的物件替換
-    def check_close(self,user_unid,items):
-        user_today_sql = "SELECT `id` FROM `ex_main` WHERE `id` IN "+\
-                        "("+','.join(str(i) for i in items)+") AND `is_closed` = 1"
+    def check_close(self,items):
+        new_val = {}
+        users_items     = ','.join(str(i) for i in items)
+        user_today_sql  =   "SELECT * FROM `ex_main` WHERE `id` IN "+\
+                            "("+users_items+") AND `is_closed` = 1"
 
         try:
             self.execute(user_today_sql,[])
             user_today_arr      = self.fetchall()
-            close_id    = [x['id'] for x in user_today_arr]
 
-            for x in close_id:
-                items.remove(x);
+            if len(user_today_arr) > 0:
+                # 取得在意項目
+                user_items_arr = self.get_stay_items(user_today_arr)
+
+                for x, user_today in enumerate(user_today_arr):
+                    for item_type,record_items in user_today.items():
+
+                        if item_type in setting.out_items:
+                            continue
+                        # 相似
+                        elif item_type in user_items_arr.keys() and item_type in setting.similar_list:
+                            new_val[item_type] = [record_items]
+                        # 比對是否在範圍內
+                        elif item_type in user_items_arr.keys() and item_type in setting.range_list:
+                            # 價格
+                            if item_type == 'price':
+                                if record_items <= 300:
+                                    user_val = [0,300]
+                                elif 300 < record_items <= 600:
+                                    user_val = [300,600]
+                                elif 600 < record_items <= 1000:
+                                    user_val = [600,1000]
+                                elif 1000 < record_items <= 1500:
+                                    user_val = [1000,1500]
+                                elif 1500 < record_items <= 2000:
+                                    user_val = [1500,2000]
+                                elif record_items > 2000:
+                                    user_val = [2000,5000]
+
+                                new_val[item_type] = user_val
+                            elif item_type == 'ping':
+                                #坪數
+                                if record_items <= 20:
+                                    user_val = [0,20]
+                                elif 20 < record_items <= 30:
+                                    user_val = [20,30]
+                                elif 30 < record_items <= 40:
+                                    user_val = [30,40]
+                                elif 40 < record_items <= 50:
+                                    user_val = [40,50]
+                                elif record_items > 50:
+                                    user_val = [51,100]
+
+                                new_val[item_type] = user_val
+                            else:
+                                std_num = int(record_items * setting.range_percent)
+
+                                # 計算範圍值
+                                star_num    = int(record_items - std_num)
+                                end_num     = int(record_items + std_num)
+
+                                new_val[item_type] = [star_num,end_num]
+
+                # 移除已售出的id
+                close_id    = [x['id'] for x in user_today_arr]
+                for x in close_id:
+                    items.remove(x);
+
+                # 依照新條件，找到喜愛的房屋
+                user_record_arr = self.get_stay_items_houses(new_val,users_items)
+                new_id    = [x['id'] for x in user_record_arr]
+
+                for x in new_id:
+                    items.append(x);
         except:
-            user_recommend = []
+            items = []
 
         return list(set(items))
