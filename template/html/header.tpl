@@ -193,12 +193,12 @@
                             <a class="view_all" style="display: block;">View all</a>
                         </div>
                         <div style="float: right;color:#ff7921;">
-                            <label style="padding-right:20px;">※條件須全部選擇才會出現View all</label>
+                            <!--<label style="padding-right:20px;">※條件須全部選擇才會出現View all</label>
 
-                            <a href="index.php" data-gtm-stat="50坪以上">[重設]</a></div>
+                            <a href="index.php">[重設]</a></div>-->
                     </div>
                 </li>
-                <li>
+                <!--<li>
                     <a class="first_a" id="mem_show" href="javascript:;">操作說明(會員)</a>
                     <div class="first_content" id="mem_div">
                         <p style="line-height: 22px;top:10px">
@@ -221,7 +221,7 @@
                             {mem_txt2}
                         </p>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>

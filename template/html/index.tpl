@@ -1,12 +1,12 @@
 <div id="content">
     <div class="first">
-        <h2>推薦列表 </h2>
+        <h2>預測您喜歡的 </h2>
         <ul>
 
         </ul>
     </div>
     <div class="second">
-        <h2>Search results</h2>
+        <h2>搜尋結果</h2>
         <ul>
 
         </ul>
@@ -19,11 +19,11 @@
         <a href="#">Visit our Blog</a>
         <a href="#">Watch us in YouTube</a>
 
-        <div>
+        <!--<div>
             <h3>Brochure</h3>
             <a href="#" id="download"><img src="template/images/brochure.jpg" alt=""/></a>
             <a href="#">Download Brochure</a>
             <p></p>
-        </div>
+        </div>-->
     </div>
 </div>

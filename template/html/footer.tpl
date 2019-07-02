@@ -1,5 +1,5 @@
 <div class="footer">
-    <div>
+    <div><!--
         <ul>
             <li><a href="#">The Company</a></li>
             <li><a href="#">Visit our Blog</a></li>
@@ -20,7 +20,7 @@
             <h2>Hot Deals &amp; <br>Special Recommend</h2>
             <input type="text" value="Enter email address" id="email" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';" />
             <input type="submit" id="submit" value=""/>
-        </form>
+        </form>-->
         <p>&#169; Copyright {COPYRIGHT}. All Rights Reserved.</p>
     </div>
 </div>

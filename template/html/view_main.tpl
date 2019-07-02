@@ -107,7 +107,7 @@
 }
 </style>
 <div id="re_list">
-    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">推薦列表 </h2>
+    <h2 style="color: #041c4c;font-size: 22px;text-transform: uppercase;margin: 10px 0 15px 28px;">預測您喜歡的 </h2>
     <ul class="second" style="">
 
     </ul>
