@@ -147,7 +147,7 @@ class FUNC_CLASS(DB_CONN):
                     time_sql=   "SELECT `last_time` "+\
                                 "FROM `ex_record` "+\
                                 "WHERE `user_id`= %s "+\
-                                "ORDER BY `last_time` DESC LIMIT 1"
+                                "ORDER BY `last_time` DESC,`times` DESC LIMIT 1"
                     self.execute(time_sql,[self.user_id])
                     time_arr    = self.fetchall()
                     time_str    = time_arr[0]['last_time']

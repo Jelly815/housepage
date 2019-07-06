@@ -560,18 +560,24 @@ class db_function extends db_connect{
 
     	switch ($type) {
     		case 'hot':
-    			$where 		= array(array(0,'area','=',$area_id));
+    			$where 		= array(
+    				array(0,'area','=',$area_id),
+    				array(0,'is_closed','=',0));
     			$orderby 	= array('view_num' => 'DESC');
     		break;
     		case 'user':
     		case 'nolike':
     		case 'content':
     		case 'like':
-    			$where 		= array(array(3,'id IN ('.$main_id.')'));
+    			$where 		= array(
+    				array(3,'id IN ('.$main_id.')'),
+    				array(0,'is_closed','=',0));
     			$orderby 	= array('view_num' => 'DESC');
     		break;
     		default:
-    			$where 		= array(array(0,'area','=',$area_id));
+    			$where 		= array(
+    				array(0,'area','=',$area_id),
+    				array(0,'is_closed','=',0));
     			$orderby 	= array('add_time' => 'DESC');
     		break;
     	}
