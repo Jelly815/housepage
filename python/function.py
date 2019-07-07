@@ -269,7 +269,7 @@ class FUNC_CLASS(DB_CONN):
 
         if orderby != '':
             hot_house_sql  += orderby
-
+        #print(hot_house_sql)
         self.execute(hot_house_sql,[])
         result  = self.fetchall()
         result  = [x['id'] for x in result]

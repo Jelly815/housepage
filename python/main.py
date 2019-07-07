@@ -10,7 +10,7 @@ import setting
 import random
 
 user_unid = sys.argv[1]
-#user_unid = 'ce7f43ca808292ce77a4ab6aea63ff5f6'
+#user_unid = 'c24a6071c37e00d88b7ee7bbcd1a8724d'
 
 func = FUNC_CLASS(user_unid)
 
@@ -40,7 +40,7 @@ for x in get_weight:
 #print(user_num,nolike_num,content_num,hot_num,new_num,search_num)
 # 取得A的搜尋紀錄
 record_data = func.get_this_user_search()
-
+#print('record_data',record_data)
 if len(record_data['often_record']) > 1:
     user_arr = []
     for key,record in record_data.items():
@@ -120,7 +120,7 @@ if len(record_data['often_record']) > 1:
 
     user_arr = random.sample(user_arr, (len(user_arr) if len(user_arr) < user_num else user_num))
     recommand_items.extend(user_arr)
-    #print('user_arr',user_arr)
+    #print('User',user_arr)
 # 如果筆數等於1，則推薦(該搜尋條件)熱門的
 """
 elif len(record_data['often_record']) == 1:
@@ -140,10 +140,11 @@ times_range_items_not = func.get_this_user_no_search()
 nolike_arr.extend(times_range_items_not)
 # 取得A曾經搜尋過的條件
 user_all_record = func.get_user_all_record()
-nolike_arr = func.get_user_all_record_items(user_all_record,nolike_arr)
-nolike_arr = random.sample(nolike_arr, (len(nolike_arr) if len(nolike_arr) < nolike_num else nolike_num))
-recommand_items.extend(nolike_arr)
-#print('nolike_arr',nolike_arr)
+if len(user_all_record[0]) > 0:
+    nolike_arr = func.get_user_all_record_items(user_all_record,nolike_arr)
+    nolike_arr = random.sample(nolike_arr, (len(nolike_arr) if len(nolike_arr) < nolike_num else nolike_num))
+    recommand_items.extend(nolike_arr)
+#print('Nolike',nolike_arr)
 
 ####### 取得A(喜愛)的物件，找到相似內容的房子 #######
 content_arr =[]
@@ -151,14 +152,14 @@ times_range_items_not = func.get_this_user_content(users_items)
 content_arr.extend(times_range_items_not)
 content_arr = random.sample(content_arr, (len(content_arr) if len(content_arr) < content_num else content_num))
 recommand_items.extend(content_arr)
-#print('content_arr',content_arr)
+#print('content',content_arr)
 
 ####### 取得地區熱門 #######
 bad_houses = ' AND `id` NOT IN ('+func.bad_houses+') ' if func.bad_houses != '' else ''
 area_hot_arr    = func.get_user_all_record_items([[setting.default_area],[],[],[],[]],[],bad_houses+' ORDER BY `view_num` DESC LIMIT '+str(hot_num))
-recommand_items.extend(area_hot_arr)
 #print('area_hot_arr',area_hot_arr)
-
+recommand_items.extend(area_hot_arr)
+#print('area_hot',area_hot_arr)
 ####### 取得搜尋條件熱門 #######
 search_hot_record = func.get_user_all_record(1);
 if len(search_hot_record) == 0:
