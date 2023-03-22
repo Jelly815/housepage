@@ -1,0 +1,67 @@
+<div class="time_tool" style="display: none;">
+    <div class="time_counter dTime_counter">
+        <span class="text_minute"></span>
+        <span>分</span>
+        <span class="text_second"></span>
+        <span>秒後 自動登出</span>
+    </div>
+</div>
+
+<script>
+// $(document).ready(function() {showTime();})
+
+	var count_down_sec = parseInt("{count_down_sec}");
+    var count_down_confirm_sec = parseInt("{count_down_confirm_sec}");
+    var text_minute = parseInt(count_down_sec/60);
+    var text_second = parseInt(count_down_sec%60);
+    function showTime(){
+        $(".time_tool").show();
+        if(count_down_sec>0){
+            count_down_sec -= 1;
+        }
+        text_minute = parseInt(count_down_sec/60);
+        text_second = parseInt(count_down_sec%60);
+        $(".text_minute").text(text_minute);
+        $(".text_second").text(text_second);
+        text_time = "";
+        if(text_minute>0){
+            text_time += text_minute+"分";
+        }
+        text_time += text_second+"秒";
+        $("#count_down_text").text(text_time);
+        if(count_down_sec==count_down_confirm_sec){
+            alertify.set({ labels:{ ok : "延長"}});
+            alertify.alert("您將於<span id='count_down_text' style='color:red'>"+text_time+"</span>後被登出系統，請按下[延長] 按鈕延長使用時間。", function (e) {
+                if (e) {
+                    count_down_sec = parseInt("{count_down_sec}");
+                }
+            });
+        }
+        if(count_down_sec<=0){
+            log_out();
+            $("#alertify, #alertify-cover").remove();
+            alertify.set({ labels:{ ok : "確定"}});
+            alertify.alert("超出作業時間，已被登出系統", function (e) {
+                if (e) {
+                    location.href='index.php?module=SC&action=login'
+                }
+            });
+            setTimeout("log_out()",3000);
+        }
+        //每秒執行一次,showTime()
+        if(count_down_sec>0){
+            setTimeout("showTime()",1000);
+        }
+    }
+    function log_out(){
+        $.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "SC_action.php?action=logout",
+            success: function (data) {
+            },
+            error: function (data) {
+            }
+        });
+    }
+</script>

@@ -1,85 +1,29 @@
-<script src="photograph/js/masonry.pkgd.min.js"></script>
-<script src="photograph/js/imagesloaded.pkgd.min.js"></script>
+<div id="content">
+    <div class="first">
+        <h2>預測您喜歡的 </h2>
+        <ul>
 
-<script src="photograph/js/wayfinder.js"></script>
-<script>
-$( function() {
-	$( "#search_btn" ).click(function() {
-        $("#search_div").toggle();
-    });
+        </ul>
+    </div>
+    <div class="second">
+        <h2>搜尋結果</h2>
+        <ul>
 
-	var $grid = $('.grid').imagesLoaded( function() {
-		$grid.masonry({
-	  		itemSelector: '.grid-item',
-			percentPosition: true,
-			columnWidth: '.grid-sizer'
-		});
-	});
-	
-	flag = true;
-	$(window).scroll(function() {
-		if($(window).scrollTop() + $(window).height() == $(document).height()){
-			first = $('#first').val();
-			limit = $('#limit').val();
-			no_data = true;
-			if(flag && no_data){
-				flag = false;
-				$('#loader').show();
-				$.ajax({
-					url : 'ajax.php',
-					method: 'post',
-					data: {
-					   start : first,
-					   limit : limit
-					},
-					dataType:'html',
-					success: function( data ) {
-						flag = true;
-						$('#loader').hide();
-						if(data !=''){
-							first = parseInt($('#first').val());
-							limit = parseInt($('#limit').val());
-				
-							$('#first').val( first+limit );
-							
-							//$('#grid').append( data );
-							//jQuery("#content").append(data).masonry( 'appended', data, true );
-							var $items = $(data);
-							$grid.append( $items ).masonry( 'appended', $items );
-						}else{
-							no_data = false;
-						}
-					},
-					error: function( data ){
-						flag = true;
-						$('#loader').hide();
-						no_data = false;
-						alert('Something went wrong, Please contact admin');
-					}
-				});
-			}
-		}
-	});	
-});
+        </ul>
+        <a class="view_all" href="">View all</a>
+    </div>
+    <div id="news">
+        <h2>Get Updated</h2>
+        <a href="#">Follow us Twitter</a>
+        <a href="#">Like us in Facebook</a>
+        <a href="#">Visit our Blog</a>
+        <a href="#">Watch us in YouTube</a>
 
-
-</script>
-<div class="grid" id="grid">
-<div class="grid-sizer"></div>
-<!-- START BLOCK : index_row -->
-	<div class="grid-item">
-  		<div class="grid-content box">
-    		<div class="grid-title">【{department}_{uname}】<br>{title}</div>
-    		<img src="{UPLOADPICPATH}{pic}">
-        	<div class="grid-txt details">{txt}</div>
-        	<a href="#" class="button">More Details</a>
-  		</div>
-  	</div>
-<!-- END BLOCK : index_row -->
+        <!--<div>
+            <h3>Brochure</h3>
+            <a href="#" id="download"><img src="template/images/brochure.jpg" alt=""/></a>
+            <a href="#">Download Brochure</a>
+            <p></p>
+        </div>-->
+    </div>
 </div>
-
-<div id="loader">
-	<div class="sk-spinner sk-spinner-pulse"></div>
-</div>
-<input type="hidden" id="first" value="{FIRST}" />
-<input type="hidden" id="limit" value="{LIMIT}" >
